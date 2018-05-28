@@ -48,9 +48,9 @@
 
     <el-table :data="list" v-loading.body="listLoading" element-loading-text="Loading" border fit highlight-current-row
               empty-text="暂无数据" @selection-change="handleSelectionChange">
-      <el-table-column prop="id" label="店铺编号"></el-table-column>
+      <el-table-column prop="id" width="90px" label="店铺编号"></el-table-column>
       <el-table-column prop="type" label="店铺类型"></el-table-column>
-      <!--<el-table-column prop="number" label="所在地"></el-table-column>--><!--provinceId  cityId  districtId-->
+      <el-table-column prop="area" :formatter="areaFormat" label="所在地"></el-table-column>
       <el-table-column prop="name" label="店铺名称"></el-table-column>
       <el-table-column prop="address" label="地址"></el-table-column>
       <el-table-column prop="linkPhone" label="联系电话"></el-table-column>
@@ -59,11 +59,11 @@
           <img :src="scope.row.pic" width="100" height="100">
         </template>
       </el-table-column>
-      <el-table-column prop="numberOrder" label="成交量"></el-table-column>
-      <el-table-column prop="numberGoodReputation" label="好评数"></el-table-column>
-      <el-table-column prop="statusStr" label="状态"></el-table-column>
-      <el-table-column prop="dateAdd" label="添加时间"></el-table-column>
-      <el-table-column prop="dateUpdate" label="修改时间"></el-table-column>
+      <el-table-column prop="numberOrder" width="70px" label="成交量"></el-table-column>
+      <el-table-column prop="numberGoodReputation" width="70px" label="好评数"></el-table-column>
+      <el-table-column prop="statusStr" width="50px" label="状态"></el-table-column>
+      <el-table-column prop="dateAdd" width="95px" label="添加时间"></el-table-column>
+      <el-table-column prop="dateUpdate" width="95px" label="修改时间"></el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
           <el-button type="text" @click="handleUpdate(scope.row.id)">编辑</el-button>
@@ -193,7 +193,10 @@
 
     },
     methods: {
-      handleDateAdd(val) {
+      areaFormat(row) {
+        return `${row.provinceStr} - ${row.cityStr} - ${row.areaStr}`;
+    },
+    handleDateAdd(val) {
         this.searchData.dateAddBegin = val?val[0]:undefined;
         this.searchData.dateAddEnd = val?val[1]:undefined;
       },
