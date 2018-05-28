@@ -183,14 +183,35 @@ export const constantRouterMap = [
       meta: { title: 'Appid配置', icon: 'alipaySR' }
     },
       {
-        name: '我的资源包2',
+        name: '首页',
         path: 'dashboard3',
         component: () => import('@/views/dashboard/index'),
-        meta: { title: '我的资源包2', icon: 'setting' }
+        meta: { title: '首页', icon: 'setting' }
+      }]
+  },{
+    name: '商城管理',
+    path: '/user',
+    component: Layout,
+    redirect: '/user/apiExtShopSub/list',
+    meta: { title: '商城管理', icon: 'shop' },
+    children: [{
+      name: '店铺管理',
+      path: 'apiExtShopSub/list',
+      component: () => import('@/views/apiExtShopSub/list'),
+      meta: { title: '店铺管理', icon: 'shop' }
+    },{
+      name: '店铺管理',
+      path: 'apiExtShopSub/add',
+      component: () => import('@/views/apiExtShopSub/add'),
+      hidden:true
+    },
+      {
+        name: '首页',
+        path: 'dashboard3',
+        component: () => import('@/views/dashboard/index'),
+        meta: { title: '首页', icon: 'setting' }
       }]
   },
-
-
   { path: '*', redirect: '/404', hidden: true }
 ]
 
