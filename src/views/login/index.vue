@@ -144,6 +144,15 @@ export default {
               })
               return;
             }
+            if (res.code != 0) {
+              this.changeRandom()
+              Message({
+                message: res.msg,
+                type: 'error',
+                duration: 3 * 1000
+              })
+              return;
+            }
             Message({
               message: '登录成功',
               type: 'success',

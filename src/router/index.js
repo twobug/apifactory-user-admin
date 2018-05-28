@@ -108,6 +108,19 @@ export const constantRouterMap = [
       path: 'apiExtShopGoodsCategory/list',
       component: () => import('@/views/apiExtShopGoodsCategory/list'),
       meta: { title: '商品分类', icon: 'category' }
+    },
+    {
+      name: '运费模板',
+      path: 'apiExtShopFreightTemplate/list',
+      component: () => import('@/views/apiExtShopFreightTemplate/list'),
+      meta: { title: '运费模板', icon: 'yunfeimoban' }
+    },
+    {
+      name: '添加修改运费模板',
+      path: 'apiExtShopFreightTemplate/add',
+      component: () => import('@/views/apiExtShopFreightTemplate/add'),
+      meta: { title: '运费模板', icon: 'yunfeimoban' },
+      hidden: true
     }]
   },
 
