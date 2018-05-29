@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import { fetchDataList, delData, saveData, infoData } from '@/api/apiExtShopFreightTemplate'
+import { fetchDataList, delData } from '@/api/apiExtShopFreightTemplate'
 import { Message, MessageBox } from 'element-ui'
 
 export default {
@@ -76,22 +76,7 @@ export default {
       this.$router.push({ path: 'add' })
     },
     handleUpdate(id){
-      let updateObj = this.list.find(item => {
-        return item.id == id
-      })
-      this.pushData = Object.assign({}, this.pushDataTmp, updateObj, {isFree:'' + updateObj.isFree, feeType:'' + updateObj.feeType})
-      if (this.pushData.pid == 0) {
-        this.pushData.pid = '0'
-      }
-      this.pushData.dialogTitle = '修改运费模板'
-      this.imageUrl = undefined
-      if (updateObj.icon) {
-        this.imageUrl = new URL(updateObj.icon);
-      }
-      this.pushData.dialogFormVisible = true
-      this.$nextTick(() => {
-        this.$refs['addEditPopForm'].clearValidate()
-      })
+      this.$router.push({ path: 'add', query:{id:id} })
     },
     handleCreateSave(){
       this.$refs['addEditPopForm'].validate((valid) => {

@@ -47,7 +47,7 @@
               </el-col>
               <el-col class="line" :span="2" style="text-align:center;">元</el-col>
             </el-form-item>
-            <el-button type="text" @click="addCityException()">为指定地区城市设置运费</el-button>
+            <el-button type="text" @click="addCityException(feeType.type)">为指定地区城市设置运费</el-button>
           </div>
         </div>
       </el-form-item>
@@ -62,13 +62,11 @@
         <el-select v-if="provinceShow" v-model="provinceSel" placeholder="请选择省份" @change="cityDataChanged(0)">
           <el-option v-for="province in provinces" :key="province.id" :label="province.name" :value="province.id"></el-option>
         </el-select>
-        <el-select v-if="cityShow" v-model="pushData.status" placeholder="请选择城市">
-          <el-option label="正常" value="0"></el-option>
-          <el-option label="禁用" value="1"></el-option>
+        <el-select v-if="cityShow" v-model="citySel" placeholder="请选择城市" @change="cityDataChanged(1)">
+          <el-option v-for="city in citys" :key="city.id" :label="city.name" :value="city.id"></el-option>
         </el-select>
-        <el-select v-if="districtShow" v-model="pushData.status" placeholder="请选择区县">
-          <el-option label="正常" value="0"></el-option>
-          <el-option label="禁用" value="1"></el-option>
+        <el-select v-if="districtShow" v-model="districtSel" placeholder="请选择区县">
+          <el-option v-for="district in districts" :key="district.id" :label="district.name" :value="district.id"></el-option>
         </el-select>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -81,8 +79,11 @@
 </template>
 
 <script>
+import { saveData, infoData } from '@/api/apiExtShopFreightTemplate'
 import { fetchProvinceList, fetchChildList } from '@/api/city'
 import { Message, MessageBox } from 'element-ui'
+
+let vm
 
 export default {
   data() {
@@ -90,13 +91,13 @@ export default {
 
       feeTypes:[
         {type:0, name:'快递', isChecked:false, details:[
-          {name:'默认运费', cityType:0, cityId:0, firstNumber:undefined, firstAmount:undefined, addNumber:undefined, addAmount:undefined}
+          {name:'默认运费', cityType:0, cityId:0, firstNumber:1, firstAmount:5, addNumber:1, addAmount:5}
         ]},
         {type:1, name:'EMS', isChecked:false, details:[
-          {name:'默认运费', cityType:0, cityId:0, firstNumber:undefined, firstAmount:undefined, addNumber:undefined, addAmount:undefined}
+          {name:'默认运费', cityType:0, cityId:0, firstNumber:1, firstAmount:5, addNumber:1, addAmount:5}
         ]},
         {type:2, name:'平邮', isChecked:false, details:[
-          {name:'默认运费', cityType:0, cityId:0, firstNumber:undefined, firstAmount:undefined, addNumber:undefined, addAmount:undefined}
+          {name:'默认运费', cityType:0, cityId:0, firstNumber:1, firstAmount:5, addNumber:1, addAmount:5}
         ]},
       ],
 
@@ -122,6 +123,8 @@ export default {
       dialogTitle : undefined,
       dialogFormVisible:false,
 
+      curAddCityExceptionIndex:undefined,
+
       provinces:undefined,
       provinceSel:undefined,
       provinceShow:false,
@@ -137,18 +140,142 @@ export default {
     }
   },
   mounted() {
+    vm = this
     this.fetchProvinceList()
+    if (this.$route.query.id) {
+      infoData(this.$route.query.id).then(res => {
+        if (res.code != 0) {
+          Message({
+            message: res.msg,
+            type: 'error',
+            duration: 3 * 1000,
+            onClose: () => {
+              this.$router.push({ path: '/user/apiExtShopFreightTemplate/list' })
+            }
+          })
+        } else {
+          this.pushData = Object.assign({}, res.data.info, {isFree:'' + res.data.info.isFree, feeType:'' + res.data.info.feeType})
+          res.data.details.forEach(detail => {
+            vm.feeTypes[detail.type].isChecked = true
+            res.data.exceptions.forEach(exception => {
+              if (detail.id == exception.detailId) {
+                let tempObj = {name:'默认运费', cityType:0, cityId:0, firstNumber:1, firstAmount:5, addNumber:1, addAmount:5}
+                if (exception.districtId) {
+                  tempObj.cityType = 2
+                  tempObj.cityId = exception.districtId
+                  tempObj.name = exception.areaStr
+                }
+                if (exception.cityId) {
+                  tempObj.cityType = 1
+                  tempObj.cityId = exception.cityId
+                  tempObj.name = exception.cityStr
+                }
+                if (exception.provinceId) {
+                  tempObj.cityType = 0
+                  tempObj.cityId = exception.provinceId
+                  tempObj.name = exception.provinceStr
+                }
+                tempObj.firstNumber = exception.firstNumber
+                tempObj.firstAmount = exception.firstAmount
+                tempObj.addNumber = exception.addNumber
+                tempObj.addAmount = exception.addAmount
+                vm.feeTypes[detail.type].details.push(tempObj)
+              }
+            })
+          })
+          
+        }
+      }).catch(e=>{
+        console.error(e);
+      })
+    }
   },
   methods: {
     onSubmit() {
-      this.$message('submit!')
+      let pushDataDetailsJsonStr = []
+      this.feeTypes.forEach(item => {
+        if (item.isChecked) {
+          item.details.forEach(detail => {
+            let tmpObj = Object.assign({}, detail, {type:item.type})
+            pushDataDetailsJsonStr.push(tmpObj)
+          })
+        }
+      })
+      this.pushData.detailsJsonStr = JSON.stringify(pushDataDetailsJsonStr)
+      this.$refs['addEditPopForm'].validate((valid) => {
+        if (valid) {
+          saveData(this.pushData).then((res) => {
+            this.pushData.dialogFormVisible = false
+            if (res.code == 0) {
+              Message({
+                message: '操作成功',
+                type: 'success',
+                duration: 1 * 1000,
+                onClose: () => {
+                  this.$router.push({ path: '/user/apiExtShopFreightTemplate/list' })
+                }
+              })
+            } else {
+              Message({
+                message: res.msg,
+                type: 'error',
+                duration: 3 * 1000
+              })
+            }
+          }).catch(e=>{
+            console.error(e);
+          })
+        }
+      })
     },
     onCancel() {
       this.$router.back();
     },
-    addCityException(){
+    addCityException(feeType){
+      this.curAddCityExceptionIndex = feeType
+      
       this.dialogTitle = '请选择配送地'
       this.dialogFormVisible = true
+
+      this.provinceSel = undefined
+
+      this.citys = undefined
+      this.citySel = undefined
+      this.cityShow = false
+
+      this.districts = undefined
+      this.districtSel = undefined
+      this.districtShow = false
+    },
+    handleCreateSave(){
+      let addExceptionObj = {name:'为指定地区城市设置运费', cityType:0, cityId:0, firstNumber:1, firstAmount:5, addNumber:1, addAmount:5}
+      if (this.districtSel) {
+        addExceptionObj.cityType = 2
+        addExceptionObj.cityId = this.districtSel
+        addExceptionObj.name = this.districts.find(item => {
+          return item.id == addExceptionObj.cityId
+        }).name
+      } else if (this.citySel) {
+        addExceptionObj.cityType = 1
+        addExceptionObj.cityId = this.citySel
+        addExceptionObj.name = this.citys.find(item => {
+          return item.id == addExceptionObj.cityId
+        }).name
+      } else if (this.provinceSel) {
+        addExceptionObj.cityType = 0
+        addExceptionObj.cityId = this.provinceSel
+        addExceptionObj.name = this.provinces.find(item => {
+          return item.id == addExceptionObj.cityId
+        }).name
+      } else {
+        this.$message({
+          message: '请至少选择配送省份',
+          type: 'error'
+        })
+        return
+      }
+      this.feeTypes[this.curAddCityExceptionIndex].details.push(addExceptionObj)
+      this.dialogFormVisible = false    
     },
     fetchProvinceList(){
       fetchProvinceList().then(res => {
@@ -157,10 +284,39 @@ export default {
       })
     },
     cityDataChanged(type){
+      let pid = 0;
       if (type == 0) {
-        
+        this.districts = undefined
+        this.districtSel = undefined
+        this.districtShow = false
+
+        this.citys = undefined
+        this.citySel = undefined
+        this.cityShow = false
+
+        pid = this.provinceSel
       }
+      if (type == 1) {
+        this.districts = undefined
+        this.districtSel = undefined
+        this.districtShow = false
+        pid = this.citySel
+      }
+      fetchChildList(pid).then(res => {
+        if (res.code != 0) {
+          return;
+        }
+        if (type == 0) {
+          this.citys = res.data
+          this.cityShow = true
+        }
+        if (type == 1) {
+          this.districts = res.data
+          this.districtShow = true
+        }
+      })
     },
+    
   }
 }
 </script>
