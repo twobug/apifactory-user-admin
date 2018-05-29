@@ -19,8 +19,8 @@ export function delData(id) {
 export function infoData(id) {
   return request({
     url: '/user/apiExtShopFreightTemplate/info',
-    method: 'post',
-    data: { id }
+    method: 'get',
+    params: { id }
   })
 }
 

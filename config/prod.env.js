@@ -1,5 +1,6 @@
 'use strict'
 module.exports = {
   NODE_ENV: '"production"',
-  BASE_API: '"http://user.api.it120.cc"',
+  QQ_MAP_KEY: '"TJ3BZ-6LVCF-C25JP-JOA3O-EWZFJ-5FBMI"',
+  BASE_API: '"http://user.api.it120.cc"'
 }

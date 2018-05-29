@@ -10,7 +10,6 @@ export function fetchDataList(data) {
   })
 }
 
-
 export function delData(id) {
   return request({
     url: '/user/apiExtShopSub/del',

@@ -63,12 +63,12 @@ export const constantRouterMap = [
       component: () => import('@/views/centerUserResourceBundle/list'),
       meta: { title: '我的资源包', icon: 'ziyuan' }
     },
-      {
-        name: '我的资源包2',
-        path: 'dashboard3',
-        component: () => import('@/views/dashboard/index'),
-        meta: { title: '我的资源包2', icon: 'setting' }
-      }]
+    {
+      name: '我的资源包2',
+      path: 'dashboard3',
+      component: () => import('@/views/dashboard/index'),
+      meta: { title: '我的资源包2', icon: 'setting' }
+    }]
   },
 
   {
@@ -83,14 +83,13 @@ export const constantRouterMap = [
       component: () => import('@/views/apiExtDfs/list'),
       meta: { title: '上传文件管理', icon: 'files' }
     },
-      {
-        name: '我的资源包2',
-        path: 'dashboard3',
-        component: () => import('@/views/dashboard/index'),
-        meta: { title: '我的资源包2', icon: 'setting' }
-      }]
+    {
+      name: '我的资源包2',
+      path: 'dashboard3',
+      component: () => import('@/views/dashboard/index'),
+      meta: { title: '我的资源包2', icon: 'setting' }
+    }]
   },
-
   {
     name: '商城管理',
     path: '/user',
@@ -102,36 +101,32 @@ export const constantRouterMap = [
       path: 'apiExtShopSub/list',
       component: () => import('@/views/apiExtShopSub/list'),
       meta: { title: '店铺管理', icon: 'shop' }
-    },{
+    },
+    {
       name: '店铺管理',
       path: 'apiExtShopSub/add',
       component: () => import('@/views/apiExtShopSub/add'),
-      hidden:true
-    },{
-      name: '上传文件管理',
-      path: 'list',
-      component: () => import('@/views/apiExtDfs/list'),
-      meta: { title: '上传文件管理', icon: 'files' }
+      hidden: true
     },
-      {
-        name: '商品分类',
-        path: 'apiExtShopGoodsCategory/list',
-        component: () => import('@/views/apiExtShopGoodsCategory/list'),
-        meta: { title: '商品分类', icon: 'category' }
-      },
-      {
-        name: '运费模板',
-        path: 'apiExtShopFreightTemplate/list',
-        component: () => import('@/views/apiExtShopFreightTemplate/list'),
-        meta: { title: '运费模板', icon: 'yunfeimoban' }
-      },
-      {
-        name: '添加修改运费模板',
-        path: 'apiExtShopFreightTemplate/add',
-        component: () => import('@/views/apiExtShopFreightTemplate/add'),
-        meta: { title: '运费模板', icon: 'yunfeimoban' },
-        hidden: true
-      }]
+    {
+      name: '商品分类',
+      path: 'apiExtShopGoodsCategory/list',
+      component: () => import('@/views/apiExtShopGoodsCategory/list'),
+      meta: { title: '商品分类', icon: 'category' }
+    },
+    {
+      name: '运费模板',
+      path: 'apiExtShopFreightTemplate/list',
+      component: () => import('@/views/apiExtShopFreightTemplate/list'),
+      meta: { title: '运费模板', icon: 'yunfeimoban' }
+    },
+    {
+      name: '添加修改运费模板',
+      path: 'apiExtShopFreightTemplate/add',
+      component: () => import('@/views/apiExtShopFreightTemplate/add'),
+      meta: { title: '运费模板', icon: 'yunfeimoban' },
+      hidden: true
+    }]
   },
 
   {
@@ -174,36 +169,36 @@ export const constantRouterMap = [
       component: () => import('@/views/kanjiaSet/list'),
       meta: { title: '砍价设置', icon: 'kanjia' }
     },
-      {
-        name: '砍价参与用户',
-        path: 'kanjiaJoiner/list',
-        component: () => import('@/views/kanjiaJoiner/list'),
-        meta: { title: '砍价参与用户', icon: 'kanjia' }
-      },
-      {
-        name: '砍价明细',
-        path: 'kanjiaHelp/list',
-        component: () => import('@/views/kanjiaHelp/list'),
-        meta: { title: '砍价明细', icon: 'kanjia' }
-      },
-      {
-        name: '拼团设置',
-        path: 'pingtuanSet/list',
-        component: () => import('@/views/pingtuanSet/list'),
-        meta: { title: '拼团设置', icon: 'pingtuan' }
-      },
-      {
-        name: '开团记录',
-        path: 'pingtuanOpener/list',
-        component: () => import('@/views/pingtuanOpener/list'),
-        meta: { title: '开团记录', icon: 'pingtuan' }
-      },
-      {
-        name: '拼团记录',
-        path: 'pingtuanHelp/list',
-        component: () => import('@/views/pingtuanHelp/list'),
-        meta: { title: '拼团记录', icon: 'pingtuan' }
-      }]
+    {
+      name: '砍价参与用户',
+      path: 'kanjiaJoiner/list',
+      component: () => import('@/views/kanjiaJoiner/list'),
+      meta: { title: '砍价参与用户', icon: 'kanjia' }
+    },
+    {
+      name: '砍价明细',
+      path: 'kanjiaHelp/list',
+      component: () => import('@/views/kanjiaHelp/list'),
+      meta: { title: '砍价明细', icon: 'kanjia' }
+    },
+    {
+      name: '拼团设置',
+      path: 'pingtuanSet/list',
+      component: () => import('@/views/pingtuanSet/list'),
+      meta: { title: '拼团设置', icon: 'pingtuan' }
+    },
+    {
+      name: '开团记录',
+      path: 'pingtuanOpener/list',
+      component: () => import('@/views/pingtuanOpener/list'),
+      meta: { title: '开团记录', icon: 'pingtuan' }
+    },
+    {
+      name: '拼团记录',
+      path: 'pingtuanHelp/list',
+      component: () => import('@/views/pingtuanHelp/list'),
+      meta: { title: '拼团记录', icon: 'pingtuan' }
+    }]
   },
 
   { path: '*', redirect: '/404', hidden: true }
