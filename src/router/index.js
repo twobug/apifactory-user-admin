@@ -115,6 +115,12 @@ export const constantRouterMap = [
       meta: { title: '商品分类', icon: 'category' }
     },
     {
+      name: '规格尺寸',
+      path: 'apiExtShopProperty/list',
+      component: () => import('@/views/apiExtShopProperty/list'),
+      meta: { title: '规格尺寸', icon: 'guigecicun' }
+    },
+    {
       name: '运费模板',
       path: 'apiExtShopFreightTemplate/list',
       component: () => import('@/views/apiExtShopFreightTemplate/list'),
