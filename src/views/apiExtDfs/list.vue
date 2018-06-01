@@ -26,6 +26,12 @@
     <el-table :data="list" v-loading.body="listLoading" element-loading-text="Loading" border fit highlight-current-row empty-text="暂无数据" @selection-change="handleSelectionChange">
       <el-table-column type="selection" align="center" width="55" row-key="id"></el-table-column>
       <el-table-column prop="fileTypeStr" label="类型"></el-table-column>
+      <el-table-column label="缩略图" width="100%" align="center">
+        <template slot-scope="scope">
+          <img v-if="scope.row.fileType == 0" :src="scope.row.urlFull" style="width:70px;" />
+          <span v-if="scope.row.fileType != 0">-</span>
+        </template>
+      </el-table-column>
       <el-table-column prop="suffix" label="文件后缀"></el-table-column>
       <el-table-column prop="sizeStr" label="容量"></el-table-column>
       <el-table-column label="Url">
