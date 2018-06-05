@@ -138,6 +138,12 @@ export const constantRouterMap = [
       path: 'apiExtOrderEvaluate/list',
       component: () => import('@/views/apiExtOrderEvaluate/list'),
       meta: { title: '评价管理', icon: 'pingjia' }
+    },
+    {
+      name: '达达门店',
+      path: 'expressDadaShopCitycode/list',
+      component: () => import('@/views/expressDadaShopCitycode/list'),
+      meta: { title: '达达门店', icon: 'dada' }
     }]
   },
 
