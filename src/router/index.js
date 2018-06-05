@@ -132,6 +132,12 @@ export const constantRouterMap = [
       component: () => import('@/views/apiExtShopFreightTemplate/add'),
       meta: { title: '运费模板', icon: 'yunfeimoban' },
       hidden: true
+    },
+    {
+      name: '评价管理',
+      path: 'apiExtOrderEvaluate/list',
+      component: () => import('@/views/apiExtOrderEvaluate/list'),
+      meta: { title: '评价管理', icon: 'pingjia' }
     }]
   },
 
