@@ -94,7 +94,7 @@ export const constantRouterMap = [
     name: '商城管理',
     path: '/user',
     component: Layout,
-    redirect: '/user/apiExtDfs/list',
+    redirect: '/user/apiExtShopSub/list',
     meta: { title: '商城管理', icon: 'shopping' },
     children: [{
       name: '店铺管理',
@@ -144,6 +144,19 @@ export const constantRouterMap = [
       path: 'expressDadaShopCitycode/list',
       component: () => import('@/views/expressDadaShopCitycode/list'),
       meta: { title: '达达门店', icon: 'dada' }
+    },
+    {
+      name: '知识交易设置',
+      path: 'virtualTraderSet/list',
+      component: () => import('@/views/virtualTraderSet/list'),
+      meta: { title: '知识交易设置', icon: 'zhishi' }
+    },
+    {
+      name: '添加知识交易',
+      path: 'virtualTraderSet/add',
+      component: () => import('@/views/virtualTraderSet/add'),
+      meta: { title: '知识交易', icon: 'zhishi' },
+      hidden: true
     }]
   },
 
