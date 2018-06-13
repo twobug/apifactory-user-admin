@@ -83,10 +83,10 @@ export const constantRouterMap = [
       meta: { title: '上传文件管理', icon: 'files' }
     },
     {
-      name: '扫呗支付配置',
+      name: '三方小程序支付',
       path: 'centerUserSetSaobei/list',
       component: () => import('@/views/centerUserSetSaobei/list'),
-      meta: { title: '扫呗支付配置', icon: 'saobei' }
+      meta: { title: '三方小程序支付', icon: 'saobei' }
     }]
   },
   {
