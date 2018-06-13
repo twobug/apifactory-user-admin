@@ -157,6 +157,12 @@ export const constantRouterMap = [
       component: () => import('@/views/virtualTraderSet/add'),
       meta: { title: '知识交易', icon: 'zhishi' },
       hidden: true
+    },
+    {
+      name: '知识交易记录',
+      path: 'virtualTraderBuyLog/list',
+      component: () => import('@/views/virtualTraderBuyLog/list'),
+      meta: { title: '知识交易记录', icon: 'zhishi' }
     }]
   },
 
