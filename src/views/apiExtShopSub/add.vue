@@ -61,7 +61,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label="图片" prop="pic">
-        <el-upload class="upload-demo" action="http://user.api.it120.cc/fileUpload"
+        <el-upload class="upload-demo" action="https://user.api.it120.cc/fileUpload"
           :data="upLoadData" :headers="fileHeaders" :on-remove="handleRemove" :on-success="uploadSuccess" :file-list="fileList"
            accept="image/jpeg,.jpg,image/gif,.gif,image/png,.png,image/bmp,.bmp,.jpeg,.JPG,.JPEG,.PBG,.GIF,.BMP,.JPEG"
           :before-upload="beforeImgUpload" list-type="picture">
