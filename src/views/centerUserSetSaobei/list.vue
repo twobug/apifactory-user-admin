@@ -115,7 +115,7 @@ export default {
       })
     },
     handleCreate(){
-      this.pushData.dialogTitle = '扫呗支付配置'
+      this.pushData.dialogTitle = '支付配置'
       this.pushData.dialogFormVisible = true
       vm.$nextTick(() => {
         vm.$refs['addEditPopForm'].clearValidate()
