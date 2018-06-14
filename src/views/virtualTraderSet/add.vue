@@ -47,7 +47,7 @@
         </div>
       </el-form-item>
       <el-form-item label="付费详情" prop="content">
-        <el-input v-model.number="pushData.content" clearable></el-input>
+        <Tinymce :height=500 ref="editor" v-model="pushData.content"/>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit">提交</el-button>
@@ -61,6 +61,7 @@
 <script>
 import { saveData, infoData } from '@/api/virtualTraderSet'
 import { Message, MessageBox } from 'element-ui'
+import Tinymce from '@/components/Tinymce'
 
 let vm
 
@@ -117,6 +118,9 @@ export default {
       districtShow:false,
 
     }
+  },
+  components: {
+    Tinymce
   },
   mounted() {
     vm = this

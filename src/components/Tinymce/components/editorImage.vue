@@ -5,7 +5,7 @@
     </el-button>
     <el-dialog append-to-body :visible.sync="dialogVisible">
       <el-upload class="editor-slide-upload" :data="upLoadData" :headers="fileHeaders"
-                 action="https://user.api.it120.cc/fileUpload" :multiple="true" :file-list="fileLists"
+                 :action="uploadUrl" :multiple="true" :file-list="fileLists"
                  :show-file-list="true"
                  list-type="picture-card" :on-remove="handleRemove"
                  accept="image/jpeg,.jpg,image/gif,.gif,image/png,.png,image/bmp,.bmp,.jpeg,.JPG,.JPEG,.PBG,.GIF,.BMP,.JPEG"
@@ -31,6 +31,7 @@
     },
     data() {
       return {
+        uploadUrl:process.env.BASE_API + '/fileUpload',
         dialogVisible: false,
         listObj: {},
         fileLists: [],
