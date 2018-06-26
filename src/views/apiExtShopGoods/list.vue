@@ -70,9 +70,10 @@
           <p>好评数 : {{scope.row.numberGoodReputation}}</p>
         </template>
       </el-table-column>
-      <el-table-column label="操作">
+      <el-table-column label="操作" width="100%">
         <template slot-scope="scope">
-          <el-button type="text" @click="handleUpdate(scope.row.id)">编辑</el-button>
+          <el-button type="text" @click="modifyNumberOrders(scope.row)">销量</el-button><br>
+          <el-button type="text" @click="handleUpdate(scope.row.id)">编辑</el-button><br>
           <el-button type="text" @click="delData(scope.row.id)" style="color:red">删除</el-button>
         </template>
       </el-table-column>
@@ -83,7 +84,7 @@
 </template>
 
 <script>
-  import {delData, fetchDataList, getShopData, getShopGoodsCategoryData} from '@/api/apiExtShopGoods'
+  import {delData, fetchDataList, getShopData, getShopGoodsCategoryData, modifyNumberOrders} from '@/api/apiExtShopGoods'
   import {Message} from 'element-ui'
   import {mapGetters} from 'vuex'
 
@@ -283,6 +284,25 @@
             })
           })
         }).catch(() => {
+        })
+      },
+      modifyNumberOrders(data){
+        this.$prompt('请输入销量', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          inputPattern: /[0-9]+/,
+          inputErrorMessage: '销量格式不正确'
+        }).then(({ value }) => {
+          modifyNumberOrders({id:data.id, numberOrders:value}).then(() => {
+            Message({
+              message: '修改成功',
+              type: 'success',
+              duration: 1000,
+              onClose: () => {
+                this.fetchData()
+              }
+            })
+          })
         })
       }
     }

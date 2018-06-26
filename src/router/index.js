@@ -93,7 +93,7 @@ export const constantRouterMap = [
     path: '/user',
     component: Layout,
     redirect: '/user/apiExtSmsConfig/list',
-    meta: {title: '短信设置', icon: 'setting'},
+    meta: {title: '短信设置', icon: 'dxsz'},
     children: [{
       name: '验证码设置',
       path: 'apiExtSmsConfig/list',

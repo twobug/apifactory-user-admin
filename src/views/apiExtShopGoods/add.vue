@@ -116,10 +116,6 @@
         <el-input-number v-model="pushData.stores" clearable @keyup.enter.native="handleCreateSave" :min="0"
                          label="请输入库存数" style="width: 100%"></el-input-number>
       </el-form-item>
-      <el-form-item label="订单数" prop="numberOrders">
-        <el-input-number v-model="pushData.numberOrders" clearable @keyup.enter.native="handleCreateSave" :min="0"
-                         label="请输入订单数" style="width: 100%"></el-input-number>
-      </el-form-item>
       <el-form-item label="商品重量" prop="weight">
         <el-col :span="23">
           <el-input-number v-model="pushData.weight" clearable @keyup.enter.native="handleCreateSave" :min="0"
@@ -291,7 +287,6 @@
           pingtuanPrice: 0,
           minScore: 0,
           stores: 0,
-          numberOrders: 0,
           weight: 0,
           commissionType: '0',
           commission: 0,

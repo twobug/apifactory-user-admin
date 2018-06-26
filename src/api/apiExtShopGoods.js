@@ -33,6 +33,14 @@ export function delData(id) {
   })
 }
 
+export function modifyNumberOrders(data) {
+  return request({
+    url: '/user/apiExtShopGoods/modify/numberOrders',
+    method: 'post',
+    data: data
+  })
+}
+
 export function infoData(id) {
   return request({
     url: '/user/apiExtShopGoods/info',
