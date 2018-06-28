@@ -82,12 +82,12 @@ export const constantRouterMap = [
       component: () => import('@/views/apiExtDfs/list'),
       meta: {title: '上传文件管理', icon: 'files'}
     },
-      {
-        name: '三方小程序支付',
-        path: 'centerUserSetSaobei/list',
-        component: () => import('@/views/centerUserSetSaobei/list'),
-        meta: {title: '三方小程序支付', icon: 'saobei'}
-      }]
+    {
+      name: '三方小程序支付',
+      path: 'centerUserSetSaobei/list',
+      component: () => import('@/views/centerUserSetSaobei/list'),
+      meta: {title: '三方小程序支付', icon: 'saobei'}
+    }]
   }, {
     name: '短信设置',
     path: '/user',
@@ -165,6 +165,18 @@ export const constantRouterMap = [
         name: '商品管理',
         path: 'apiExtShopGoods/add',
         component: () => import('@/views/apiExtShopGoods/add'),
+        hidden: true
+      },
+      {
+        name: '订单管理',
+        path: 'apiExtOrder/list',
+        component: () => import('@/views/apiExtOrder/list'),
+        meta: {title: '订单管理', icon: 'order'}
+      },
+      {
+        name: '订单详情',
+        path: 'apiExtOrder/detail',
+        component: () => import('@/views/apiExtOrder/detail'),
         hidden: true
       },
       {
