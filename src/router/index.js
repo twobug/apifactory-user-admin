@@ -89,6 +89,29 @@ export const constantRouterMap = [
       meta: {title: '三方小程序支付', icon: 'saobei'}
     }]
   }, {
+    name: '用户管理',
+    path: '/user',
+    component: Layout,
+    redirect: '/user/apiExtUser/list',
+    meta: {title: '用户管理', icon: 'user'},
+    children: [{
+      name: '用户列表',
+      path: 'apiExtUser/list',
+      component: () => import('@/views/apiExtUser/list'),
+      meta: {title: '用户列表', icon: 'userList'}
+    },
+      {
+        name: '收获地址管理',
+        path: 'apiExtUserShippingAddress/list',
+        component: () => import('@/views/apiExtUserShippingAddress/list'),
+        meta: {title: '收获地址管理', icon: 'address'}
+      },{
+        name: '收获地址管理',
+        path: 'apiExtUserShippingAddress/add',
+        component: () => import('@/views/apiExtUserShippingAddress/add'),
+        hidden: true
+      }]
+  }, {
     name: '短信设置',
     path: '/user',
     component: Layout,
