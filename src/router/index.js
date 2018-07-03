@@ -88,7 +88,33 @@ export const constantRouterMap = [
       component: () => import('@/views/centerUserSetSaobei/list'),
       meta: {title: '三方小程序支付', icon: 'saobei'}
     }]
-  }, {
+  },
+  {
+    name: '微信设置',
+    path: '/user',
+    component: Layout,
+    redirect: '/user/centerUserWxKey/list',
+    meta: {title: '微信设置', icon: 'wx'},
+    children: [
+      {
+      name: '微信设置',
+      path: 'centerUserWxKey/list',
+      component: () => import('@/views/centerUserWxKey/list'),
+      meta: {title: '微信设置', icon: 'setting'}
+    },
+    {
+      name: '收获地址管理',
+      path: 'apiExtUserShippingAddress/list',
+      component: () => import('@/views/apiExtUserShippingAddress/list'),
+      meta: {title: '收获地址管理', icon: 'address'}
+    },{
+      name: '收获地址管理',
+      path: 'apiExtUserShippingAddress/add',
+      component: () => import('@/views/apiExtUserShippingAddress/add'),
+      hidden: true
+    }]
+  },
+  {
     name: '用户管理',
     path: '/user',
     component: Layout,
@@ -111,7 +137,8 @@ export const constantRouterMap = [
         component: () => import('@/views/apiExtUserShippingAddress/add'),
         hidden: true
       }]
-  }, {
+  },
+  {
     name: '短信设置',
     path: '/user',
     component: Layout,
