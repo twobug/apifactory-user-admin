@@ -103,15 +103,10 @@ export const constantRouterMap = [
       meta: {title: '微信设置', icon: 'setting'}
     },
     {
-      name: '收获地址管理',
-      path: 'apiExtUserShippingAddress/list',
-      component: () => import('@/views/apiExtUserShippingAddress/list'),
-      meta: {title: '收获地址管理', icon: 'address'}
-    },{
-      name: '收获地址管理',
-      path: 'apiExtUserShippingAddress/add',
-      component: () => import('@/views/apiExtUserShippingAddress/add'),
-      hidden: true
+      name: '自动回复',
+      path: 'wxAutoReply/list',
+      component: () => import('@/views/wxAutoReply/list'),
+      meta: {title: '自动回复', icon: 'dxsz'}
     }]
   },
   {
