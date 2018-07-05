@@ -107,6 +107,12 @@ export const constantRouterMap = [
       path: 'wxAutoReply/list',
       component: () => import('@/views/wxAutoReply/list'),
       meta: {title: '自动回复', icon: 'dxsz'}
+    },
+    {
+      name: '公众号菜单',
+      path: 'wxMenu/list',
+      component: () => import('@/views/wxMenu/list'),
+      meta: {title: '公众号菜单', icon: 'table'}
     }]
   },
   {
