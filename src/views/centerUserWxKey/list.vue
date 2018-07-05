@@ -13,6 +13,7 @@
         :before-upload="beforeAvatarUpload">
         <el-button slot="trigger" class="filter-item" size="medium" type="primary" icon="el-icon-upload">上传支付证书（P12格式文件）</el-button>
         <el-button class="filter-item" style="margin-bottom: 10px;" size="medium" @click="handleCreate" type="success" icon="el-icon-edit">修改appid/secret设置</el-button>
+        <el-button class="filter-item" size="medium" type="primary" icon="el-icon-upload" @click="fetchQrcode">小程序获取二维码</el-button>
         <el-button class="filter-item" style="margin-bottom: 10px;" size="medium" @click="delData" type="danger" icon="el-icon-delete">删除当前配置</el-button>
       </el-upload>
       
@@ -50,13 +51,27 @@
         <el-button type="primary" @click="handleCreateSave">确定</el-button>
       </div>
     </el-dialog>
+    <el-dialog title="小程序获取二维码" :visible.sync="pushData2.dialogFormVisible" :close-on-click-modal="false" :close-on-press-escape="false">
+      <el-form ref="addEditPopForm2" :model="pushData2" label-position="left" label-width="160px">
+        <el-form-item label="页面路径" prop="content" >
+          <el-input v-model="pushData2.content" type="text" clearable @keyup.enter.native="handleCreateSave2"></el-input>
+        </el-form-item>
+        <el-form-item label="二维码的宽度" prop="width" >
+          <el-input v-model.number="pushData2.width" type="text" clearable @keyup.enter.native="handleCreateSave2"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="pushData2.dialogFormVisible = false">取消</el-button>
+        <el-button type="primary" @click="handleCreateSave2">确定</el-button>
+      </div>
+    </el-dialog>
 
 
   </div>
 </template>
 
 <script>
-import { infoData, saveData, delData } from "@/api/centerUserWxKey";
+import { infoData, saveData, delData, qrcode } from "@/api/centerUserWxKey";
 import { Message, MessageBox } from "element-ui";
 import { mapGetters } from "vuex";
 import { getToken } from '@/utils/auth'
@@ -89,12 +104,21 @@ export default {
 
         id: undefined,
         appid: undefined,
-        privateKey: undefined
+        secret: undefined,
+        token: undefined,
+        mchId: undefined,
+        mchKey: undefined,
+      },
+      pushData2: {
+        dialogFormVisible: false,
+
+        content: undefined,
+        width: undefined,
       }
     };
   },
   created() {
-    this.pushDataTmp = Object.assign({}, this.pushData);
+    this.pushData2Tmp = Object.assign({}, this.pushData2);
     this.fetchData();
   },
   mounted() {},
@@ -148,6 +172,11 @@ export default {
               { name: "微信支付商户号", val: response.data.mchId },
               { name: "微信支付商户秘钥", val: response.data.mchKey }
             ]);
+            this.pushData.appid = response.data.appid
+            this.pushData.secret = response.data.secret
+            this.pushData.token = response.data.token
+            this.pushData.mchId = response.data.mchId
+            this.pushData.mchKey = response.data.mchKey
           if (response.data.mchCertFile) {
             this.list.push({ name: "微信支付证书", val: "已上传" });
           } else {
@@ -174,10 +203,6 @@ export default {
       });
     },
     handleCreate() {
-      this.pushData = Object.assign({}, this.pushDataTmp, {
-        appid: this.appid,
-        privateKey: this.privateKey
-      });
       this.pushData.dialogFormVisible = true;
       this.$nextTick(() => {
         this.$refs["addEditPopForm"].clearValidate();
@@ -212,6 +237,37 @@ export default {
             .catch(e => {
               console.error(e);
             });
+        }
+      });
+    },
+    fetchQrcode() {
+      this.pushData2 = Object.assign({}, this.pushData2Tmp);
+      this.pushData2.dialogFormVisible = true;
+      this.$nextTick(() => {
+        this.$refs["addEditPopForm2"].clearValidate();
+      });
+    },
+    handleCreateSave2() {
+      this.$refs["addEditPopForm2"].validate(valid => {
+        if (valid) {
+          qrcode(this.pushData2).then((res) => {
+            this.pushData2.dialogFormVisible = false;            
+            if (res.code != 0) {
+              Message({
+                message: res.msg,
+                type: 'error',
+                duration: 3 * 1000
+              })
+              return;
+            }
+            this.$alert(`<img src="${res.data}" width="200" >`, '微信扫一扫', {
+              dangerouslyUseHTMLString: true,
+              showConfirmButton:false,
+              center: true
+            });
+          }).catch((err) => {
+            console.log(err);
+          })          
         }
       });
     },

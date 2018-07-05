@@ -21,3 +21,11 @@ export function saveData(data) {
     data: { ...data }
   })
 }
+
+export function qrcode(data) {
+  return request({
+    url: '/user/centerUserWxKey/qrcode',
+    method: 'post',
+    data: { ...data }
+  })
+}
