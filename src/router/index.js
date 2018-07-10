@@ -113,6 +113,12 @@ export const constantRouterMap = [
       path: 'wxMenu/list',
       component: () => import('@/views/wxMenu/list'),
       meta: {title: '公众号菜单', icon: 'table'}
+    },
+    {
+      name: '客服管理',
+      path: 'kefuMember/list',
+      component: () => import('@/views/kefuMember/list'),
+      meta: {title: '客服管理', icon: 'userList'}
     }]
   },
   {

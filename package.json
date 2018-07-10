@@ -21,6 +21,8 @@
     "jsonlint": "^1.6.3",
     "normalize.css": "8.0.0",
     "nprogress": "0.2.0",
+    "qrcode": "^1.2.0",
+    "qrcodejs2": "0.0.2",
     "qs": "6.5.2",
     "script-loader": "^0.7.2",
     "vue": "2.5.16",
