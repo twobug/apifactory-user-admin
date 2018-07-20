@@ -2,36 +2,24 @@
   <div class="app-container">
     
     <div class="filter-container">
-      <el-input clearable @keyup.enter.native="fetchData" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="searchData.likeAsk">
-      </el-input>
-      <el-input clearable @keyup.enter.native="fetchData" style="width: 200px;" class="filter-item" placeholder="回复内容" v-model="searchData.likeReply">
-      </el-input>
-      <el-select clearable style="width: 200px" class="filter-item" v-model="searchData.type" placeholder="类型">
-        <el-option label="关注" value="0"></el-option>
-        <el-option label="关键词回复" value="1"></el-option>
-        <el-option label="小程序客服欢迎语" value="2"></el-option>
-      </el-select>
-      <el-select clearable style="width: 200px" class="filter-item" v-model="searchData.isUse" placeholder="是否启用">
-        <el-option label="启用" value="true"></el-option>
-        <el-option label="禁用" value="false"></el-option>
-      </el-select>
-      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="fetchData">搜索</el-button>
-      <el-button class="filter-item" style="margin-left: 10px;" @click="handleCreate" type="success" icon="el-icon-edit">添加</el-button>
+      <el-button class="filter-item" @click="handleCreate(0)" type="success">添加文本参数</el-button>
+      <el-button class="filter-item" @click="handleCreate(1)" type="success">添加开关参数</el-button>
+      <el-button class="filter-item" @click="handleCreate(2)" type="success">添加文件参数</el-button>
     </div>
     
     <el-table :data="list" v-loading.body="listLoading" element-loading-text="Loading" border fit highlight-current-row empty-text="暂无数据" @selection-change="handleSelectionChange">
-      <el-table-column prop="typeStr" label="类型"></el-table-column>
-      <el-table-column prop="ask" label="关键词"></el-table-column>
-      <el-table-column prop="reply" label="回复内容" show-overflow-tooltip></el-table-column>
+      <el-table-column prop="key" label="编号"></el-table-column>
+      <el-table-column prop="value" label="参数值"></el-table-column>
+      <el-table-column prop="remark" label="备注" show-overflow-tooltip></el-table-column>
       <el-table-column label="状态" width="100%">
         <template slot-scope="scope">
-          <el-tag type="success" v-if="scope.row.isUse">启用</el-tag>
-          <el-tag type="danger" v-if="!scope.row.isUse">禁用</el-tag>
+          <el-tag type="success" v-if="scope.row.isPub">公开参数</el-tag>
+          <el-tag type="danger" v-if="!scope.row.isPub">保密参数</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="添加/修改" width="160">
         <template slot-scope="scope">
-          {{scope.row.dateAdd}}<br>{{scope.row.dateUpdate?scope.row.dateUpdate:'-'}}
+          {{scope.row.creatAt}}<br>{{scope.row.dateUpdate?scope.row.dateUpdate:'-'}}
         </template>
       </el-table-column>
       <el-table-column label="操作" width="100%">
@@ -53,23 +41,37 @@
 
     <el-dialog :title="pushData.dialogTitle" :visible.sync="pushData.dialogFormVisible" :close-on-click-modal="false" :close-on-press-escape="false">
       <el-form :rules="rules" ref="addEditPopForm" :model="pushData" label-position="left" label-width="100px">
-        <el-form-item label="类型" prop="type" >
-          <el-select v-model="pushData.type" placeholder="请选择">
-            <el-option label="关注" value="0"></el-option>
-            <el-option label="关键词回复" value="1"></el-option>
-            <el-option label="小程序客服欢迎语" value="2"></el-option>
+        
+        <el-form-item v-if="!pushData.id" label="参数编码" prop="key" >
+          <el-input v-model="pushData.key" clearable @keyup.enter.native="handleCreateSave"></el-input>
+        </el-form-item>
+        <el-form-item v-if="pushData.dateType == 0" label="参数值" prop="content" >
+          <el-input v-model="pushData.content" type="textarea" :rows="4" clearable @keyup.enter.native="handleCreateSave"></el-input>
+        </el-form-item>
+        <el-form-item v-if="pushData.dateType == 1" label="开关状态" prop="content" >
+          <el-select v-model="pushData.content" placeholder="请选择">
+            <el-option label="开启" value="1"></el-option>
+            <el-option label="关闭" value="0"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="关键词" prop="ask" >
-          <el-input v-model="pushData.ask" clearable @keyup.enter.native="handleCreateSave"></el-input>
+        <el-form-item v-if="pushData.dateType == 2" label="上传文件" prop="content" >
+          <el-upload
+            class="upload-demo"
+            :action="uploadUrl"
+            name="upfile"
+            :headers="uploadUrlHeaders"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess">
+            <el-button slot="trigger" class="filter-item" size="medium" type="primary">选择文件上传</el-button>
+          </el-upload>
         </el-form-item>
-        <el-form-item label="回复内容" prop="reply" >
-          <el-input v-model="pushData.reply" type="textarea" :rows="4" clearable @keyup.enter.native="handleCreateSave"></el-input>
+        <el-form-item label="备注" prop="remark" >
+          <el-input v-model="pushData.remark" type="textarea" :rows="4" clearable @keyup.enter.native="handleCreateSave"></el-input>
         </el-form-item>
-        <el-form-item label="状态" prop="isUse" >
-          <el-select v-model="pushData.isUse" placeholder="请选择">
-            <el-option label="启用" value="true"></el-option>
-            <el-option label="禁用" value="false"></el-option>
+        <el-form-item label="状态" prop="isPub" >
+          <el-select v-model="pushData.isPub" placeholder="请选择">
+            <el-option label="公开数据" value="true"></el-option>
+            <el-option label="保密数据" value="false"></el-option>
           </el-select>
         </el-form-item>
       </el-form>
@@ -83,9 +85,10 @@
 </template>
 
 <script>
-import { fetchDataList, infoData, delData, saveData } from '@/api/wxAutoReply'
+import { fetchDataList, infoData, delData, saveData } from '@/api/apiExtConfig'
 import { Message, MessageBox } from 'element-ui'
 import { mapGetters } from 'vuex'
+import { getToken } from '@/utils/auth'
 
 export default {
   computed: {
@@ -99,17 +102,19 @@ export default {
       pageSize:10,
       totalRow:0,
 
+      uploadUrl:process.env.BASE_API + '/fileUpload',
+      uploadUrlHeaders:{
+        "X-Token":getToken()
+      },
+
       rules: {
-        type: [
+        key: [
           { required: true, message: '不能为空'},
         ],
-        ask: [
+        content: [
           { required: true, message: '不能为空'},
         ],
-        reply: [
-          { required: true, message: '不能为空'},
-        ],
-        isUse: [
+        isPub: [
           { required: true, message: '不能为空'},
         ],
       },
@@ -121,10 +126,8 @@ export default {
         dialogFormVisible:false,
 
         id:undefined,
-        type:undefined,
-        ask:undefined,
-        reply:undefined,
-        isUse:undefined,
+        dateType:undefined,
+        isPub:"true",
       },
 
       multipleSelection: [],
@@ -141,6 +144,22 @@ export default {
     
   },
   methods: {
+    handleAvatarSuccess(res, file) {
+      if (res.code == 10000) {
+        this.$message.error('参数编号已被使用')
+        return
+      }
+      if (res.code == 0) {
+        Message({
+          message: "上传成功",
+          type: "success",
+          duration: 1 * 1000
+        });
+        this.pushData.content = res.data.url;
+      } else {
+        this.$message.error(res.msg);
+      }
+    },
     handleSizeChange(val) {
       this.pageSize = val;
       this.fetchData();
@@ -163,9 +182,18 @@ export default {
         this.listLoading = false
       })
     },
-    handleCreate(){
+    handleCreate(dateType){
       this.pushData = Object.assign({}, this.pushDataTmp)
-      this.pushData.dialogTitle = '增加拼团设置'
+      this.pushData.dateType = '' + dateType
+      if (dateType == 0) {
+        this.pushData.dialogTitle = '添加文本参数'
+      }
+      if (dateType == 1) {
+        this.pushData.dialogTitle = '添加开关参数'
+      }
+      if (dateType == 2) {
+        this.pushData.dialogTitle = '添加文件参数'
+      }
       this.pushData.dialogFormVisible = true
       this.$nextTick(() => {
         this.$refs['addEditPopForm'].clearValidate()
@@ -180,8 +208,16 @@ export default {
             duration: 3 * 1000
           })
         } else {
-          this.pushData = Object.assign({}, this.pushDataTmp, res.data, {type:'' + res.data.type, isUse:'' + res.data.isUse})
-          this.pushData.dialogTitle = '修改拼团设置'
+          this.pushData = Object.assign({}, this.pushDataTmp, res.data, {dateType:'' + res.data.dateType, isPub:'' + res.data.isPub, content:res.data.value})
+          if (res.data.dateType == 0) {
+            this.pushData.dialogTitle = '修改文本参数'
+          }
+          if (res.data.dateType == 1) {
+            this.pushData.dialogTitle = '修改开关参数'
+          }
+          if (res.data.dateType == 2) {
+            this.pushData.dialogTitle = '修改文件参数'
+          }
           this.pushData.dialogFormVisible = true
           this.$nextTick(() => {
             this.$refs['addEditPopForm'].clearValidate()

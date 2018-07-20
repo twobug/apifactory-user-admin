@@ -15,8 +15,15 @@
 
     <el-table :data="list" v-loading.body="listLoading" element-loading-text="Loading" border fit highlight-current-row
               empty-text="暂无数据">
-      <el-table-column prop="typeStr" label="类型" width="95px;"></el-table-column>
-      <el-table-column label="账户信息" width="270px;">
+      <el-table-column label="编号/通道/类型" width="120" align="center">
+        <template slot-scope="scope">
+          {{scope.row.id}}<br>
+          {{scope.row.typeStr}}<br>
+          <el-tag type="success" v-if="scope.row.mod == 0">验证码</el-tag>
+          <el-tag type="danger" v-if="scope.row.mod == 1">其他短信</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column label="账号信息" width="270px;">
         <template slot-scope="scope">
           <p>{{scope.row.userName}}</p>
           <p>{{scope.row.pwd}}</p>
@@ -24,15 +31,19 @@
       </el-table-column>
       <el-table-column prop="signName" label="签名"></el-table-column>
       <el-table-column prop="templateContent" label="短信内容" width="440px;"></el-table-column>
-      <el-table-column prop="dateAdd" label="添加时间" width="95px;"></el-table-column>
-      <el-table-column prop="dateUpdate" label="修改时间" width="95px;"></el-table-column>
-      <el-table-column label="是否启用" width="50px;">
+      <el-table-column prop="dateAdd" label="添加时间" width="160">
+        <template slot-scope="scope">
+          <p>{{scope.row.dateAdd}}</p>
+          <p>{{scope.row.dateUpdate?scope.row.dateUpdate:"-"}}</p>
+        </template>
+      </el-table-column>
+      <el-table-column label="启用" width="50px;">
         <template slot-scope="scope">
           <el-button type="success" icon="el-icon-check" size="mini" circle v-if="scope.row.isUse"></el-button>
           <el-button type="danger" icon="el-icon-close" size="mini" circle v-if="!scope.row.isUse"></el-button>
         </template>
       </el-table-column>
-      <el-table-column label="是否需要图形验证码" width="95px;">
+      <el-table-column label="图形验证" width="95px;" align="center">
         <template slot-scope="scope">
           <el-button type="success" icon="el-icon-check" size="mini" circle v-if="scope.row.isNeedPiccode"></el-button>
           <el-button type="danger" icon="el-icon-close" size="mini" circle v-if="!scope.row.isNeedPiccode"></el-button>

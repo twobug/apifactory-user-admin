@@ -77,6 +77,11 @@ export const constantRouterMap = [
     redirect: '/user/apiExtDfs/list',
     meta: {title: '系统设置', icon: 'setting'},
     children: [{
+      name: '系统参数',
+      path: 'apiExtConfig/list',
+      component: () => import('@/views/apiExtConfig/list'),
+      meta: {title: '系统参数', icon: 'setting'}
+    },{
       name: '上传文件管理',
       path: 'apiExtDfs/list',
       component: () => import('@/views/apiExtDfs/list'),
@@ -115,10 +120,16 @@ export const constantRouterMap = [
       meta: {title: '公众号菜单', icon: 'table'}
     },
     {
-      name: '客服管理',
+      name: '客服设置',
+      path: 'kefuMember/set',
+      component: () => import('@/views/kefuMember/centerUserSetKefu'),
+      meta: {title: '客服设置', icon: 'setting'}
+    },
+    {
+      name: '客服人员管理',
       path: 'kefuMember/list',
       component: () => import('@/views/kefuMember/list'),
-      meta: {title: '客服管理', icon: 'userList'}
+      meta: {title: '客服人员管理', icon: 'userList'}
     }]
   },
   {

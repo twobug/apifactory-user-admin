@@ -30,6 +30,12 @@
           &nbsp;&nbsp;&nbsp;&nbsp;数字越小，优先级越高
         </el-col>
       </el-form-item>
+      <el-form-item label="短信类型" prop="mod">
+        <el-select v-model="pushData.mod" placeholder="请选择">
+          <el-option label="验证码短信" value='0'></el-option>
+          <el-option label="其他短信" value='1'></el-option>
+        </el-select>
+      </el-form-item>
       <el-form-item label="是否启用" prop="isUse">
         <el-select v-model="pushData.isUse" placeholder="请选择">
           <el-option label="启用" value='true'></el-option>
@@ -99,6 +105,7 @@
           templateData: undefined,
           templateContent: undefined,
           paixu: 0,
+          mod: 0,
           isUse: 'true',
           isNeedPiccode: 'true',
         },
@@ -139,6 +146,7 @@
             } else {
               this.pushData = Object.assign({}, this.pushDataTmp, res.data, {
                 isUse: '' + res.data.isUse,
+                mod: '' + res.data.mod,
                 isNeedPiccode: '' + res.data.isNeedPiccode,
                 dateAddStr: res.data.dateAdd,
                 dateEndStr: res.data.dateEnd
