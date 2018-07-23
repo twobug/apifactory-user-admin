@@ -21,3 +21,11 @@ export function saveData(data) {
     data: { ...data }
   })
 }
+
+export function getPayData(userId) {
+  return request({
+    url: '/buy/wxakf/getPayData',
+    method: 'post',
+    data: { userId }
+  })
+}

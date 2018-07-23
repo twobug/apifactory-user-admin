@@ -4,12 +4,22 @@
 
 <div class="filter-container">
 <el-button class="filter-item" style="margin-bottom: 10px;" @click="handleCreate" type="success" icon="el-icon-edit">设置</el-button>
-<el-button class="filter-item" style="margin-bottom: 10px;" @click="delData" type="danger" icon="el-icon-edit">删除当前设置</el-button>
+<el-button class="filter-item" style="margin-bottom: 10px;" @click="delData" type="danger" icon="el-icon-delete">删除当前设置</el-button>
+<el-button v-if="!pushData.isBuy" class="filter-item" style="margin-bottom: 10px;" @click="buyKf" type="warning" icon="el-icon-goods">购买移动客服</el-button>
+<el-button v-if="pushData.isBuy" class="filter-item" style="margin-bottom: 10px;" @click="buyKf" type="warning" icon="el-icon-goods">移动客服续费</el-button>
 </div>
     <el-table :data="list" v-loading.body="listLoading" element-loading-text="Loading" :show-header="false" border fit highlight-current-row empty-text="暂无数据">
       <el-table-column prop="name" label="name"></el-table-column>
       <el-table-column prop="val" label="val"></el-table-column>
     </el-table>
+
+    <el-alert
+      style="margin-top:25px;"
+      v-if="pushData.isBuy"
+      :title="'您已购买客服小管家，到期时间为：' + pushData.dateEnd + ' ，请在到期之前续费！'"
+      type="error"
+      :closable="false">
+    </el-alert>
 
     <el-dialog :title="pushData.dialogTitle" :visible.sync="pushData.dialogFormVisible" :close-on-click-modal="false" :close-on-press-escape="false">
       <el-form :rules="rules" ref="addEditPopForm" :model="pushData" label-position="left" label-width="200px">
@@ -33,12 +43,19 @@
       </div>
     </el-dialog>
 
+    <el-dialog title="在线支付" :visible.sync="dialogTableVisiblePay">
+      <form :action="alipayPostData.gateway" method="POST" target="_blank">
+        <input type="hidden" v-for="(v, k) in alipayPostData.params" v-bind:key="k" :name="k" :value="v" />
+        <el-button type="success" native-type="submit" round>打开支付宝付款</el-button>
+      </form>
+    </el-dialog>
+
 
   </div>
 </template>
 
 <script>
-import { info, saveData, delData } from '@/api/centerUserSetKefu'
+import { info, saveData, delData, getPayData } from '@/api/centerUserSetKefu'
 import { Message, MessageBox } from 'element-ui'
 import { mapGetters } from 'vuex'
 
@@ -62,7 +79,8 @@ export default {
         ],
       },
 
-
+      dialogTableVisiblePay:false,
+      alipayPostData:{},
 
       multipleSelection: [],
       list: null,
@@ -166,7 +184,14 @@ export default {
           })
         }
       })
-    }
+    },
+    buyKf(){
+      getPayData(this.centerUserBase.id).then(res => {
+        // 弹框点击确定调整支付宝付款
+        this.alipayPostData = res.data;
+        this.dialogTableVisiblePay = true;
+      })
+    },
   }
 }
 </script>

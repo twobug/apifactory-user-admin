@@ -130,6 +130,12 @@ export const constantRouterMap = [
       path: 'kefuMember/list',
       component: () => import('@/views/kefuMember/list'),
       meta: {title: '客服人员管理', icon: 'userList'}
+    },
+    {
+      name: '销售记录',
+      path: 'kefuBuyLog/list',
+      component: () => import('@/views/kefuMember/kefuBuyLog'),
+      meta: {title: '销售记录', icon: 'xstb'}
     }]
   },
   {

@@ -36,8 +36,8 @@
         <el-form-item label="secret" prop="secret" >
           <el-input v-model="pushData.secret" type="text" clearable @keyup.enter.native="handleCreateSave"></el-input>
         </el-form-item>
-        <el-form-item label="token" prop="token" >
-          <el-input v-model="pushData.token" type="text" clearable @keyup.enter.native="handleCreateSave"></el-input>
+        <el-form-item label="token" prop="wxtoken" >
+          <el-input v-model="pushData.wxtoken" type="text" clearable @keyup.enter.native="handleCreateSave"></el-input>
         </el-form-item>
         <el-form-item label="微信支付商户号" prop="mchId" >
           <el-input v-model="pushData.mchId" type="text" clearable @keyup.enter.native="handleCreateSave"></el-input>
@@ -105,7 +105,7 @@ export default {
         id: undefined,
         appid: undefined,
         secret: undefined,
-        token: undefined,
+        wxtoken: undefined,
         mchId: undefined,
         mchKey: undefined,
       },
@@ -168,13 +168,13 @@ export default {
             (this.list = [
               { name: "appid", val: response.data.appid },
               { name: "secret", val: response.data.secret },
-              { name: "token", val: response.data.token },
+              { name: "token", val: response.data.wxtoken },
               { name: "微信支付商户号", val: response.data.mchId },
               { name: "微信支付商户秘钥", val: response.data.mchKey }
             ]);
             this.pushData.appid = response.data.appid
             this.pushData.secret = response.data.secret
-            this.pushData.token = response.data.token
+            this.pushData.wxtoken = response.data.wxtoken
             this.pushData.mchId = response.data.mchId
             this.pushData.mchKey = response.data.mchKey
           if (response.data.mchCertFile) {

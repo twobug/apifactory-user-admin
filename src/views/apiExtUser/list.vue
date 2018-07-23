@@ -59,6 +59,7 @@
     </div>
 
     <el-table :data="list" v-loading.body="listLoading" element-loading-text="Loading" border fit highlight-current-row empty-text="暂无数据" @selection-change="handleSelectionChange">
+      <el-table-column type="selection" align="center" width="55" row-key="id"></el-table-column>
       <el-table-column prop="id" label="用户编号" width="80px"></el-table-column>
       <el-table-column prop="sourceStr" label="注册来源" width="80px"></el-table-column>
       <el-table-column prop="mobile" label="手机号码" width="110px">
@@ -88,6 +89,7 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-button style='margin-top:20px' type="danger" @click="delDataMore">批量删除</el-button>
     <el-pagination
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
@@ -374,6 +376,27 @@ export default {
             onClose: () => {
               this.fetchData()
             }
+          })
+        })
+      }).catch(() => {});
+    },
+    delDataMore(){
+      if (!this.multipleSelection.length) {
+        Message({
+          message: '请先选择需要删除的数据',
+          type: 'error',
+          duration: 1 * 1000
+        })
+        return
+      }
+      this.$confirm('删除无法恢复, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.multipleSelection.forEach(obj => {
+          delData(obj.id).then(res => {
+            this.fetchData()
           })
         })
       }).catch(() => {});
