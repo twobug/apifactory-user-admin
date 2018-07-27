@@ -2,31 +2,22 @@
   <div class="app-container">
     
     <div class="filter-container">
-      <el-input clearable @keyup.enter.native="fetchData" style="width: 200px;" class="filter-item" placeholder="关键词" v-model="searchData.likeAsk">
-      </el-input>
-      <el-input clearable @keyup.enter.native="fetchData" style="width: 200px;" class="filter-item" placeholder="回复内容" v-model="searchData.likeReply">
-      </el-input>
-      <el-select clearable style="width: 200px" class="filter-item" v-model="searchData.type" placeholder="类型">
-        <el-option label="关注" value="0"></el-option>
-        <el-option label="关键词回复" value="1"></el-option>
-        <el-option label="小程序客服欢迎语" value="2"></el-option>
+      <el-select clearable style="width: 200px" class="filter-item" v-model="searchData.status" placeholder="是否启用">
+        <el-option label="启用" value="0"></el-option>
+        <el-option label="禁用" value="1"></el-option>
       </el-select>
-      <el-select clearable style="width: 200px" class="filter-item" v-model="searchData.isUse" placeholder="是否启用">
-        <el-option label="启用" value="true"></el-option>
-        <el-option label="禁用" value="false"></el-option>
-      </el-select>
-      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="fetchData">搜索</el-button>
-      <el-button class="filter-item" style="margin-left: 10px;" @click="handleCreate" type="success" icon="el-icon-edit">添加</el-button>
+      <el-button class="filter-item" type="primary" size="medium" icon="el-icon-search" @click="fetchData">搜索</el-button>
+      <el-button class="filter-item" size="medium" style="margin-left: 10px;" @click="handleCreate" type="success" icon="el-icon-edit">添加</el-button>
     </div>
     
     <el-table :data="list" v-loading.body="listLoading" element-loading-text="Loading" border fit highlight-current-row empty-text="暂无数据" @selection-change="handleSelectionChange">
-      <el-table-column prop="typeStr" label="类型"></el-table-column>
-      <el-table-column prop="ask" label="关键词"></el-table-column>
-      <el-table-column prop="reply" label="回复内容" show-overflow-tooltip></el-table-column>
+      <el-table-column prop="name" label="名称"></el-table-column>
+      <el-table-column prop="rebate" label="折扣"></el-table-column>
+      <el-table-column prop="upgradeAmount" label="消费满升级"></el-table-column>
       <el-table-column label="状态" width="100%">
         <template slot-scope="scope">
-          <el-tag type="success" v-if="scope.row.isUse">启用</el-tag>
-          <el-tag type="danger" v-if="!scope.row.isUse">禁用</el-tag>
+          <el-tag type="success" v-if="scope.row.status == 0">启用</el-tag>
+          <el-tag type="danger" v-if="scope.row.status == 1">禁用</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="添加/修改" width="160">
@@ -53,23 +44,28 @@
 
     <el-dialog :title="pushData.dialogTitle" :visible.sync="pushData.dialogFormVisible" :close-on-click-modal="false" :close-on-press-escape="false">
       <el-form :rules="rules" ref="addEditPopForm" :model="pushData" label-position="left" label-width="100px">
-        <el-form-item label="类型" prop="type" >
-          <el-select v-model="pushData.type" placeholder="请选择">
-            <el-option label="关注" value="0"></el-option>
-            <el-option label="关键词回复" value="1"></el-option>
-            <el-option label="小程序客服欢迎语" value="2"></el-option>
-          </el-select>
+        <el-form-item label="等级名称" prop="name" >
+          <el-input v-model="pushData.name" clearable @keyup.enter.native="handleCreateSave"></el-input>
         </el-form-item>
-        <el-form-item label="关键词" prop="ask" >
-          <el-input v-model="pushData.ask" clearable @keyup.enter.native="handleCreateSave"></el-input>
+        <el-form-item label="排序" prop="paixu" >
+          <el-input v-model="pushData.paixu" clearable @keyup.enter.native="handleCreateSave"></el-input>
         </el-form-item>
-        <el-form-item label="回复内容" prop="reply" >
-          <el-input v-model="pushData.reply" type="textarea" :rows="4" clearable @keyup.enter.native="handleCreateSave"></el-input>
+        <el-form-item label="折扣" prop="rebate" >
+          <el-col :span="4">
+            <el-input v-model="pushData.rebate" clearable @keyup.enter.native="handleCreateSave"></el-input>
+          </el-col>
+          <el-col :span="20"> &nbsp;折</el-col>
         </el-form-item>
-        <el-form-item label="状态" prop="isUse" >
-          <el-select v-model="pushData.isUse" placeholder="请选择">
-            <el-option label="启用" value="true"></el-option>
-            <el-option label="禁用" value="false"></el-option>
+        <el-form-item label="自动升级" prop="upgradeAmount" >
+          <el-col :span="4">
+            <el-input v-model="pushData.upgradeAmount" clearable @keyup.enter.native="handleCreateSave"></el-input>
+          </el-col>
+          <el-col :span="20"> &nbsp;消费满多少金额自动升级到该会员</el-col>
+        </el-form-item>
+        <el-form-item label="状态" prop="status" >
+          <el-select v-model="pushData.status" placeholder="请选择">
+            <el-option label="启用" value="0"></el-option>
+            <el-option label="禁用" value="1"></el-option>
           </el-select>
         </el-form-item>
       </el-form>
@@ -83,7 +79,7 @@
 </template>
 
 <script>
-import { fetchDataList, infoData, delData, saveData } from '@/api/wxAutoReply'
+import { fetchAllUserLevels, infoData, delData, saveData } from '@/api/apiExtUserLevel'
 import { Message, MessageBox } from 'element-ui'
 import { mapGetters } from 'vuex'
 
@@ -100,16 +96,10 @@ export default {
       totalRow:0,
 
       rules: {
-        type: [
+        name: [
           { required: true, message: '不能为空'},
         ],
-        ask: [
-          { required: true, message: '不能为空'},
-        ],
-        reply: [
-          { required: true, message: '不能为空'},
-        ],
-        isUse: [
+        paixu: [
           { required: true, message: '不能为空'},
         ],
       },
@@ -121,10 +111,11 @@ export default {
         dialogFormVisible:false,
 
         id:undefined,
-        type:undefined,
-        ask:undefined,
-        reply:undefined,
-        isUse:undefined,
+        paixu:0,
+        rebate:10,
+        name:undefined,
+        upgradeAmount:undefined,
+        status:undefined,
       },
 
       multipleSelection: [],
@@ -155,7 +146,7 @@ export default {
     fetchData() {
       this.list = null
       this.listLoading = true
-      fetchDataList(this.page, this.pageSize, this.searchData).then(response => {
+      fetchAllUserLevels(this.page, this.pageSize, this.searchData).then(response => {
         if (response.code == 0) {
           this.list = response.data.result
           this.totalRow = response.data.totalRow
@@ -165,7 +156,7 @@ export default {
     },
     handleCreate(){
       this.pushData = Object.assign({}, this.pushDataTmp)
-      this.pushData.dialogTitle = '增加自动回复'
+      this.pushData.dialogTitle = '增加会员等级'
       this.pushData.dialogFormVisible = true
       this.$nextTick(() => {
         this.$refs['addEditPopForm'].clearValidate()
@@ -180,8 +171,8 @@ export default {
             duration: 3 * 1000
           })
         } else {
-          this.pushData = Object.assign({}, this.pushDataTmp, res.data, {type:'' + res.data.type, isUse:'' + res.data.isUse})
-          this.pushData.dialogTitle = '修改自动回复'
+          this.pushData = Object.assign({}, this.pushDataTmp, res.data, {status:'' + res.data.status})
+          this.pushData.dialogTitle = '修改会员等级'
           this.pushData.dialogFormVisible = true
           this.$nextTick(() => {
             this.$refs['addEditPopForm'].clearValidate()

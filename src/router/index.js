@@ -145,22 +145,27 @@ export const constantRouterMap = [
     redirect: '/user/apiExtUser/list',
     meta: {title: '用户管理', icon: 'user'},
     children: [{
+      name: '会员等级',
+      path: 'apiExtUserLevel/list',
+      component: () => import('@/views/apiExtUser/apiExtUserLevel'),
+      meta: {title: '会员等级', icon: 'userlevel'}
+    },{
       name: '用户列表',
       path: 'apiExtUser/list',
       component: () => import('@/views/apiExtUser/list'),
       meta: {title: '用户列表', icon: 'userList'}
     },
-      {
-        name: '收获地址管理',
-        path: 'apiExtUserShippingAddress/list',
-        component: () => import('@/views/apiExtUserShippingAddress/list'),
-        meta: {title: '收获地址管理', icon: 'address'}
-      },{
-        name: '收获地址管理',
-        path: 'apiExtUserShippingAddress/add',
-        component: () => import('@/views/apiExtUserShippingAddress/add'),
-        hidden: true
-      }]
+    {
+      name: '收获地址管理',
+      path: 'apiExtUserShippingAddress/list',
+      component: () => import('@/views/apiExtUserShippingAddress/list'),
+      meta: {title: '收获地址管理', icon: 'address'}
+    },{
+      name: '收获地址管理',
+      path: 'apiExtUserShippingAddress/add',
+      component: () => import('@/views/apiExtUserShippingAddress/add'),
+      hidden: true
+    }]
   },
   {
     name: '短信设置',

@@ -11,3 +11,13 @@ export function fetchDataList(page, pageSize, data) {
     }
   })
 }
+
+export function setSuccess(id) {
+  return request({
+    url: '/user/kefuBuyLog/success',
+    method: 'post',
+    data: {
+      id
+    }
+  })
+}

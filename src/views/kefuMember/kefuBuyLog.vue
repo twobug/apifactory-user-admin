@@ -27,6 +27,12 @@
         </template>
 			</el-table-column>
       <el-table-column prop="dateAdd" label="购买时间"></el-table-column>
+      <el-table-column label="操作" width="100%" align="center">
+        <template slot-scope="scope">
+          <el-button v-if="!scope.row.isSuccess" type="danger" size="mini" @click="setSuccess(scope.row.id)">设为成功</el-button>
+          <el-button v-else type="text" disabled="true" size="mini">-</el-button>
+        </template>
+      </el-table-column>
     </el-table>
     <el-pagination
       @size-change="handleSizeChange"
@@ -41,7 +47,7 @@
 </template>
 
 <script>
-import { fetchDataList } from '@/api/kefuBuyLog'
+import { fetchDataList, setSuccess } from '@/api/kefuBuyLog'
 import { Message, MessageBox } from 'element-ui'
 import { mapGetters } from 'vuex'
 
@@ -93,6 +99,24 @@ export default {
         }
         this.listLoading = false
       })
+    },
+    setSuccess(id){
+      this.$confirm('确定要设置为成功吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        setSuccess(id).then(res => {
+          Message({
+            message: '设置成功',
+            type: 'success',
+            duration: 1 * 1000,
+            onClose: () => {
+              this.fetchData()
+            }
+          })
+        })
+      }).catch(() => {});
     }
   }
 }

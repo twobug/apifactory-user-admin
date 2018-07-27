@@ -56,3 +56,19 @@ export function saveData(data) {
     data: { ...data }
   })
 }
+
+export function rebate(id) {
+  return request({
+    url: '/user/apiExtShopGoods/rebate',
+    method: 'get',
+    params: { id }
+  })
+}
+
+export function saveRebate(data) {
+  return request({
+    url: '/user/apiExtShopGoods/rebate/save',
+    method: 'post',
+    data: { ...data }
+  })
+}

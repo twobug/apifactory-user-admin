@@ -139,8 +139,14 @@
             <el-input v-model="pushData.nick"></el-input>
             </el-col>
           </el-form-item>
+          <el-form-item label="会员等级">
+            <el-select clearable v-model="pushData.levelId" placeholder="请选择">
+              <el-option v-for="item in userLevels" :key="item.id" :label="item.name" :value="item.id">
+              </el-option>
+            </el-select>
+          </el-form-item>
         </el-card>
-        <el-card class="box-card" shadow="never">
+        <!-- <el-card class="box-card" shadow="never">
           <div slot="header" class="clearfix">
             <span>扩展信息</span>
           </div>
@@ -149,7 +155,7 @@
             <el-input v-model="pushData.用户"></el-input>
             </el-col>
           </el-form-item>
-        </el-card>
+        </el-card> -->
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="pushData.dialogFormVisible = false">取消</el-button>
@@ -162,6 +168,7 @@
 
 <script>
 import { fetchDataList,info,importFromWX, saveData,delData } from '@/api/apiExtUser'
+import { fetchAllUserLevels } from '@/api/apiExtUserLevel'
 import { Message, MessageBox } from 'element-ui'
 import { mapGetters } from 'vuex'
 
@@ -234,12 +241,13 @@ export default {
         mobile:undefined,
         nick:undefined,
         pwd:undefined,
-        用户:undefined,
+        levelId:undefined,
       },
 
       multipleSelection: [],
       list: null,
       listLoading: true,
+      userLevels:[]
     }
   },
   created() {
@@ -312,6 +320,7 @@ export default {
       })
     },
     handleUpdate(id){
+      let vm = this
       this.pushData = Object.assign({}, this.pushDataTmp, {id:id})
       this.pushData.dialogTitle = '编辑用户信息'
       this.pushData.dialogFormVisible = true
@@ -326,11 +335,24 @@ export default {
           this.pushData.mobile = res.data.userBase.mobile;
           this.pushData.nick = res.data.userBase.nick;
           this.pushData.openid = res.data.userBaseWx.openid;
-          this.pushData.用户 = res.data.userExtJson.用户;
+          this.pushData.levelId = res.data.userBase.levelId;
 
-          /*this.$nextTick(() => {
+          let levelSearchData = {}
+          levelSearchData.status = 0
+          fetchAllUserLevels(1, 10000, levelSearchData).then(res2 =>{
+            if (res2.code !== 0) {
+              Message({
+                message: res2.msg,
+                type: 'error',
+                duration: 3 * 1000
+              })
+            } else {
+              vm.userLevels = res2.data.result
+            }
+          })
+          this.$nextTick(() => {
             this.$refs['addEditPopForm'].clearValidate()
-          })*/
+          })
         }
       }).then(() => {
       });

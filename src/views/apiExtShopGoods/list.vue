@@ -40,8 +40,8 @@
         <el-option label="不推荐" value="0"></el-option>
         <el-option label="推荐" value="1"></el-option>
       </el-select>
-      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="fetchData">搜索</el-button>
-      <el-button class="filter-item" style="margin-left: 10px;" @click="handleCreate" type="success"
+      <el-button class="filter-item" size="medium" type="primary" icon="el-icon-search" @click="fetchData">搜索</el-button>
+      <el-button class="filter-item" size="medium" style="margin-left: 10px;" @click="handleCreate" type="success"
                  icon="el-icon-edit">添加
       </el-button>
     </div>
@@ -70,21 +70,37 @@
           <p>好评数 : {{scope.row.numberGoodReputation}}</p>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="100%">
+      <el-table-column label="操作" width="100%" align="center">
         <template slot-scope="scope">
           <el-button type="text" @click="modifyNumberOrders(scope.row)">销量</el-button><br>
           <el-button type="text" @click="handleUpdate(scope.row.id)">编辑</el-button><br>
+          <el-button type="text" @click="rebateUpdate(scope.row.id)">会员折扣</el-button><br>
           <el-button type="text" @click="delData(scope.row.id)" style="color:red">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
+
+    <el-dialog :title="pushData.dialogTitle" :visible.sync="pushData.dialogFormVisible" :close-on-click-modal="false" :close-on-press-escape="false">
+      <el-form :rules="rules" ref="addEditPopForm" :model="pushData" label-position="left" label-width="100px">
+        <el-form-item v-for="l in rebateData.levels" :key="l.id" :label="l.name" required :show-message="false">
+          <el-col :span="4">
+            <el-input v-model="l.rebate" clearable @keyup.enter.native="rebateUpdateSave"></el-input>
+          </el-col>
+          <el-col :span="20"> &nbsp;折</el-col>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="pushData.dialogFormVisible = false">取消</el-button>
+        <el-button type="primary" @click="rebateUpdateSave">确定</el-button>
+      </div>
+    </el-dialog>
 
 
   </div>
 </template>
 
 <script>
-  import {delData, fetchDataList, getShopData, getShopGoodsCategoryData, modifyNumberOrders} from '@/api/apiExtShopGoods'
+  import {delData, fetchDataList, getShopData, getShopGoodsCategoryData, modifyNumberOrders, rebate, saveRebate} from '@/api/apiExtShopGoods'
   import {Message} from 'element-ui'
   import {mapGetters} from 'vuex'
 
@@ -131,6 +147,9 @@
             {required: true, message: '不能为空'}
           ],
           dateEndStr: [
+            {required: true, message: '不能为空'}
+          ],
+          rebate: [
             {required: true, message: '不能为空'}
           ]
         },
@@ -192,7 +211,7 @@
         multipleSelection: [],
         list: null,
         listLoading: true,
-        statisticsData: {}
+        rebateData: {}
       }
     },
     created() {
@@ -304,7 +323,55 @@
             })
           })
         })
-      }
+      },
+      rebateUpdate(id){
+        rebate(id).then(res => {
+          if (res.code != 0) {
+            Message({
+              message: res.msg,
+              type: 'error',
+              duration: 3 * 1000
+            })
+          } else {
+            this.rebateData = res.data
+            this.pushData.id = id
+            this.pushData.dialogTitle = '设置会员等级享受折扣'
+            this.pushData.dialogFormVisible = true
+            this.$nextTick(() => {
+              this.$refs['addEditPopForm'].clearValidate()
+            })
+          }
+        }).catch(e=>{
+          console.error(e);
+        })
+      },
+      rebateUpdateSave(){
+        this.$refs['addEditPopForm'].validate((valid) => {
+          if (valid) {
+            let postData = {}
+            postData.id = this.pushData.id
+            postData.detailsJsonStr = JSON.stringify(this.rebateData.levels)
+            saveRebate(postData).then((res) => {
+              this.pushData.dialogFormVisible = false
+              if (res.code == 0) {
+                Message({
+                  message: '操作成功',
+                  type: 'success',
+                  duration: 1 * 1000
+                })
+              } else {
+                Message({
+                  message: res.msg,
+                  type: 'error',
+                  duration: 3 * 1000
+                })
+              }
+            }).catch(e=>{
+              console.error(e);
+            })
+          }
+        })
+      },
     }
   }
 </script>
