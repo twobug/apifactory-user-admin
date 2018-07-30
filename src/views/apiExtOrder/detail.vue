@@ -544,6 +544,7 @@ export default {
       fetchExpressCompanies().then(res => {
         if (res.code == 0) {
           this.expressCompanies = res.data
+          this.expressCompanies.unshift({"code":"-1","id":-1,"name":"其他快递公司","type":0,"typeStr":"国内"})
           if (this.apiExtOrderLogistics) {
             this.fahuoPushData.number = this.apiExtOrderLogistics.trackingNumber
             this.expressCompanies.forEach(item => {

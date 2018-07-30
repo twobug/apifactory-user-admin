@@ -69,7 +69,6 @@ export const constantRouterMap = [
         meta: {title: '我的资源包2', icon: 'setting'}
       }]
   },
-
   {
     name: '系统设置',
     path: '/user',
@@ -92,6 +91,26 @@ export const constantRouterMap = [
       path: 'centerUserSetSaobei/list',
       component: () => import('@/views/centerUserSetSaobei/list'),
       meta: {title: '三方小程序支付', icon: 'saobei'}
+    }]
+  },
+  {
+    name: 'CMS模块',
+    path: '/user',
+    component: Layout,
+    redirect: '/user/apiExtNewsCategory/list',
+    meta: {title: 'CMS模块', icon: 'cms'},
+    children: [
+      {
+        name: '分类管理',
+        path: 'apiExtNewsCategory/list',
+        component: () => import('@/views/apiExtNewsCategory/list'),
+        meta: {title: '分类管理', icon: 'category'}
+      },
+      {
+      name: '上传文件管理',
+      path: 'apiExtDfs/list',
+      component: () => import('@/views/apiExtDfs/list'),
+      meta: {title: '上传文件管理', icon: 'files'}
     }]
   },
   {

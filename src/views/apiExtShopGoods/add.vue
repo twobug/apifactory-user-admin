@@ -295,6 +295,7 @@
           photos: [],
           content: undefined,
           detailsJsonStr: [],
+          deleteOldPics:'true',
           dateStartStr: new Date(),
           dateEndStr: undefined,
           dateAddStr: undefined,
@@ -336,7 +337,7 @@
 
     },
     mounted() {
-
+      this.pushDataTmp = Object.assign({}, this.pushData)
     },
     methods: {
       //删除图片
