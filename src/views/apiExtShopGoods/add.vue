@@ -347,9 +347,7 @@
       //获取店铺数据
       getShopData() {
         getShopData().then(response => {
-          if (response.code !== 0) {
-            Message({message: response.msg, type: 'error', duration: 3 * 1000})
-          } else {
+          if (response.code == 0) {
             response.data.result.forEach((a) => {
               let v = {};
               v.value = a.id;
@@ -363,9 +361,7 @@
       getGoodsCategoryData() {
         getGoodsCategoryData().then(response => {
           const data = [];
-          if (response.code !== 0) {
-            Message({message: response.msg, type: 'error', duration: 3 * 1000})
-          } else {
+          if (response.code == 0) {
             response.data.forEach((a, index) => {
               if (index === 0) {
                 this.pushData.categoryId = a.id;
@@ -388,9 +384,7 @@
       //运费模板列表
       getFreightTemplate() {
         getFreightTemplate().then(response => {
-          if (response.code !== 0) {
-            Message({message: response.msg, type: 'error', duration: 3 * 1000})
-          } else {
+          if (response.code == 0) {
             response.data.forEach((a) => {
               let v = {};
               v.value = a.id;

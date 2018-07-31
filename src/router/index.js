@@ -91,6 +91,12 @@ export const constantRouterMap = [
       path: 'centerUserSetSaobei/list',
       component: () => import('@/views/centerUserSetSaobei/list'),
       meta: {title: '三方小程序支付', icon: 'saobei'}
+    },
+    {
+      name: 'Banner管理',
+      path: 'apiExtBanner/list',
+      component: () => import('@/views/apiExtBanner/list'),
+      meta: {title: 'Banner管理', icon: 'banner'}
     }]
   },
   {
