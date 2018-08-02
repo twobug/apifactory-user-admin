@@ -174,6 +174,48 @@
         </el-col>
       </el-row>      
     </div>
+    <div v-if="refundApplies && refundApplies.length > 0" class="order-title">用户申请售后记录：</div>
+    <div v-if="refundApplies && refundApplies.length > 0" style="clear:both;margin-top:20px;">
+      <el-table :data="refundApplies" fit highlight-current-row empty-text="暂无数据">
+        <el-table-column label="类型" prop="baseInfo.typeStr"></el-table-column>
+        <el-table-column label="物流情况" prop="baseInfo.logisticsStatusStr"></el-table-column>
+        <el-table-column label="原因">
+          <template slot-scope="scope">
+            <el-tooltip class="item" effect="dark" :content="scope.row.baseInfo.remark? scope.row.baseInfo.remark : '-'" placement="right-start">
+              <el-tag type="danger">{{scope.row.baseInfo.reason}}</el-tag>
+            </el-tooltip>
+            <p v-if="scope.row.pics && scope.row.pics.length > 0">
+              <a v-for="(ppp,index) in scope.row.pics" :key="ppp.id" :href="ppp.pic" target="_blank"> &nbsp;图{{index+1}}&nbsp;</a>
+            </p>
+          </template>
+        </el-table-column>
+        <el-table-column label="退款金额" prop="baseInfo.amount" width="100%"></el-table-column>
+        <el-table-column label="状态">
+          <template slot-scope="scope">
+            <el-tag v-if="scope.row.baseInfo.status == 0" type="danger">{{scope.row.baseInfo.statusStr}}</el-tag>
+            <el-tag v-else-if="scope.row.baseInfo.status == 1" type="info">{{scope.row.baseInfo.statusStr}}</el-tag>
+            <el-tag v-else-if="scope.row.baseInfo.status == 2" type="warning">{{scope.row.baseInfo.statusStr}}</el-tag>
+            <el-tag v-else-if="scope.row.baseInfo.status == 3">{{scope.row.baseInfo.statusStr}}</el-tag>
+            <el-tag v-else-if="scope.row.baseInfo.status == 4" type="success">{{scope.row.baseInfo.statusStr}}</el-tag>
+            <el-tag v-else type="info">-</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column label="发起/更新时间">
+          <template slot-scope="scope">
+            {{scope.row.baseInfo.dateAdd}}
+            <br>
+            {{scope.row.baseInfo.dateUpdate?scope.row.baseInfo.dateUpdate:'-'}}
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" width="100%">
+          <template slot-scope="scope">
+            <el-button type="text" v-if="scope.row.baseInfo.status == 0" @click="refundAppliesRefuseing(scope.row.baseInfo.id)" style="color:red">设为处理中</el-button>
+            <el-button type="text" v-if="scope.row.baseInfo.status == 0 || scope.row.baseInfo.status == 3" @click="refundAppliesRefuse(scope.row.baseInfo.id)" style="color:red">拒绝</el-button>
+            <el-button type="text" v-if="scope.row.baseInfo.status == 3" @click="refundAppliesRefuseSuccess(scope.row.baseInfo.id)" style="color:green">设为成功</el-button>
+          </template>
+        </el-table-column>
+      </el-table>     
+    </div>
     <div v-if="refunds && refunds.length > 0" class="order-title">退款信息：</div>
     <div v-if="refunds && refunds.length > 0" style="clear:both;margin-top:20px;">
       <el-table :data="refunds" fit highlight-current-row empty-text="暂无数据">
@@ -260,7 +302,7 @@
 </template>
 
 <script>
-import { fetchExpressCompanies, traces, orderDetails, closeOrder, changePrice, payOrder, payOrderOff, fahuo, fahuoDada, successOrder, orderRefund } from '@/api/apiExtOrder'
+import { fetchExpressCompanies, traces, orderDetails, closeOrder, changePrice, payOrder, payOrderOff, fahuo, fahuoDada, successOrder, orderRefund, refuse, refuseing, refuseSuccess } from '@/api/apiExtOrder'
 import { Message, MessageBox } from 'element-ui'
 import { mapGetters } from 'vuex'
 
@@ -280,6 +322,7 @@ export default {
       goodsList:[],
       tracesArray:[],
       refunds:[],
+      refundApplies:[],
       logs:[],
       expressCompanies:[],
 
@@ -355,6 +398,7 @@ export default {
           this.apiExtOrderLogistics = response.data.apiExtOrderLogistics
           this.tracesArray = response.data.tracesArray
           this.refunds = response.data.refunds
+          this.refundApplies = response.data.refundApplies
           this.logs = response.data.logs
         }
       }).catch(e => {
@@ -614,6 +658,60 @@ export default {
       }).catch((e) => {
         console.log(e);
       });
+    },
+    refundAppliesRefuse(applyId){
+      this.$confirm('是否驳回用户的本次售后申请?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        refuse(this.id, applyId).then(res => {
+          Message({
+            message: '操作成功',
+            type: 'success',
+            duration: 1 * 1000,
+            onClose: () => {
+              this.fetchData()
+            }
+          })
+        })
+      }).catch(() => {});
+    },
+    refundAppliesRefuseing(applyId){
+      this.$confirm('是否将本次售后申请设为处理中?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        refuseing(this.id, applyId).then(res => {
+          Message({
+            message: '操作成功',
+            type: 'success',
+            duration: 1 * 1000,
+            onClose: () => {
+              this.fetchData()
+            }
+          })
+        })
+      }).catch(() => {});
+    },
+    refundAppliesRefuseSuccess(applyId){
+      this.$confirm('是否将本次售后申请设为成功?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        refuseSuccess(this.id, applyId).then(res => {
+          Message({
+            message: '操作成功',
+            type: 'success',
+            duration: 1 * 1000,
+            onClose: () => {
+              this.fetchData()
+            }
+          })
+        })
+      }).catch(() => {});
     },
   }
 }

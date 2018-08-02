@@ -113,3 +113,27 @@ export function orderRefund(data) {
     data: { ...data }
   })
 }
+
+export function refuse(id, applyId) {
+  return request({
+    url: '/user/apiExtOrder/refuse',
+    method: 'post',
+    data: { id, applyId }
+  })
+}
+
+export function refuseing(id, applyId) {
+  return request({
+    url: '/user/apiExtOrder/refuseing',
+    method: 'post',
+    data: { id, applyId }
+  })
+}
+
+export function refuseSuccess(id, applyId) {
+  return request({
+    url: '/user/apiExtOrder/refuseSuccess',
+    method: 'post',
+    data: { id, applyId }
+  })
+}
