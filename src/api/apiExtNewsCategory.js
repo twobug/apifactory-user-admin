@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-export function fetchDataList() {
+export function fetchCmsCategoryList() {
   return request({
     url: '/user/apiExtNewsCategory/list',
     method: 'post',

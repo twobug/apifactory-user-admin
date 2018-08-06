@@ -113,11 +113,17 @@ export const constantRouterMap = [
         meta: {title: '分类管理', icon: 'category'}
       },
       {
-      name: '上传文件管理',
-      path: 'apiExtDfs/list',
-      component: () => import('@/views/apiExtDfs/list'),
-      meta: {title: '上传文件管理', icon: 'files'}
-    }]
+        name: '文章管理',
+        path: 'apiExtNews/list',
+        component: () => import('@/views/apiExtNews/list'),
+        meta: {title: '文章管理', icon: 'articles'}
+      },{
+        name: '添加文章',
+        path: 'apiExtNews/add',
+        component: () => import('@/views/apiExtNews/add'),
+        meta: {title: '添加文章', icon: 'articles'},
+        hidden: true
+      }]
   },
   {
     name: '微信设置',

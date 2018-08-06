@@ -109,7 +109,7 @@
 </template>
 
 <script>
-import { fetchDataList, delData, saveData } from '@/api/apiExtNewsCategory'
+import { fetchCmsCategoryList, delData, saveData } from '@/api/apiExtNewsCategory'
 import { Message, MessageBox } from 'element-ui'
 import { mapGetters } from 'vuex'
 import { getToken } from '@/utils/auth'
@@ -187,7 +187,7 @@ export default {
     fetchData() {
       this.list = null
       this.listLoading = true
-      fetchDataList().then(response => {
+      fetchCmsCategoryList().then(response => {
         if (response.code == 0) {
           this.list = response.data
         }

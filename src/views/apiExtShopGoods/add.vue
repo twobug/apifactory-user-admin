@@ -3,25 +3,32 @@
 
     <el-form :rules="rules" ref="addEditPopForm" :model="pushData" :label-position="labelPosition" label-width="100px">
       <el-form-item label="所属店铺" prop="shopId">
-        <el-select style="width: 100%" class="filter-item" v-model="pushData.shopId" placeholder="不选择店铺">
-          <el-option
-            v-for="item in shopData"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-          </el-option>
-        </el-select>
+        <el-col :span="8">
+          <el-select style="width: 100%" class="filter-item" v-model="pushData.shopId" placeholder="不选择店铺">
+            <el-option
+              v-for="item in shopData"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-col>
+        <el-col :span="16" class="orange" style="padding-left:10px;">
+          没有多店铺的不需要选择
+        </el-col>
       </el-form-item>
       <el-form-item label="商品分类" prop="categoryId">
-        <el-select style="width: 100%" class="filter-item" v-model="pushData.categoryId"
-                   placeholder="商品分类">
-          <el-option
-            v-for="item in categoryData"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-          </el-option>
-        </el-select>
+        <el-col :span="8">
+          <el-select style="width: 100%" class="filter-item" v-model="pushData.categoryId"
+                    placeholder="商品分类">
+            <el-option
+              v-for="item in categoryData"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-col>
       </el-form-item>
       <el-form-item label="条码编号" prop="barCode">
         <el-input v-model="pushData.barCode" clearable @keyup.enter.native="handleCreateSave"></el-input>
@@ -34,6 +41,14 @@
       </el-form-item>
       <el-form-item label="商品名称" prop="name">
         <el-input v-model="pushData.name" clearable @keyup.enter.native="handleCreateSave"></el-input>
+      </el-form-item>
+      <el-form-item v-for="(v, k) in extJson" :key="k" :label="k">
+        <el-col :span="8">
+          <el-input v-model="extJson[k]" clearable @keyup.enter.native="handleCreateSave"></el-input>
+        </el-col>
+        <el-col :span="8" style="padding-left:10px;">
+          <el-button type="danger" size="small" @click="deleteExtJson(k)">删除属性</el-button>
+        </el-col>
       </el-form-item>
       <el-form-item label="商品特色" prop="characteristic">
         <el-input v-model="pushData.characteristic" type="textarea" clearable
@@ -180,7 +195,7 @@
             {{item.name}}
           </el-checkbox>
         </el-checkbox-group>
-        <div v-for="(item,index) in detailsJsonStr" v-if="item.name" style="margin-top:30px;">
+        <div v-for="(item,index) in detailsJsonStr" :key="index" v-if="item.name" style="margin-top:30px;">
           <p class="red">{{item.name}}</p>
           <span class="col-sm-2">
               原价：
@@ -319,6 +334,8 @@
         subPriceArrayStack: [],
         detailsJsonStr: [],
         priceExts: [],
+        // 扩展属性
+        extJson:{}
       }
     },
     components: {
@@ -361,6 +378,10 @@
       getGoodsCategoryData() {
         getGoodsCategoryData().then(response => {
           const data = [];
+          if (response.code == 700) {
+            Message({message: '您当前还未设置商品分类，无法添加商品', type: 'error', duration: 3 * 1000})
+            return;
+          }
           if (response.code == 0) {
             response.data.forEach((a, index) => {
               if (index === 0) {
@@ -513,7 +534,7 @@
                 dateStartStr: new Date(),
                 content: res.data.content.content
               });
-
+              this.extJson = Object.assign({}, res.data.extJson)
               this.propertyIds = res.data.info.propertyIds;
               //编辑器
               this.$refs['editor'].setContent(res.data.content ? res.data.content.content : '');
@@ -596,6 +617,7 @@
             });
             this.pushData.pic = photos[0];
             this.pushData.pics = photos.toString();
+            this.pushData.extJsonStr = JSON.stringify(this.extJson)
             saveData(this.pushData).then((res) => {
               if (res.code === 0) {
                 Message({
@@ -628,6 +650,15 @@
       },
       goBack() {
         this.$router.push({path: '/user/apiExtShopGoods/list'});
+      },
+      deleteExtJson(k) {
+        let newextJson = {}
+        Object.keys(this.extJson).forEach(kkk => {
+          if (k != kkk) {
+            newextJson[kkk] = this.extJson[kkk]
+          }
+        })
+        this.extJson = newextJson
       }
     }
   }
