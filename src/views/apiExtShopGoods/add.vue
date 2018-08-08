@@ -31,16 +31,21 @@
         </el-col>
       </el-form-item>
       <el-form-item label="条码编号" prop="barCode">
-        <el-input v-model="pushData.barCode" clearable @keyup.enter.native="handleCreateSave"></el-input>
+        <el-col :span="8">
+          <el-input v-model="pushData.barCode" clearable @keyup.enter.native="handleCreateSave"></el-input>
+        </el-col>
+        <el-col :span="16" class="orange">&nbsp;&nbsp;&nbsp;填写您的商品编码，建议使用扫码枪</el-col>
       </el-form-item>
       <el-form-item label="视频编号" prop="videoId">
-        <el-col :span="20">
+        <el-col :span="8">
           <el-input v-model="pushData.videoId" clearable @keyup.enter.native="handleCreateSave"></el-input>
         </el-col>
-        <el-col :span="4" class="orange">&nbsp;&nbsp;&nbsp;便于您展示商品视频</el-col>
+        <el-col :span="16" class="orange">&nbsp;&nbsp;&nbsp;便于您展示商品视频</el-col>
       </el-form-item>
       <el-form-item label="商品名称" prop="name">
-        <el-input v-model="pushData.name" clearable @keyup.enter.native="handleCreateSave"></el-input>
+        <el-col :span="8">
+          <el-input v-model="pushData.name" clearable @keyup.enter.native="handleCreateSave"></el-input>
+        </el-col>
       </el-form-item>
       <el-form-item v-for="(v, k) in extJson" :key="k" :label="k">
         <el-col :span="8">
@@ -84,7 +89,7 @@
       </el-form-item>
       <el-form-item label="商品图片" prop="photos">
         <el-col :span="3" class="orange">
-          <el-upload class="upload-demo" action="https://user.api.it120.cc/fileUpload"
+          <el-upload class="upload-demo" :action="uploadUrl"
                      list-type="picture"
                      :data="upLoadData" :headers="fileHeaders" :on-success="uploadSuccess"
                      :file-list="fileList"
@@ -112,31 +117,49 @@
         <Tinymce :height=500 ref="editor" v-model="pushData.content"/>
       </el-form-item>
       <el-form-item label="原价" prop="originalPrice">
-        <el-input-number v-model="pushData.originalPrice" clearable @keyup.enter.native="handleCreateSave" :min="0"
-                         label="请输入原价" style="width: 100%"></el-input-number>
+        <el-col :span="4">
+          <el-input-number v-model="pushData.originalPrice" clearable @keyup.enter.native="handleCreateSave" :min="0"
+                          label="请输入原价" style="width: 100%"></el-input-number>
+        </el-col>
       </el-form-item>
       <el-form-item label="现价" prop="minPrice">
-        <el-input-number v-model="pushData.minPrice" clearable @keyup.enter.native="handleCreateSave" :min="0"
-                         label="请输入现价" style="width: 100%"></el-input-number>
+        <el-col :span="4">
+          <el-input-number v-model="pushData.minPrice" clearable @keyup.enter.native="handleCreateSave" :min="0"
+                          label="请输入现价" style="width: 100%"></el-input-number>
+        </el-col>
       </el-form-item>
       <el-form-item label="拼团价" prop="pingtuanPrice">
-        <el-input-number v-model="pushData.pingtuanPrice" clearable @keyup.enter.native="handleCreateSave" :min="0"
-                         label="请输入拼团价" style="width: 100%"></el-input-number>
+        <el-col :span="4">
+          <el-input-number v-model="pushData.pingtuanPrice" clearable @keyup.enter.native="handleCreateSave" :min="0"
+                          label="请输入拼团价" style="width: 100%"></el-input-number>
+        </el-col>
       </el-form-item>
       <el-form-item label="需要积分" prop="minScore">
-        <el-input-number v-model="pushData.minScore" clearable @keyup.enter.native="handleCreateSave" :min="0"
+        <el-col :span="4">
+          <el-input-number v-model="pushData.minScore" clearable @keyup.enter.native="handleCreateSave" :min="0"
                          label="请输入需要积分" style="width: 100%"></el-input-number>
+        </el-col>   
+        <el-col :span="20" class="orange">&nbsp;&nbsp;&nbsp;购买本商品需要扣除用户的积分数量</el-col>     
+      </el-form-item>
+      <el-form-item label="赠送积分" prop="gotScore">
+        <el-col :span="4">
+          <el-input-number v-model="pushData.gotScore" clearable @keyup.enter.native="handleCreateSave" :min="0"
+                         label="请输入赠送积分" style="width: 100%"></el-input-number>
+        </el-col>   
+        <el-col :span="20" class="orange">&nbsp;&nbsp;&nbsp;购买本商品后用户可获得的积分数量</el-col>     
       </el-form-item>
       <el-form-item label="库存数" prop="stores">
-        <el-input-number v-model="pushData.stores" clearable @keyup.enter.native="handleCreateSave" :min="0"
-                         label="请输入库存数" style="width: 100%"></el-input-number>
+        <el-col :span="4">
+          <el-input-number v-model="pushData.stores" clearable @keyup.enter.native="handleCreateSave" :min="0"
+                          label="请输入库存数" style="width: 100%"></el-input-number>
+        </el-col>
       </el-form-item>
       <el-form-item label="商品重量" prop="weight">
-        <el-col :span="23">
+        <el-col :span="4">
           <el-input-number v-model="pushData.weight" clearable @keyup.enter.native="handleCreateSave" :min="0"
                            label="请输入商品重量" style="width: 100%"></el-input-number>
         </el-col>
-        <el-col :span="1">
+        <el-col :span="20">
           &nbsp;&nbsp;KG
         </el-col>
       </el-form-item>
@@ -259,6 +282,9 @@
     },
     data() {
       return {
+        uploadUrl:process.env.BASE_API + '/fileUpload',
+
+
         categoryData: [],
         shopData: [{label: '不选择店铺', value: 0}],
         logisticsIdData: [{label: '不使用物流', value: 0}],
@@ -278,9 +304,17 @@
             {required: true, message: '请选择商品状态', trigger: 'blur'}
           ], originalPrice: [
             {required: true, message: '请输入商品原价', trigger: 'blur'}
-          ], minPrice: [
+          ]
+          , minPrice: [
             {required: true, message: '请输入商品现价', trigger: 'blur'}
-          ], stores: [
+          ]
+          , minScore: [
+            {required: true, message: '不能为空', trigger: 'blur'}
+          ]
+          , gotScore: [
+            {required: true, message: '不能为空', trigger: 'blur'}
+          ]
+          , stores: [
             {required: true, message: '请输入总库存数', trigger: 'blur'}
           ]
         },
@@ -301,6 +335,7 @@
           minPrice: 0,
           pingtuanPrice: 0,
           minScore: 0,
+          gotScore:0,
           stores: 0,
           weight: 0,
           commissionType: '0',

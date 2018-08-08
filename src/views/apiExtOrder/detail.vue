@@ -98,6 +98,18 @@
         </el-col>
       </el-row>
     </div>
+    <div v-if="kvList" class="order-title">其他信息：</div>
+    <div v-if="kvList" style="clear:both;margin-top:20px;">
+      <el-row :gutter="20">
+        <el-col :span="6" v-for="kv in kvList" v-bind:key="kv.k">
+          <el-form size="mini" label-width="120">
+            <el-form-item :label="kv.k">
+                <span>{{ kv.v }}</span>
+            </el-form-item>
+          </el-form>
+        </el-col> 
+      </el-row>
+    </div>
     <div class="order-title">商品信息：</div>
     <div style="clear:both;margin-top:20px;">
       <el-table :data="goodsList" fit highlight-current-row empty-text="暂无数据">
@@ -314,6 +326,12 @@ export default {
   },
   data() {
     return {
+
+      kvList:[
+        {k:"", v:""}
+      ],
+
+
       id:undefined,
       loading:true,
       orderInfo:{},
@@ -391,6 +409,10 @@ export default {
     fetchData() {
       orderDetails(this.id).then(response => {
         this.loading = false
+        if (response.code != 0) {
+          this.$message.error(response.msg);
+          return
+        }
         if (response.code == 0) {
           this.orderInfo = response.data.order
           this.userBean = Object.assign({}, this.userBean, response.data.userBean)
@@ -400,6 +422,19 @@ export default {
           this.refunds = response.data.refunds
           this.refundApplies = response.data.refundApplies
           this.logs = response.data.logs
+
+          // 计算扩展属性
+          let kvList = [];
+          if (response.data.extJson) {
+            Object.keys(response.data.extJson).forEach(k => {
+              let aaaa = '{"k":"'+ k +'", "v":"'+ response.data.extJson[k] +'"}'
+              kvList.push(JSON.parse(aaaa))
+            })
+          }
+          if (kvList.length == 0) {
+            kvList = undefined;
+          }
+          this.kvList = kvList
         }
       }).catch(e => {
         console.log(e);

@@ -199,6 +199,24 @@ export const constantRouterMap = [
     }]
   },
   {
+    name: '财务管理',
+    path: '/user',
+    component: Layout,
+    redirect: '/user/extDiscountsCoupon/list',
+    meta: {title: '财务管理', icon: 'caiwu'},
+    children: [{
+      name: '优惠券规则',
+      path: 'extDiscountsCoupon/list',
+      component: () => import('@/views/extDiscountsCoupon/list'),
+      meta: {title: '优惠券规则', icon: 'juan'}
+    },{
+      name: '用户列表',
+      path: 'apiExtUser/list',
+      component: () => import('@/views/apiExtUser/list'),
+      meta: {title: '用户列表', icon: 'userList'}
+    }]
+  },
+  {
     name: '短信设置',
     path: '/user',
     component: Layout,
