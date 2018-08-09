@@ -210,10 +210,10 @@ export const constantRouterMap = [
       component: () => import('@/views/extDiscountsCoupon/list'),
       meta: {title: '优惠券规则', icon: 'juan'}
     },{
-      name: '用户列表',
-      path: 'apiExtUser/list',
-      component: () => import('@/views/apiExtUser/list'),
-      meta: {title: '用户列表', icon: 'userList'}
+      name: '优惠券管理',
+      path: 'extDiscountsCouponUser/list',
+      component: () => import('@/views/extDiscountsCoupon/extDiscountsCouponUser'),
+      meta: {title: '优惠券管理', icon: 'juan'}
     }]
   },
   {
