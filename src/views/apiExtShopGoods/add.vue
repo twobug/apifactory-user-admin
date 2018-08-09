@@ -56,36 +56,45 @@
         </el-col>
       </el-form-item>
       <el-form-item label="商品特色" prop="characteristic">
-        <el-input v-model="pushData.characteristic" type="textarea" clearable
+        <el-input v-model="pushData.characteristic" type="textarea" clearable rows="4"
                   @keyup.enter.native="handleCreateSave"></el-input>
       </el-form-item>
       <el-form-item label="选择物流模板" prop="logisticsId">
-        <el-select style="width: 100%" class="filter-item" v-model="pushData.logisticsId"
-                   placeholder="选择物流模板">
-          <el-option
-            v-for="item in logisticsIdData"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-          </el-option>
-        </el-select>
+        <el-col :span="8">
+          <el-select style="width: 100%" class="filter-item" v-model="pushData.logisticsId"
+                    placeholder="选择物流模板">
+            <el-option
+              v-for="item in logisticsIdData"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-col>
+        <el-col :span="16" class="orange">&nbsp;&nbsp;&nbsp;虚拟物品等不需要快递（不需要用户填写收货地址）的商品请选择不需要物流</el-col>
       </el-form-item>
       <el-form-item label="排序" prop="paixu">
-        <el-input-number v-model="pushData.paixu" controls-position="right" :min="0"
-                         style="width: 100%;"></el-input-number>
+        <el-col :span="8">
+          <el-input-number v-model="pushData.paixu" controls-position="right" :min="0"
+                          style="width: 100%;"></el-input-number>
+        </el-col>
       </el-form-item>
       <el-form-item label="是否推荐" prop="recommendStatus">
-        <el-select style="width: 100%" class="filter-item" v-model="pushData.recommendStatus"
-                   placeholder="是否推荐">
-          <el-option label="不推荐" value="0"></el-option>
-          <el-option label="推荐" value="1"></el-option>
-        </el-select>
+        <el-col :span="8">
+          <el-select style="width: 100%" class="filter-item" v-model="pushData.recommendStatus"
+                    placeholder="是否推荐">
+            <el-option label="不推荐" value="0"></el-option>
+            <el-option label="推荐" value="1"></el-option>
+          </el-select>
+        </el-col>
       </el-form-item>
       <el-form-item label="商品状态" prop="status">
-        <el-select style="width: 100%" class="filter-item" v-model="pushData.status" placeholder="商品状态">
-          <el-option label="上架" value="0"></el-option>
-          <el-option label="下架" value="1"></el-option>
-        </el-select>
+        <el-col :span="8">
+          <el-select style="width: 100%" class="filter-item" v-model="pushData.status" placeholder="商品状态">
+            <el-option label="上架" value="0"></el-option>
+            <el-option label="下架" value="1"></el-option>
+          </el-select>
+        </el-col>
       </el-form-item>
       <el-form-item label="商品图片" prop="photos">
         <el-col :span="3" class="orange">
@@ -164,26 +173,26 @@
         </el-col>
       </el-form-item>
       <el-form-item label="分享奖励" prop="commissionType">
-        <el-col :span="10">
+        <el-col :span="4">
           <el-select style="width: 100%" v-model="pushData.commissionType" placeholder="请选择">
-            <el-option label="关闭" value='0'></el-option>
-            <el-option label="送积分" value='1'></el-option>
-            <el-option label="送现金" value='2'></el-option>
+            <el-option label="关闭分享奖励" value='0'></el-option>
+            <el-option label="赠送右侧对应的积分" value='1'></el-option>
+            <el-option label="赠送右侧对应的现金" value='2'></el-option>
+            <el-option label="赠送右侧编号的优惠券" value='3'></el-option>
           </el-select>
         </el-col>
-        <el-col :span="1">
-          &nbsp;
-        </el-col>
-        <el-col :span="13">
+        <el-col v-if="pushData.commissionType != 0" :span="4" style="margin-left:10px">
           <el-input-number v-model="pushData.commission" controls-position="right" :min="0"
                            style="width: 100%;"></el-input-number>
         </el-col>
       </el-form-item>
       <el-form-item label="拼团功能" prop="pingtuan">
-        <el-select style="width: 100%" v-model="pushData.pingtuan" placeholder="请选择">
-          <el-option label="关闭" value='false'></el-option>
-          <el-option label="开启" value='true'></el-option>
-        </el-select>
+        <el-col :span="8">
+          <el-select style="width: 100%" v-model="pushData.pingtuan" placeholder="请选择">
+            <el-option label="关闭" value='false'></el-option>
+            <el-option label="开启" value='true'></el-option>
+          </el-select>
+        </el-col>
       </el-form-item>
 
       <el-form-item label="起售时间" prop="dateStartStr">
