@@ -117,12 +117,19 @@ export const constantRouterMap = [
         path: 'apiExtNews/list',
         component: () => import('@/views/apiExtNews/list'),
         meta: {title: '文章管理', icon: 'articles'}
-      },{
+      },
+      {
         name: '添加文章',
         path: 'apiExtNews/add',
         component: () => import('@/views/apiExtNews/add'),
         meta: {title: '添加文章', icon: 'articles'},
         hidden: true
+      },
+      {
+        name: '留言管理',
+        path: 'apiExtComment/list',
+        component: () => import('@/views/apiExtComment/list'),
+        meta: {title: '留言管理', icon: 'liuyan'}
       }]
   },
   {
