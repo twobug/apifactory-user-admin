@@ -130,6 +130,19 @@ export const constantRouterMap = [
         path: 'apiExtComment/list',
         component: () => import('@/views/apiExtComment/list'),
         meta: {title: '留言管理', icon: 'liuyan'}
+      },
+      {
+        name: '单页管理',
+        path: 'apiExtPage/list',
+        component: () => import('@/views/apiExtPage/list'),
+        meta: {title: '单页管理', icon: 'page'}
+      },
+      {
+        name: '添加单页',
+        path: 'apiExtPage/add',
+        component: () => import('@/views/apiExtPage/add'),
+        meta: {title: '添加单页', icon: 'page'},
+        hidden: true
       }]
   },
   {
