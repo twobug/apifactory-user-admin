@@ -11,7 +11,7 @@
       <el-input clearable @keyup.enter.native="fetchData" style="width: 200px;" class="filter-item" placeholder="发布人昵称"
                 v-model="searchData.nick">
       </el-input>
-      <el-select clearable style="width: 200px" class="filter-item" v-model="searchData.categoryId" placeholder="商品分类">
+      <el-select clearable style="width: 200px" class="filter-item" v-model="searchData.categoryId" placeholder="分类">
         <el-option v-for="item in CmsCategoryList" :key="item.value" :label="item.name" :value="item.id">
           <span>
             <span v-for="lv in item.level-1" :key="lv">&#8195;&#8195;&#8195;&#8195;&#8195;</span>
@@ -57,7 +57,7 @@
           {{scope.row.nick ? scope.row.nick : '-'}}
         </template>
       </el-table-column>      
-      <el-table-column prop="categoryName" label="分类" width="100%"></el-table-column>
+      <el-table-column prop="categoryName" label=" width="100%"></el-table-column>
       <el-table-column label="标题" show-overflow-tooltip>
         <template slot-scope="scope">
           <el-tag v-if="scope.row.isRecommend" type="danger" size="mini">推荐</el-tag>
