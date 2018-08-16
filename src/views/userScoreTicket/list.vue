@@ -18,7 +18,7 @@
       </el-select>
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="fetchData" size="medium">搜索</el-button>
       <el-button class="filter-item" style="margin-left: 10px;" @click="handleCreate" type="success" icon="el-icon-edit" size="medium">添加</el-button>
-      <el-button class="filter-item" style="margin-left: 10px;" @click="handleDownload" type="danger" icon="el-icon-download" size="medium">导出Excel</el-button>
+      <el-button class="filter-item" style="margin-left: 10px;" @click="handleDownload" type="danger" icon="el-icon-download" size="medium" :loading="downloadLoading">导出Excel</el-button>
     </div>
     
     <el-table :data="list" v-loading.body="listLoading" element-loading-text="Loading" border fit highlight-current-row empty-text="暂无数据" @selection-change="handleSelectionChange">
@@ -170,6 +170,7 @@ export default {
       multipleSelection: [],
       list: null,
       listLoading: true,
+      downloadLoading: false,
       statisticsData:{}
     }
   },
@@ -285,18 +286,31 @@ export default {
     },
     handleDownload() {
       this.downloadLoading = true
-      import('@/vendor/Export2Excel').then(excel => {
-        const tHeader = ['手机号码', '昵称', '券号', '积分数', '状态', '创建时间', '更新时间', '到期时间', '备注']
-        const filterVal = ['mobile', 'nick', 'number', 'score', 'statusStr', 'dateAdd', 'dateUpdate', 'dateEnd', 'remark']
-        const list = this.list
-        const data = this.formatJson(filterVal, list)
-        excel.export_json_to_excel({
-          header: tHeader,
-          data,
-          filename: '积分券',
-          autoWidth: true
-        })
-        this.downloadLoading = false
+      fetchDataList(1, 65535, this.searchData).then(response => {
+        if (response.code == 0) {
+          let curList = response.data.result
+          curList.forEach(ele => {
+            if (ele.uid) {
+              let userMap = userMap[ele.uid]
+              if (userMap) {
+                ele.mobile = userMap.mobile
+                ele.nick = userMap.nick
+              }
+            }
+          })
+          import('@/vendor/Export2Excel').then(excel => {
+            const tHeader = ['手机号码', '昵称', '券号', '积分数', '状态', '创建时间', '更新时间', '到期时间', '备注']
+            const filterVal = ['mobile', 'nick', 'number', 'score', 'statusStr', 'dateAdd', 'dateUpdate', 'dateEnd', 'remark']
+            const data = this.formatJson(filterVal, curList)
+            excel.export_json_to_excel({
+              header: tHeader,
+              data,
+              filename: '积分券',
+              autoWidth: true
+            })
+            this.downloadLoading = false
+          })
+        }
       })
     },
     formatJson(filterVal, jsonData) {

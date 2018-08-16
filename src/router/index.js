@@ -143,6 +143,19 @@ export const constantRouterMap = [
         component: () => import('@/views/apiExtPage/add'),
         meta: {title: '添加单页', icon: 'page'},
         hidden: true
+      },
+      {
+        name: '公告管理',
+        path: 'apiExtNotice/list',
+        component: () => import('@/views/apiExtNotice/list'),
+        meta: {title: '公告管理', icon: 'gonggao'}
+      },
+      {
+        name: '添加公告',
+        path: 'apiExtNotice/add',
+        component: () => import('@/views/apiExtNotice/add'),
+        meta: {title: '添加公告', icon: 'gonggao'},
+        hidden: true
       }]
   },
   {
