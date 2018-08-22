@@ -95,7 +95,7 @@
 </template>
 
 <script>
-    import {fetchDataList,saveData,delData,info} from '@/api/apiExtJson';
+    import {fetchDataList,saveData,delData,infoData} from '@/api/apiExtJson';
     import { Message, MessageBox } from 'element-ui';
     export default{
         data(){
@@ -216,7 +216,6 @@
             addJson(){
                 this.addJsonData.isdlg = true;
                 //重置添加表单
-                console.log(this.$refs.addJson)
                 if(this.$refs.addJson){
                     this.$refs.addJson.resetFields();
                 }
@@ -224,7 +223,6 @@
             },
             //添加数据
             addJsonFn(_data){
-                console.log(_data.content)
                 if(_data.content == '' || _data.content == undefined){
                     Message({
                         message: 'Json数据不能为空',
@@ -254,9 +252,8 @@
             //编辑数据
             setJsonData(row){
                 this.saveJsonData.isdlg = true
-                // this.saveJsonData.formData = row
-                fetchDataList(this.page, this.pageSize, {id:row.id}).then(res =>{
-                    this.saveJsonData.formData = res.data.result[0]
+                infoData(row.id).then(res =>{
+                    this.saveJsonData.formData = res.data;
                 })
             },
             //保存编辑数据
@@ -309,7 +306,6 @@
             },
             //批量删除
             delDataMore(){
-                console.log(111)
                 if(!this.selectJsonData.length){
                     Message({
                         message: '请先选择需要删除的数据',
