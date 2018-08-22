@@ -79,6 +79,16 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="page"
+      :page-sizes="[10, 20, 50, 100]"
+      :page-size="pageSize"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="totalRow" style="margin-top:20px;">
+    </el-pagination>
+
 
     <el-dialog :title="pushData.dialogTitle" :visible.sync="pushData.dialogFormVisible" :close-on-click-modal="false" :close-on-press-escape="false">
       <el-form :rules="rules" ref="addEditPopForm" :model="pushData" label-position="left" label-width="100px">
@@ -112,6 +122,10 @@
     },
     data() {
       return {
+        page:1,
+        pageSize:10,
+        totalRow:0,
+
         categoryData: [],
         shopData: [{label: '全部', value: ''},
           {label: '未归属任何店铺', value: 0}],
@@ -269,12 +283,20 @@
       handleSelectionChange(val) {
         this.multipleSelection = val
       },
+      handleSizeChange(val) {
+        this.pageSize = val;
+        this.fetchData();
+      },
+      handleCurrentChange(val) {
+        this.page = val
+        this.fetchData()
+      },
       fetchData() {
         this.list = null;
         this.listLoading = true;
-        fetchDataList(this.searchData).then(response => {
+        fetchDataList(this.page, this.pageSize, this.searchData).then(response => {
           if (response.code === 0) {
-            this.list = response.data.result;
+            this.list = response.data.result
             this.totalRow = response.data.totalRow
           }
           this.listLoading = false
