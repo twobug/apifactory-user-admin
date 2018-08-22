@@ -27,6 +27,8 @@
 
 - [Achen JarenChen](https://github.com/JarenChen)
 
+- [Alice](https://github.com/Alice-Only)
+
 - 期待您的加入...
 
 ## 开发
