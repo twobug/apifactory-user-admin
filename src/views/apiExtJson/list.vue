@@ -216,7 +216,6 @@
             addJson(){
                 this.addJsonData.isdlg = true;
                 //重置添加表单
-                console.log(this.$refs.addJson)
                 if(this.$refs.addJson){
                     this.$refs.addJson.resetFields();
                 }
@@ -224,7 +223,6 @@
             },
             //添加数据
             addJsonFn(_data){
-                console.log(_data.content)
                 if(_data.content == '' || _data.content == undefined){
                     Message({
                         message: 'Json数据不能为空',
@@ -255,9 +253,7 @@
             setJsonData(row){
                 this.saveJsonData.isdlg = true
                 infoData(row.id).then(res =>{
-                    console.log(111)
                     this.saveJsonData.formData = res.data;
-                    console.log(this.saveJsonData.formData)
                 })
             },
             //保存编辑数据
@@ -310,7 +306,6 @@
             },
             //批量删除
             delDataMore(){
-                console.log(111)
                 if(!this.selectJsonData.length){
                     Message({
                         message: '请先选择需要删除的数据',
