@@ -97,6 +97,11 @@ export const constantRouterMap = [
       path: 'apiExtBanner/list',
       component: () => import('@/views/apiExtBanner/list'),
       meta: {title: 'Banner管理', icon: 'banner'}
+    },{
+      name: 'Json接口数据',
+      path: 'apiExtJson/list',
+      component: () => import('@/views/apiExtJson/list'),
+      meta: {title: 'Json数据管理', icon: 'json'}
     }]
   },
   {
