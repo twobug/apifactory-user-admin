@@ -95,7 +95,7 @@
 </template>
 
 <script>
-    import {fetchDataList,saveData,delData,info} from '@/api/apiExtJson';
+    import {fetchDataList,saveData,delData,infoData} from '@/api/apiExtJson';
     import { Message, MessageBox } from 'element-ui';
     export default{
         data(){
@@ -254,9 +254,10 @@
             //编辑数据
             setJsonData(row){
                 this.saveJsonData.isdlg = true
-                // this.saveJsonData.formData = row
-                fetchDataList(this.page, this.pageSize, {id:row.id}).then(res =>{
-                    this.saveJsonData.formData = res.data.result[0]
+                infoData(row.id).then(res =>{
+                    console.log(111)
+                    this.saveJsonData.formData = res.data;
+                    console.log(this.saveJsonData.formData)
                 })
             },
             //保存编辑数据

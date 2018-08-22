@@ -29,11 +29,10 @@ export function delData(id) {
   })
 }
 
-export function info(id) {
+export function infoData(id) {
   return request({
-    url: '/user/apiExtJson/info',
-    method: 'post',
-    data: { id }
+    url: `/user/apiExtJson/info?id=${id}`,
+    method: 'get'
   })
 }
 
