@@ -45,6 +45,14 @@ export function modifyNumberOrders(data) {
   })
 }
 
+export function modifyNumberSells(data) {
+  return request({
+    url: '/user/apiExtShopGoods/modify/numberSells',
+    method: 'post',
+    data: data
+  })
+}
+
 export function infoData(id) {
   return request({
     url: '/user/apiExtShopGoods/info',

@@ -67,15 +67,24 @@
           <p>浏览量 : {{scope.row.views}}</p>
           <p>收藏量 : {{scope.row.numberFav}}</p>
           <p>订单数 : {{scope.row.numberOrders}}</p>
+          <p>销量 : {{scope.row.numberSells}}</p>
           <p>好评数 : {{scope.row.numberGoodReputation}}</p>
         </template>
       </el-table-column>
       <el-table-column label="操作" width="100%" align="center">
         <template slot-scope="scope">
-          <el-button type="text" @click="modifyNumberOrders(scope.row)">销量</el-button><br>
-          <el-button type="text" @click="handleUpdate(scope.row.id)">编辑</el-button><br>
-          <el-button type="text" @click="rebateUpdate(scope.row.id)">会员折扣</el-button><br>
-          <el-button type="text" @click="delData(scope.row.id)" style="color:red">删除</el-button>
+          <el-dropdown trigger="click">
+            <span class="el-dropdown-link">
+              操作<i class="el-icon-arrow-down el-icon--right"></i>
+            </span>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item @click.native="modifyNumberOrders(scope.row)">修改订单数</el-dropdown-item>
+              <el-dropdown-item @click.native="modifyNumberSells(scope.row)">修改销量</el-dropdown-item>
+              <el-dropdown-item @click.native="handleUpdate(scope.row.id)">编辑</el-dropdown-item>
+              <el-dropdown-item @click.native="rebateUpdate(scope.row.id)">会员折扣</el-dropdown-item>
+              <el-dropdown-item @click.native="delData(scope.row.id)" style="color:red">删除</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
         </template>
       </el-table-column>
     </el-table>
@@ -110,7 +119,7 @@
 </template>
 
 <script>
-  import {delData, fetchDataList, getShopData, getShopGoodsCategoryData, modifyNumberOrders, rebate, saveRebate} from '@/api/apiExtShopGoods'
+  import {delData, fetchDataList, getShopData, getShopGoodsCategoryData, modifyNumberOrders, modifyNumberSells, rebate, saveRebate} from '@/api/apiExtShopGoods'
   import {Message} from 'element-ui'
   import {mapGetters} from 'vuex'
 
@@ -328,13 +337,30 @@
         })
       },
       modifyNumberOrders(data){
-        this.$prompt('请输入销量', '提示', {
+        this.$prompt('请输入订单数', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           inputPattern: /[0-9]+/,
           inputErrorMessage: '销量格式不正确'
         }).then(({ value }) => {
           modifyNumberOrders({id:data.id, numberOrders:value}).then(() => {
+            Message({
+              message: '修改成功',
+              type: 'success',
+              duration: 1000
+            })
+            this.fetchData()
+          })
+        })
+      },
+      modifyNumberSells(data){
+        this.$prompt('请输入销量', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          inputPattern: /[0-9]+/,
+          inputErrorMessage: '销量格式不正确'
+        }).then(({ value }) => {
+          modifyNumberSells({id:data.id, numberSells:value}).then(() => {
             Message({
               message: '修改成功',
               type: 'success',
