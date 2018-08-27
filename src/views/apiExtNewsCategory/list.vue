@@ -5,7 +5,7 @@
       <el-button class="filter-item" @click="handleCreate" type="success" icon="el-icon-edit">添加</el-button>
     </div>
     
-    <el-table :data="list" v-loading.body="listLoading" element-loading-text="Loading" border fit highlight-current-row empty-text="暂无数据" @selection-change="handleSelectionChange">
+    <el-table :data="list" v-loading="listLoading" element-loading-text="Loading" border fit highlight-current-row empty-text="暂无数据" @selection-change="handleSelectionChange">
       <el-table-column prop="id" label="ID" align="center" width="100%"></el-table-column>
       <el-table-column label="分类名称">
         <template slot-scope="scope">

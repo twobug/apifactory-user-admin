@@ -43,7 +43,7 @@
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="fetchData">搜索</el-button>
     </div>
    <!-- 编号	手机号码	昵称	是否默认	所在地	联系人	邮编	状态	添加时间	更新时间	操作-->
-    <el-table :data="list" v-loading.body="listLoading" element-loading-text="Loading" border fit highlight-current-row empty-text="暂无数据" @selection-change="handleSelectionChange">
+    <el-table :data="list" v-loading="listLoading" element-loading-text="Loading" border fit highlight-current-row empty-text="暂无数据" @selection-change="handleSelectionChange">
       <el-table-column prop="id" label="编号" width="70px"></el-table-column>
       <el-table-column prop="mobile" label="手机号码" width="110px">
         <template slot-scope="scope">

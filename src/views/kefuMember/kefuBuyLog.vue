@@ -15,7 +15,7 @@
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="fetchData">搜索</el-button>
     </div>
     
-    <el-table :data="list" v-loading.body="listLoading" element-loading-text="Loading" border fit highlight-current-row empty-text="暂无数据" @selection-change="handleSelectionChange">
+    <el-table :data="list" v-loading="listLoading" element-loading-text="Loading" border fit highlight-current-row empty-text="暂无数据" @selection-change="handleSelectionChange">
       <el-table-column prop="userIdShop" label="商户编号"></el-table-column>
       <el-table-column prop="number" label="订单号"></el-table-column>
       <el-table-column prop="payGateTradeId" label="支付宝单号"></el-table-column>

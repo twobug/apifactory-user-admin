@@ -35,7 +35,7 @@
       </el-tag>
     </div>
     
-    <el-table :data="list" v-loading.body="listLoading" element-loading-text="Loading" border fit highlight-current-row empty-text="暂无数据">
+    <el-table :data="list" v-loading="listLoading" element-loading-text="Loading" border fit highlight-current-row empty-text="暂无数据">
       <el-table-column prop="keyStr" label="名称"></el-table-column>
       <el-table-column prop="number" label="资源包数量"></el-table-column>
       <el-table-column prop="numberLeft" label="剩余数量"></el-table-column>

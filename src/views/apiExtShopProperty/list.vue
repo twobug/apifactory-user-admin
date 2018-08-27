@@ -5,7 +5,7 @@
       <el-button class="filter-item" @click="handleCreate" type="success" icon="el-icon-edit">添加</el-button>
     </div>
     
-    <el-table :data="list" v-loading.body="listLoading" element-loading-text="Loading" border fit highlight-current-row empty-text="暂无数据" @selection-change="handleSelectionChange">
+    <el-table :data="list" v-loading="listLoading" element-loading-text="Loading" border fit highlight-current-row empty-text="暂无数据" @selection-change="handleSelectionChange">
       <el-table-column prop="name" label="名称"></el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
@@ -53,7 +53,7 @@
       <div class="filter-container">
         <el-button class="filter-item" @click="handleCreateChild" type="success" icon="el-icon-edit">添加属性</el-button>
       </div>
-      <el-table :data="childList" v-loading.body="listLoading" element-loading-text="Loading" border fit highlight-current-row empty-text="暂未添加子属性">
+      <el-table :data="childList" v-loading="listLoading" element-loading-text="Loading" border fit highlight-current-row empty-text="暂未添加子属性">
         <el-table-column prop="name" label="名称"></el-table-column>
         <el-table-column prop="remark" label="备注"></el-table-column>
         <el-table-column label="操作">

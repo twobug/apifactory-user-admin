@@ -4,7 +4,7 @@
 
     
     <div class="json-editor" style="margin-top:10px;">
-      <textarea ref="textarea" v-loading.body="listLoading" element-loading-text="Loading"></textarea>
+      <textarea ref="textarea" v-loading="listLoading" element-loading-text="Loading"></textarea>
     </div>
     <div class="filter-container">
       <el-button class="filter-item" style="margin-top: 10px;" @click="handleCreateSave" type="danger" icon="el-icon-edit">保存当前菜单设置</el-button>

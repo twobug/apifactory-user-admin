@@ -2,10 +2,10 @@
   <div class="app-container">
     
     <div class="filter-container">
-      <el-button class="filter-item" @click="handleCreate" type="success" icon="el-icon-edit" v-loading.body="listLoadingBT" element-loading-text="Loading">添加</el-button>
+      <el-button class="filter-item" @click="handleCreate" type="success" icon="el-icon-edit" v-loading="listLoadingBT" element-loading-text="Loading">添加</el-button>
     </div>
     
-    <el-table :data="list" v-loading.body="listLoading" element-loading-text="Loading" border fit highlight-current-row empty-text="暂无数据" @selection-change="handleSelectionChange">
+    <el-table :data="list" v-loading="listLoading" element-loading-text="Loading" border fit highlight-current-row empty-text="暂无数据" @selection-change="handleSelectionChange">
       <el-table-column prop="nick" label="昵称"></el-table-column>
       <el-table-column prop="mobile" label="手机号码"></el-table-column>
       <el-table-column label="状态" width="100%">

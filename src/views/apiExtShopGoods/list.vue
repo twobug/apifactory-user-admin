@@ -46,7 +46,7 @@
       </el-button>
     </div>
 
-    <el-table :data="list" v-loading.body="listLoading" element-loading-text="Loading" border fit highlight-current-row
+    <el-table :data="list" v-loading="listLoading" element-loading-text="Loading" border fit highlight-current-row
               empty-text="暂无数据" @selection-change="handleSelectionChange">
       <el-table-column prop="id" width="90px" label="商品编号"></el-table-column>
       <el-table-column prop="shopName" label="店铺"></el-table-column>
