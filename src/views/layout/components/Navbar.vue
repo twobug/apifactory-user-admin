@@ -1,13 +1,13 @@
 <template>
   <el-menu class="navbar" mode="horizontal">
-    <hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></hamburger>
-    <breadcrumb></breadcrumb>
+    <hamburger :toggle-click="toggleSideBar" :is-active="sidebar.opened" class="hamburger-container"/>
+    <breadcrumb />
     <el-dropdown class="avatar-container" trigger="click">
       <div class="avatar-wrapper">
         <span style="display:block;">{{centerUserBase.realName}} ( {{centerUserBase.mobile}} )</span>
         <i class="el-icon-caret-bottom"></i>
       </div>
-      <el-dropdown-menu class="user-dropdown" slot="dropdown">
+      <el-dropdown-menu slot="dropdown" class="user-dropdown">
         <router-link class="inlineBlock" to="/">
           <el-dropdown-item>
             首页
@@ -19,7 +19,7 @@
           </el-dropdown-item>
         </router-link>
         <el-dropdown-item divided>
-          <span @click="logout" style="display:block;">退出</span>
+          <span style="display:block;" @click="logout">退出</span>
         </el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
