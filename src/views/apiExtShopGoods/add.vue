@@ -152,10 +152,16 @@
       </el-form-item>
       <el-form-item label="赠送积分" prop="gotScore">
         <el-col :span="4">
-          <el-input-number v-model="pushData.gotScore" clearable @keyup.enter.native="handleCreateSave" :min="0"
-                         label="请输入赠送积分" style="width: 100%"></el-input-number>
+          <el-input v-model="pushData.gotScore" clearable @keyup.enter.native="handleCreateSave"
+                         label="请输入赠送积分" style="width: 100%"></el-input>
         </el-col>   
-        <el-col :span="20" class="orange">&nbsp;&nbsp;&nbsp;购买本商品后用户可获得的积分数量</el-col>     
+        <el-col :span="4" style="margin-left:10px">
+          <el-select style="width: 100%" v-model="pushData.gotScoreType" placeholder="请选择">
+            <el-option label="固定数量积分" value='0'></el-option>
+            <el-option label="金额的百分比(%)" value='1'></el-option>
+          </el-select>
+        </el-col>
+        <el-col :span="10" class="orange">&nbsp;&nbsp;&nbsp;购买本商品后用户可获得的积分数量</el-col>     
       </el-form-item>
       <el-form-item label="库存数" prop="stores">
         <el-col :span="4">
@@ -323,6 +329,9 @@
           , gotScore: [
             {required: true, message: '不能为空', trigger: 'blur'}
           ]
+          , gotScoreType: [
+            {required: true, message: '不能为空', trigger: 'blur'}
+          ]
           , stores: [
             {required: true, message: '请输入总库存数', trigger: 'blur'}
           ]
@@ -345,6 +354,7 @@
           pingtuanPrice: 0,
           minScore: 0,
           gotScore:0,
+          gotScoreType:'0',
           stores: 0,
           weight: 0,
           commissionType: '0',
@@ -569,6 +579,7 @@
                 commissionType: '' + res.data.info.commissionType,
                 pingtuan: '' + res.data.info.pingtuan,
                 status: '' + res.data.info.status,
+                gotScoreType: '' + res.data.info.gotScoreType,
                 dateStart: res.data.info.dateStart,
                 dateAdd: res.data.info.dateAdd,
                 dateUpdate: res.data.info.dateUpdate,
