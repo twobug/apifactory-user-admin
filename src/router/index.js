@@ -62,10 +62,21 @@ export const constantRouterMap = [
         component: () => import('@/views/centerUserResourceBundle/list'),
         meta: {title: '我的资源包', icon: 'ziyuan'}
       },
+      // {
+      //   path: 'external-link',
+      //   component: Layout,
+      //   children: [
+      //     {
+      //       path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
+      //       meta: { title: 'externalLink', icon: 'link' }
+      //     }
+      //   ]
+      // },
       {
-        name: '外部URL',
-        path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
-        meta: {title: '外部URL', icon: 'setting'}
+        name: '我的资源包',
+        path: 'list',
+        component: () => import('@/views/centerUserResourceBundle/list'),
+        meta: {title: '我的资源包', icon: 'ziyuan'}
       }]
   },
   {
