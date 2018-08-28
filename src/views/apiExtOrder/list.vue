@@ -12,6 +12,10 @@
       </el-input>
       <el-input clearable @keyup.enter.native="fetchData" style="width: 200px;" class="filter-item" placeholder="核销码" v-model="searchData.hxNumber">
       </el-input>
+      <el-input clearable @keyup.enter.native="fetchData" style="width: 200px;" class="filter-item" placeholder="商品编号" v-model="searchData.goodsId">
+      </el-input>
+      <el-input clearable @keyup.enter.native="fetchData" style="width: 200px;" class="filter-item" placeholder="商品名称" v-model="searchData.goodsName">
+      </el-input>
       <el-select clearable style="width: 200px" class="filter-item" v-model="searchData.status" placeholder="状态">
         <el-option label="订单关闭" value="-1"></el-option>
         <el-option label="待支付" value="0"></el-option>
