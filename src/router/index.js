@@ -91,6 +91,11 @@ export const constantRouterMap = [
       component: () => import('@/views/apiExtConfig/list'),
       meta: {title: '系统参数', icon: 'setting'}
     },{
+      name: '签到积分规则',
+      path: 'apiExtUserScoreSignRule/list',
+      component: () => import('@/views/apiExtUserScoreSignRule/list'),
+      meta: {title: '签到积分规则', icon: 'scoreSignRule'}
+    },{
       name: '上传文件管理',
       path: 'apiExtDfs/list',
       component: () => import('@/views/apiExtDfs/list'),
