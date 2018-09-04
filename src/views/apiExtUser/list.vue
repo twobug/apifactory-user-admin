@@ -332,10 +332,16 @@ export default {
             duration: 3 * 1000
           })
         } else {
-          this.pushData.mobile = res.data.userBase.mobile;
-          this.pushData.nick = res.data.userBase.nick;
-          this.pushData.openid = res.data.userBaseWx.openid;
-          this.pushData.levelId = res.data.userBase.levelId;
+          if (res.data.userBase) {
+            this.pushData.mobile = res.data.userBase.mobile;
+            this.pushData.nick = res.data.userBase.nick;
+            if (res.data.userBase.levelId) {
+              this.pushData.levelId = res.data.userBase.levelId;
+            } 
+          }          
+          if (res.data.userBaseWx && res.data.userBaseWx.openid) {
+            this.pushData.openid = res.data.userBaseWx.openid;
+          }                             
 
           let levelSearchData = {}
           levelSearchData.status = 0

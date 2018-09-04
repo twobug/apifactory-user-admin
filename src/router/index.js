@@ -13,7 +13,7 @@ Vue.use(Router)
  * alwaysShow: true               if set true, will always show the root menu, whatever its child routes length
  *                                if not set alwaysShow, only more than one route under the children
  *                                it will becomes nested mode, otherwise not show the root menu
- * redirect: noredirect           if `redirect:noredirect` will no redirct in the breadcrumb
+ * redirect: noredirect           if `redirect:noredirect` will no redirect in the breadcrumb
  * name:'router-name'             the name is used by <keep-alive> (must set!!!)
  * meta : {
     title: 'title'               the name show in submenu and breadcrumb (recommend set)
@@ -274,6 +274,12 @@ export const constantRouterMap = [
       path: 'userScoreTicket/list',
       component: () => import('@/views/userScoreTicket/list'),
       meta: {title: '积分券管理', icon: 'score'}
+    },
+    {
+      name: '支付记录',
+      path: 'apiExtUserPay/list',
+      component: () => import('@/views/apiExtUserPay/list'),
+      meta: {title: '支付记录', icon: 'paylog'}
     }]
   },
   {
