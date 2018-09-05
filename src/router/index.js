@@ -90,7 +90,14 @@ export const constantRouterMap = [
       path: 'apiExtConfig/list',
       component: () => import('@/views/apiExtConfig/list'),
       meta: {title: '系统参数', icon: 'setting'}
-    },{
+    },
+    {
+      name: '友情链接',
+      path: 'apiExtFriendlyPartner/list',
+      component: () => import('@/views/apiExtFriendlyPartner/list'),
+      meta: {title: '友情链接', icon: 'yqlj'}
+    },
+    {
       name: '签到积分规则',
       path: 'apiExtUserScoreSignRule/list',
       component: () => import('@/views/apiExtUserScoreSignRule/list'),
