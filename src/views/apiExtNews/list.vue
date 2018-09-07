@@ -57,7 +57,7 @@
           {{scope.row.nick ? scope.row.nick : '-'}}
         </template>
       </el-table-column>      
-      <el-table-column prop="categoryName" label=" width="100%"></el-table-column>
+      <el-table-column prop="categoryName" label="分类" width="100%"></el-table-column>
       <el-table-column label="标题" show-overflow-tooltip>
         <template slot-scope="scope">
           <el-tag v-if="scope.row.isRecommend" type="danger" size="mini">推荐</el-tag>

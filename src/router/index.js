@@ -73,7 +73,7 @@ export const constantRouterMap = [
       //   ]
       // },
       {
-        name: '我的资源包',
+        name: '我的资源包2',
         path: 'list',
         component: () => import('@/views/centerUserResourceBundle/list'),
         meta: {title: '我的资源包', icon: 'ziyuan'}
@@ -156,7 +156,7 @@ export const constantRouterMap = [
         name: '添加文章',
         path: 'apiExtNews/add',
         component: () => import('@/views/apiExtNews/add'),
-        meta: {title: '添加文章', icon: 'articles'},
+        meta: {title: '添加文章', icon: 'articles', noKeepAlive: true},
         hidden: true
       },
       {
@@ -175,7 +175,7 @@ export const constantRouterMap = [
         name: '添加单页',
         path: 'apiExtPage/add',
         component: () => import('@/views/apiExtPage/add'),
-        meta: {title: '添加单页', icon: 'page'},
+        meta: {title: '添加单页', icon: 'page', noKeepAlive: true},
         hidden: true
       },
       {
@@ -188,7 +188,7 @@ export const constantRouterMap = [
         name: '添加公告',
         path: 'apiExtNotice/add',
         component: () => import('@/views/apiExtNotice/add'),
-        meta: {title: '添加公告', icon: 'gonggao'},
+        meta: {title: '添加公告', icon: 'gonggao', noKeepAlive: true},
         hidden: true
       }]
   },
@@ -262,6 +262,7 @@ export const constantRouterMap = [
       name: '收获地址管理',
       path: 'apiExtUserShippingAddress/add',
       component: () => import('@/views/apiExtUserShippingAddress/add'),
+      meta: {noKeepAlive: true},
       hidden: true
     }]
   },
@@ -311,6 +312,7 @@ export const constantRouterMap = [
       name: '验证码设置add',
       path: 'apiExtSmsConfig/add',
       component: () => import('@/views/apiExtSmsConfig/add'),
+      meta: {noKeepAlive: true},
       hidden: true
     },
       {
@@ -336,6 +338,7 @@ export const constantRouterMap = [
         name: '店铺管理',
         path: 'apiExtShopSub/add',
         component: () => import('@/views/apiExtShopSub/add'),
+        meta: {noKeepAlive: true},
         hidden: true
       },
       {
@@ -360,7 +363,7 @@ export const constantRouterMap = [
         name: '添加修改运费模板',
         path: 'apiExtShopFreightTemplate/add',
         component: () => import('@/views/apiExtShopFreightTemplate/add'),
-        meta: {title: '运费模板', icon: 'yunfeimoban'},
+        meta: {title: '运费模板', icon: 'yunfeimoban', noKeepAlive: true},        
         hidden: true
       },
       {
@@ -373,10 +376,11 @@ export const constantRouterMap = [
         name: '商品管理',
         path: 'apiExtShopGoods/add',
         component: () => import('@/views/apiExtShopGoods/add'),
+        meta: {noKeepAlive: true},
         hidden: true
       },
       {
-        name: '订单管理',
+        name: '订单列表',
         path: 'apiExtOrder/list',
         component: () => import('@/views/apiExtOrder/list'),
         meta: {title: '订单管理', icon: 'order'}
@@ -385,6 +389,7 @@ export const constantRouterMap = [
         name: '订单详情',
         path: 'apiExtOrder/detail',
         component: () => import('@/views/apiExtOrder/detail'),
+        meta: {title: '订单管理', icon: 'order', noKeepAlive: true},
         hidden: true
       },
       {
@@ -409,7 +414,7 @@ export const constantRouterMap = [
         name: '添加知识交易',
         path: 'virtualTraderSet/add',
         component: () => import('@/views/virtualTraderSet/add'),
-        meta: {title: '知识交易', icon: 'zhishi'},
+        meta: {title: '知识交易', icon: 'zhishi', noKeepAlive: true},        
         hidden: true
       },
       {

@@ -97,7 +97,7 @@ export default {
     },
     handleCreate(){
       this.pushData = Object.assign({}, this.pushDataTmp)
-      this.pushData.dialogTitle = '设置优惠券'
+      this.pushData.dialogTitle = '添加签到积分规则'
       this.pushData.dialogFormVisible = true
       this.$nextTick(() => {
         this.$refs['addEditPopForm'].clearValidate()
@@ -113,7 +113,7 @@ export default {
           })
         } else {
           this.pushData = Object.assign({}, this.pushDataTmp, res.data, {dateType:'' + res.data.dateType, isPub:'' + res.data.isPub, content:res.data.value})
-          this.pushData.dialogTitle = '修改文本参数'
+          this.pushData.dialogTitle = '修改签到积分规则'
           this.pushData.dialogFormVisible = true
           this.$nextTick(() => {
             this.$refs['addEditPopForm'].clearValidate()
