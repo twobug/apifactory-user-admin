@@ -79,7 +79,16 @@ export default {
         imgcode: [{ required: true, trigger: 'blur', validator:validateImgCode, message:'不能为空' }],
       },
       loading: false,
-      pwdType: 'password'
+      pwdType: 'password',
+      redirect: undefined
+    }
+  },
+  watch: {
+    $route: {
+      handler: function(route) {
+        this.redirect = route.query && route.query.redirect
+      },
+      immediate: true
     }
   },
   mounted() {
@@ -159,7 +168,7 @@ export default {
               duration: 1 * 1000,
               onClose: () => {
                 setToken(res.data);
-                this.$router.push({ path: '/' })
+                this.$router.push({ path: this.redirect || '/' })
               }
             })
           }).catch((err) => {

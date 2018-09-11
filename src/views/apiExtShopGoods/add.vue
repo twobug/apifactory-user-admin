@@ -143,6 +143,12 @@
                           label="请输入拼团价" style="width: 100%"></el-input-number>
         </el-col>
       </el-form-item>
+      <el-form-item label="砍价底价" prop="kanjiaPrice">
+        <el-col :span="4">
+          <el-input-number v-model="pushData.kanjiaPrice" clearable @keyup.enter.native="handleCreateSave" :min="0"
+                          label="请输入砍价底价" style="width: 100%"></el-input-number>
+        </el-col>
+      </el-form-item>
       <el-form-item label="需要积分" prop="minScore">
         <el-col :span="4">
           <el-input-number v-model="pushData.minScore" clearable @keyup.enter.native="handleCreateSave" :min="0"

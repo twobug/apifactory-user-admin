@@ -177,7 +177,7 @@ export default {
         minPrice:undefined,
         helpPriceMin:undefined,
         helpPriceMax:undefined,
-        status:undefined,
+        status:'0',
         dateAddStr:undefined,
         dateEndStr:undefined
       },

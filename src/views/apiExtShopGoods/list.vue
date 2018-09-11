@@ -48,27 +48,52 @@
 
     <el-table :data="list" v-loading="listLoading" element-loading-text="Loading" border fit highlight-current-row
               empty-text="暂无数据" @selection-change="handleSelectionChange">
-      <el-table-column prop="id" width="90px" label="商品编号"></el-table-column>
-      <el-table-column prop="shopName" label="店铺"></el-table-column>
-      <el-table-column prop="categoryName" label="分类"></el-table-column>
-      <el-table-column prop="name" label="标题"></el-table-column>
-      <el-table-column label="图片" min-width="100px">
+      <el-table-column label="编号/条码">
+        <template slot-scope="scope">
+          {{scope.row.id}}<br>
+          {{scope.row.barCode ? scope.row.barCode : '-'}}
+        </template>
+      </el-table-column>
+      <el-table-column label="门店/分类">
+        <template slot-scope="scope">
+          {{scope.row.shopName ? scope.row.shopName : '-'}}
+          <br>
+          {{scope.row.categoryName ? scope.row.categoryName : '-'}}
+        </template>
+      </el-table-column>
+      <el-table-column label="标题">
+        <template slot-scope="scope">
+          <font v-if="scope.row.recommendStatus == 1" style="color:green">[推荐]&nbsp;</font>
+          {{scope.row.name}}
+        </template>
+      </el-table-column>
+      <el-table-column label="图片" min-width="100px" align="center">
         <template slot-scope="scope" v-if="scope.row.pic">
           <img :src="scope.row.pic" width="100" height="100">
         </template>
       </el-table-column>
-      <el-table-column prop="statusStr" label="状态"></el-table-column>
-      <el-table-column prop="recommendStatusStr" label="推荐状态"></el-table-column>
-      <el-table-column prop="stores" label="总库存"></el-table-column>
-      <el-table-column prop="originalPrice" label="原价"></el-table-column>
-      <el-table-column prop="minPrice" label="最低价"></el-table-column>
-      <el-table-column prop="linkPhone" label="商品数据">
+      <el-table-column label="库存/状态" align="center">
         <template slot-scope="scope">
-          <p>浏览量 : {{scope.row.views}}</p>
-          <p>收藏量 : {{scope.row.numberFav}}</p>
-          <p>订单数 : {{scope.row.numberOrders}}</p>
-          <p>销量 : {{scope.row.numberSells}}</p>
-          <p>好评数 : {{scope.row.numberGoodReputation}}</p>
+          {{scope.row.stores}}<br>
+          <el-tag v-if="scope.row.status == 0" type="success">上架</el-tag>
+          <el-tag v-if="scope.row.status == 1" type="danger">下架</el-tag>        
+        </template>
+      </el-table-column>
+      <el-table-column label="价格">
+        <template slot-scope="scope">
+          商品原价 : {{scope.row.originalPrice}}<br>
+          最低价格 : {{scope.row.minPrice}}<br>
+          砍价底价 : {{scope.row.kanjiaPrice}}<br>
+          团购价格 : {{scope.row.pingtuanPrice}}
+        </template>
+      </el-table-column>
+      <el-table-column prop="linkPhone" label="数据统计">
+        <template slot-scope="scope">
+          浏览量 : {{scope.row.views}}<br>
+          收藏量 : {{scope.row.numberFav}}<br>
+          订单数 : {{scope.row.numberOrders}}<br>
+          销售数 : {{scope.row.numberSells}}<br>
+          好评数 : {{scope.row.numberGoodReputation}}
         </template>
       </el-table-column>
       <el-table-column label="操作" width="100%" align="center">
