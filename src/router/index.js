@@ -104,6 +104,12 @@ export const constantRouterMap = [
       meta: {title: '签到积分规则', icon: 'scoreSignRule'}
     },
     {
+      name: '积分赠送规则',
+      path: 'userScoreSendRule/list',
+      component: () => import('@/views/userScoreSendRule/list'),
+      meta: {title: '积分赠送规则', icon: 'scoreSignRule'}
+    },
+    {
       name: '图片验证码设置',
       path: 'apiExtVerificationPicConfig/list',
       component: () => import('@/views/apiExtVerificationPicConfig/list'),
