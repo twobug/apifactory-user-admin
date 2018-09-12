@@ -8,6 +8,8 @@
       </el-input>
       <el-input clearable @keyup.enter.native="fetchData" style="width: 200px;" class="filter-item" placeholder="用户昵称" v-model="searchData.nick">
       </el-input>
+      <el-input clearable @keyup.enter.native="fetchData" style="width: 200px;" class="filter-item" placeholder="订单ID" v-model="searchData.id">
+      </el-input>
       <el-input clearable @keyup.enter.native="fetchData" style="width: 200px;" class="filter-item" placeholder="订单号" v-model="searchData.orderNumber">
       </el-input>
       <el-input clearable @keyup.enter.native="fetchData" style="width: 200px;" class="filter-item" placeholder="核销码" v-model="searchData.hxNumber">

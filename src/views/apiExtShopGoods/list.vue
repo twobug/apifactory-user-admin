@@ -48,6 +48,7 @@
 
     <el-table :data="list" v-loading="listLoading" element-loading-text="Loading" border fit highlight-current-row
               empty-text="暂无数据" @selection-change="handleSelectionChange">
+      <el-table-column type="selection" align="center" width="55" row-key="id"></el-table-column>
       <el-table-column label="编号/条码">
         <template slot-scope="scope">
           {{scope.row.id}}<br>
@@ -113,6 +114,8 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-button style='margin-top:20px' type="success" @click="modifystatus(0)">上架</el-button>
+    <el-button style='margin-top:20px' type="danger" @click="modifystatus(1)">下架</el-button>
     <el-pagination
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
@@ -144,7 +147,7 @@
 </template>
 
 <script>
-  import {delData, fetchDataList, getShopData, getShopGoodsCategoryData, modifyNumberOrders, modifyNumberSells, rebate, saveRebate} from '@/api/apiExtShopGoods'
+  import {delData, fetchDataList, getShopData, getShopGoodsCategoryData, modifyNumberOrders, modifyNumberSells, rebate, saveRebate, modifystatus} from '@/api/apiExtShopGoods'
   import {Message} from 'element-ui'
   import {mapGetters} from 'vuex'
 
@@ -445,6 +448,28 @@
           }
         })
       },
+      modifystatus(status){
+        if (!this.multipleSelection.length) {
+          Message({
+            message: '请先选择需要操作的记录',
+            type: 'error',
+            duration: 1 * 1000
+          })
+          return
+        }
+        let ids = []
+        this.multipleSelection.forEach(obj => {
+          ids.push(obj.id)
+        })
+        modifystatus(ids.join(), status).then(res => {
+          Message({
+            message: '操作成功',
+            type: 'success',
+            duration: 1 * 1000
+          })
+          this.fetchData()
+        })
+      }
     }
   }
 </script>

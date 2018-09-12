@@ -84,3 +84,11 @@ export function saveRebate(data) {
     data: { ...data }
   })
 }
+
+export function modifystatus(ids, status) {
+  return request({
+    url: '/user/apiExtShopGoods/modify/status',
+    method: 'post',
+    data: { ids, status }
+  })
+}
