@@ -9,9 +9,9 @@
 
 欢迎大家一起来参与开发，踊跃提交代码，交流QQ群:315181914
 
-- [在线演示](http://newadmin.it120.cc/)
+- [在线演示](http://newadmin.it120.cc/) ,测试账号 11100000224 密码 123456
 
-- [后台接口文档](http://user.api.it120.cc/swagger-ui.html)
+- [后台接口文档](http://user.api.it120.cc)
 
 - [vue-element-admin 演示](http://panjiachen.github.io/vue-element-admin)
 
