@@ -188,8 +188,17 @@ export default {
     buyKf(){
       getPayData(this.centerUserBase.id).then(res => {
         // 弹框点击确定调整支付宝付款
-        this.alipayPostData = res.data;
-        this.dialogTableVisiblePay = true;
+        if (res.code == 0) {
+          this.alipayPostData = res.data;
+          this.dialogTableVisiblePay = true;
+        } else {
+          Message({
+            message: res.msg,
+            type: 'error',
+            duration: 3 * 1000
+          })
+          this.handleCreate()
+        }        
       })
     },
   }

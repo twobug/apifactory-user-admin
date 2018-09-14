@@ -193,8 +193,9 @@
                 this.list = null
                 this.listLoading = true
                 fetchDataList(this.page, this.pageSize, this.searchData).then(res => {
-                    this.totalRow = res.data.totalRow
+                    this.totalRow = 0
                     if (res.code === 0) {
+                        this.totalRow = res.data.totalRow
                         this.jsonList = res.data.result
                         this.jsonList.forEach(ele => {
                         if (ele.uid) {

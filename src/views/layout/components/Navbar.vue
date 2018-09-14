@@ -31,7 +31,7 @@ import { mapGetters } from 'vuex'
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
 import { logout } from '@/api/login'
-import { info } from '@/api/centeruser'
+import { getInfo } from '@/api/login'
 import { removeToken } from '@/utils/auth'
 import { Message } from 'element-ui'
 
@@ -53,7 +53,7 @@ export default {
     }
   },
   mounted() {
-    info().then(res => {
+    getInfo().then(res => {
       this.$store.commit('SET_CENTER_USER_BASE',res.data)
     });
   },

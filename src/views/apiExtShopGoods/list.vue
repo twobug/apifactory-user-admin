@@ -66,6 +66,9 @@
         <template slot-scope="scope">
           <font v-if="scope.row.recommendStatus == 1" style="color:green">[推荐]&nbsp;</font>
           {{scope.row.name}}
+          <div v-if="scope.row.tags">
+            <el-tag style="margin-right:5px;" type="success" v-for="key in scope.row.tags.split(',')" :key="key">{{key}}</el-tag>
+          </div>
         </template>
       </el-table-column>
       <el-table-column label="图片" min-width="100px" align="center">
@@ -267,11 +270,11 @@
     },
     created() {
       this.pushDataTmp = Object.assign({}, this.pushData);
-
-      this.fetchData();
-
       this.getShopData();
       this.getShopGoodsCategoryData();
+    },
+    activated() {
+      this.fetchData();
     },
     mounted() {
 

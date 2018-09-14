@@ -47,6 +47,12 @@
           <el-input v-model="pushData.name" clearable @keyup.enter.native="handleCreateSave"></el-input>
         </el-col>
       </el-form-item>
+      <el-form-item label="标签(关键词)" prop="tags">
+        <el-col :span="8">
+          <el-input v-model="pushData.tags" clearable @keyup.enter.native="handleCreateSave"></el-input>
+        </el-col>
+        <el-col :span="16" class="orange">&nbsp;&nbsp;&nbsp;多个标签用逗号或空格隔开</el-col>
+      </el-form-item>
       <el-form-item v-for="(v, k) in extJson" :key="k" :label="k">
         <el-col :span="8">
           <el-input v-model="extJson[k]" clearable @keyup.enter.native="handleCreateSave"></el-input>
