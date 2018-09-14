@@ -13,7 +13,7 @@
       <el-button type="primary" icon="el-icon-plus" @click="handleCreate('zthysms')">上海助通</el-button>
     </div>
 
-    <el-table :data="list" v-loading="listLoading" element-loading-text="Loading" border fit highlight-current-row
+    <el-table :data="list" v-loading="listLoading" element-loading-text="Loading" fit highlight-current-row
               empty-text="暂无数据">
       <el-table-column label="编号/通道/类型" width="120" align="center">
         <template slot-scope="scope">

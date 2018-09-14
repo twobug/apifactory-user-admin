@@ -8,7 +8,7 @@
 <el-button v-if="!pushData.isBuy" class="filter-item" style="margin-bottom: 10px;" @click="buyKf" type="warning" icon="el-icon-goods">购买移动客服</el-button>
 <el-button v-if="pushData.isBuy" class="filter-item" style="margin-bottom: 10px;" @click="buyKf" type="warning" icon="el-icon-goods">移动客服续费</el-button>
 </div>
-    <el-table :data="list" v-loading="listLoading" element-loading-text="Loading" :show-header="false" border fit highlight-current-row empty-text="暂无数据">
+    <el-table :data="list" v-loading="listLoading" element-loading-text="Loading" :show-header="false" fit highlight-current-row empty-text="暂无数据">
       <el-table-column prop="name" label="name"></el-table-column>
       <el-table-column prop="val" label="val"></el-table-column>
     </el-table>

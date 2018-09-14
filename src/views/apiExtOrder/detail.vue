@@ -112,7 +112,7 @@
     </div>
     <div class="order-title">商品信息：</div>
     <div style="clear:both;margin-top:20px;">
-      <el-table :data="goodsList" fit highlight-current-row empty-text="暂无数据">
+      <el-table :data="goodsList"  fit highlight-current-row empty-text="暂无数据">
         <el-table-column label="图标">
           <template slot-scope="scope">
             <img :src="scope.row.pic" style="width:70px;" />
@@ -188,7 +188,7 @@
     </div>
     <div v-if="refundApplies && refundApplies.length > 0" class="order-title">用户申请售后记录：</div>
     <div v-if="refundApplies && refundApplies.length > 0" style="clear:both;margin-top:20px;">
-      <el-table :data="refundApplies" fit highlight-current-row empty-text="暂无数据">
+      <el-table :data="refundApplies"  fit highlight-current-row empty-text="暂无数据">
         <el-table-column label="类型" prop="baseInfo.typeStr"></el-table-column>
         <el-table-column label="物流情况" prop="baseInfo.logisticsStatusStr"></el-table-column>
         <el-table-column label="原因">
@@ -230,7 +230,7 @@
     </div>
     <div v-if="refunds && refunds.length > 0" class="order-title">退款信息：</div>
     <div v-if="refunds && refunds.length > 0" style="clear:both;margin-top:20px;">
-      <el-table :data="refunds" fit highlight-current-row empty-text="暂无数据">
+      <el-table :data="refunds"  fit highlight-current-row empty-text="暂无数据">
         <el-table-column label="退款单号" prop="refundNo"></el-table-column>
         <el-table-column label="退款金额" prop="moneyRefund" width="100%"></el-table-column>
         <el-table-column label="状态" width="100%">
@@ -253,7 +253,7 @@
     </div>
     <div class="order-title">订单记录：</div>
     <div style="clear:both;margin-top:20px;">
-      <el-table :data="logs" fit highlight-current-row empty-text="暂无数据">
+      <el-table :data="logs"  fit highlight-current-row empty-text="暂无数据">
         <el-table-column label="操作时间" prop="dateAdd"></el-table-column>
         <el-table-column label="操作事件" prop="typeStr"></el-table-column>
       </el-table>     

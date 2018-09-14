@@ -21,7 +21,7 @@
       <el-button class="filter-item" style="margin-left: 10px;" @click="handleDownload" type="danger" icon="el-icon-download" size="medium" :loading="downloadLoading">导出Excel</el-button>
     </div>
     
-    <el-table :data="list" v-loading="listLoading" element-loading-text="Loading" border fit highlight-current-row empty-text="暂无数据" @selection-change="handleSelectionChange">
+    <el-table :data="list" v-loading="listLoading" element-loading-text="Loading" fit highlight-current-row empty-text="暂无数据" @selection-change="handleSelectionChange">
       <el-table-column label="用户信息">
         <template slot-scope="scope">
           {{scope.row.mobile?scope.row.mobile:'-'}}<br>

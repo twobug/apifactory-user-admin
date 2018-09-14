@@ -19,7 +19,7 @@
             </el-button>
         </div>
 
-        <el-table :data="jsonList" v-loading="listLoading" element-loading-text="Loading" border fit highlight-current-row empty-text="暂无数据" @selection-change="selectJsonChange">
+        <el-table :data="jsonList" v-loading="listLoading" element-loading-text="Loading" fit highlight-current-row empty-text="暂无数据" @selection-change="selectJsonChange">
             <el-table-column type="selection" align="center" width="55" row-key="id"></el-table-column>
             <el-table-column prop="uid" label="用户信息" width="150px">
                 <template slot-scope="scope">

@@ -20,7 +20,7 @@ export function successData(id) {
   })
 }
 
-export function saveData(data) {
+export function modifyUserAmount(data) {
   return request({
     url: '/user/apiExtUserPay/save',
     method: 'post',

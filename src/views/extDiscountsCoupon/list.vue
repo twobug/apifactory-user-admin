@@ -17,7 +17,7 @@
       <el-button class="filter-item" style="margin-left: 10px;" @click="handleCreate" type="success" icon="el-icon-edit">添加</el-button>
     </div>
     
-    <el-table :data="list" v-loading="listLoading" element-loading-text="Loading" border fit highlight-current-row empty-text="暂无数据" @selection-change="handleSelectionChange">
+    <el-table :data="list" v-loading="listLoading" element-loading-text="Loading" fit highlight-current-row empty-text="暂无数据" @selection-change="handleSelectionChange">
       <el-table-column label="编号/名称" width="100%">
         <template slot-scope="scope">
           {{scope.row.id}}<br>{{scope.row.name}}

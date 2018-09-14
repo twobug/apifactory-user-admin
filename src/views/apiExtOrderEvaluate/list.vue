@@ -18,7 +18,7 @@
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="fetchData">搜索</el-button>
     </div>
     
-    <el-table :data="list" v-loading="listLoading" element-loading-text="Loading" border fit highlight-current-row empty-text="暂无数据" @selection-change="handleSelectionChange">
+    <el-table :data="list" v-loading="listLoading" element-loading-text="Loading" fit highlight-current-row empty-text="暂无数据" @selection-change="handleSelectionChange">
       <el-table-column prop="orderId" label="订单ID"></el-table-column>
       <el-table-column label="商品图片" align="center">
         <template slot-scope="scope">

@@ -18,12 +18,12 @@
       </el-upload>
       
     </div>
-    <el-table :data="list" v-loading="listLoading" element-loading-text="Loading" :show-header="false" border fit highlight-current-row empty-text="暂无数据">
+    <el-table :data="list" v-loading="listLoading" element-loading-text="Loading" :show-header="false" fit highlight-current-row empty-text="暂无数据">
       <el-table-column prop="name" label="name"></el-table-column>
       <el-table-column prop="val" label="val"></el-table-column>
     </el-table>
     <h3>Accesstoken 信息</h3>
-    <el-table :data="listResult" v-loading="listLoading" element-loading-text="Loading" :show-header="false" border fit highlight-current-row empty-text="暂无数据">
+    <el-table :data="listResult" v-loading="listLoading" element-loading-text="Loading" :show-header="false" fit highlight-current-row empty-text="暂无数据">
       <el-table-column prop="name" label="name"></el-table-column>
       <el-table-column prop="val" label="val"></el-table-column>
     </el-table>

@@ -46,7 +46,7 @@
       </el-button>
     </div>
 
-    <el-table :data="list" v-loading="listLoading" element-loading-text="Loading" border fit highlight-current-row
+    <el-table :data="list" v-loading="listLoading" element-loading-text="Loading" fit highlight-current-row
               empty-text="暂无数据">
       <el-table-column prop="type" label="通道" width="140px;"></el-table-column>
       <el-table-column prop="mobile" label="手机号" width="150px;"></el-table-column>

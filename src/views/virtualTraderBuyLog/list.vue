@@ -15,7 +15,7 @@
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="fetchData">搜索</el-button>
     </div>
     
-    <el-table :data="list" v-loading="listLoading" element-loading-text="Loading" border fit highlight-current-row empty-text="暂无数据" @selection-change="handleSelectionChange">
+    <el-table :data="list" v-loading="listLoading" element-loading-text="Loading" fit highlight-current-row empty-text="暂无数据" @selection-change="handleSelectionChange">
       <el-table-column prop="vId" label="知识ID"></el-table-column>
       <el-table-column label="知识名称">
         <template slot-scope="scope">

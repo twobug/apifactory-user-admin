@@ -5,7 +5,7 @@
       <el-button class="filter-item" size="medium" @click="handleCreate()" type="success" icon="el-icon-edit">添加</el-button>
     </div>
     
-    <el-table :data="list" v-loading="listLoading" element-loading-text="Loading" border fit highlight-current-row empty-text="暂无数据" @selection-change="handleSelectionChange">
+    <el-table :data="list" v-loading="listLoading" element-loading-text="Loading" fit highlight-current-row empty-text="暂无数据" @selection-change="handleSelectionChange">
       <el-table-column prop="continuous" label="连续签到"></el-table-column>
       <el-table-column prop="score" label="赠送积分"></el-table-column>
       <el-table-column label="操作" width="100%">

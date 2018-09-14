@@ -8,7 +8,7 @@ export function fetchDataList(data) {
   })
 }
 
-export function saveData(data) {
+export function modifyUserScore(data) {
   return request({
     url: '/user/apiExtUserScoreLog/save',
     method: 'post',

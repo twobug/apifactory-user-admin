@@ -304,6 +304,12 @@ export const constantRouterMap = [
       meta: {title: '积分券管理', icon: 'score'}
     },
     {
+      name: '用户资产管理',
+      path: 'apiExtUserCash/list',
+      component: () => import('@/views/apiExtUserCash/list'),
+      meta: {title: '用户资产管理', icon: 'caiwu'}
+    },
+    {
       name: '用户积分记录',
       path: 'apiExtUserScoreLog/list',
       component: () => import('@/views/apiExtUserScoreLog/list'),

@@ -20,7 +20,7 @@
       </el-button>
     </div>
     
-    <el-table :data="list" v-loading="listLoading" element-loading-text="Loading" border fit highlight-current-row empty-text="暂无数据" @selection-change="handleSelectionChange">
+    <el-table :data="list" v-loading="listLoading" element-loading-text="Loading" fit highlight-current-row empty-text="暂无数据" @selection-change="handleSelectionChange">
       <el-table-column prop="type" label="类型"></el-table-column>
       <el-table-column label="标题" show-overflow-tooltip>
         <template slot-scope="scope">

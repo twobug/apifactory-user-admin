@@ -18,7 +18,7 @@
       <el-button class="filter-item" style="margin-left: 10px;" @click="handleCreate" type="success" icon="el-icon-edit">添加</el-button>
     </div>
     
-    <el-table :data="list" v-loading="listLoading" element-loading-text="Loading" border fit highlight-current-row empty-text="暂无数据" @selection-change="handleSelectionChange">
+    <el-table :data="list" v-loading="listLoading" element-loading-text="Loading" fit highlight-current-row empty-text="暂无数据" @selection-change="handleSelectionChange">
       <el-table-column type="selection" align="center" width="55" row-key="id"></el-table-column>
       <el-table-column prop="id" label="拼团ID"></el-table-column>
       <el-table-column prop="goodsId" label="商品ID"></el-table-column>

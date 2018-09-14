@@ -7,7 +7,7 @@
       <el-button class="filter-item" @click="handleCreate(2)" type="success">添加文件参数</el-button>
     </div>
     
-    <el-table :data="list" v-loading="listLoading" element-loading-text="Loading" border fit highlight-current-row empty-text="暂无数据" @selection-change="handleSelectionChange">
+    <el-table :data="list" v-loading="listLoading" element-loading-text="Loading" fit highlight-current-row empty-text="暂无数据" @selection-change="handleSelectionChange">
       <el-table-column prop="key" label="编号"></el-table-column>
       <el-table-column prop="value" label="参数值"></el-table-column>
       <el-table-column prop="remark" label="备注" show-overflow-tooltip></el-table-column>

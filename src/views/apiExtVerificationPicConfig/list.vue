@@ -5,7 +5,7 @@
 <div class="filter-container">
 <el-button class="filter-item" style="margin-bottom: 10px;" @click="handleCreate" type="success" icon="el-icon-edit">设置</el-button>
 </div>
-    <el-table :data="list" v-loading="listLoading" element-loading-text="Loading" :show-header="false" border fit highlight-current-row empty-text="暂无数据">
+    <el-table :data="list" v-loading="listLoading" element-loading-text="Loading" :show-header="false" fit highlight-current-row empty-text="暂无数据">
       <el-table-column prop="name" label="name"></el-table-column>
       <el-table-column prop="val" label="val"></el-table-column>
     </el-table>

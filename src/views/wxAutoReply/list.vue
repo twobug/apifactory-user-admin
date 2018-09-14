@@ -19,7 +19,7 @@
       <el-button class="filter-item" style="margin-left: 10px;" @click="handleCreate" type="success" icon="el-icon-edit">添加</el-button>
     </div>
     
-    <el-table :data="list" v-loading="listLoading" element-loading-text="Loading" border fit highlight-current-row empty-text="暂无数据" @selection-change="handleSelectionChange">
+    <el-table :data="list" v-loading="listLoading" element-loading-text="Loading" fit highlight-current-row empty-text="暂无数据" @selection-change="handleSelectionChange">
       <el-table-column prop="typeStr" label="类型"></el-table-column>
       <el-table-column prop="ask" label="关键词"></el-table-column>
       <el-table-column prop="reply" label="回复内容" show-overflow-tooltip></el-table-column>

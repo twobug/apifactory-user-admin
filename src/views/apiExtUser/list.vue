@@ -58,7 +58,7 @@
       <el-button class="filter-item but_gn" type="primary" icon="el-icon-plus" @click="importFromWX">从微信公众号导入用户</el-button>
     </div>
 
-    <el-table :data="list" v-loading="listLoading" element-loading-text="Loading" border fit highlight-current-row empty-text="暂无数据" @selection-change="handleSelectionChange">
+    <el-table :data="list" v-loading="listLoading" element-loading-text="Loading" fit highlight-current-row empty-text="暂无数据" @selection-change="handleSelectionChange">
       <el-table-column type="selection" align="center" width="55" row-key="id"></el-table-column>
       <el-table-column prop="id" label="用户编号" width="80px"></el-table-column>
       <el-table-column prop="sourceStr" label="注册来源" width="80px"></el-table-column>
