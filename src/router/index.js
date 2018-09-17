@@ -320,6 +320,18 @@ export const constantRouterMap = [
       path: 'apiExtUserPay/list',
       component: () => import('@/views/apiExtUserPay/list'),
       meta: {title: '支付记录', icon: 'paylog'}
+    },
+    {
+      name: '提现管理',
+      path: 'extUserWithdraw/list',
+      component: () => import('@/views/extUserWithdraw/list'),
+      meta: {title: '提现管理', icon: 'tixian'}
+    },
+    {
+      name: '支付宝收钱码',
+      path: 'alipayTransferQrcode/list',
+      component: () => import('@/views/alipayTransferQrcode/list'),
+      meta: {title: '支付宝收钱码', icon: 'alipaySR'}
     }]
   },
   {
