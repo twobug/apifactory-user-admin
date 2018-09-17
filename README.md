@@ -1,6 +1,6 @@
 ## 简介
 
-本项目是基于 `api工厂` 接口 和 `vue-element-admin` 开发的后台管理系统。 (perf[Sidebar]: adapt when no icon)
+本项目是基于 `api工厂` 接口 和 `vue-element-admin` 开发的后台管理系统。 (fixed: sidebar has no children bug)
 
 [api工厂](https://www.it120.cc/) 是一个 PAAS 提供商，
 您可以根据工厂提供的各种api接口，开发出您自己的 SAAS 应用，非常方便。

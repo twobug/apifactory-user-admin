@@ -332,6 +332,12 @@ export const constantRouterMap = [
       path: 'alipayTransferQrcode/list',
       component: () => import('@/views/alipayTransferQrcode/list'),
       meta: {title: '支付宝收钱码', icon: 'alipaySR'}
+    },
+    {
+      name: '支付宝转账记录',
+      path: 'alipayTransfer/list',
+      component: () => import('@/views/alipayTransfer/list'),
+      meta: {title: '支付宝转账记录', icon: 'alipaySR'}
     }]
   },
   {
