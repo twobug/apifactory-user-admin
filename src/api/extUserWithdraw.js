@@ -1,10 +1,14 @@
 import request from '@/utils/request'
 
-export function fetchDataList(data) {
+export function fetchDataList(page, pageSize, data) {
   return request({
     url: '/user/extUserWithdraw/list',
     method: 'post',
-    data: { ...data }
+    data: { 
+      page,
+      pageSize,
+      ...data 
+    }
   })
 }
 

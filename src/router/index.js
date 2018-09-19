@@ -280,6 +280,25 @@ export const constantRouterMap = [
     }]
   },
   {
+    name: '排队叫号',
+    path: '/user',
+    component: Layout,
+    redirect: '/user/queuingUpType/list',
+    meta: {title: '排队叫号', icon: 'paiduijiaohao'},
+    children: [{
+      name: '队列维护',
+      path: 'queuingUpType/list',
+      component: () => import('@/views/queuingUpType/list'),
+      meta: {title: '队列维护', icon: 'paiduijiaohao'}
+    },
+    {
+      name: '取号列表',
+      path: 'queuingUpLog/list',
+      component: () => import('@/views/queuingUpLog/list'),
+      meta: {title: '取号列表', icon: 'jiaohao'}
+    }]
+  },
+  {
     name: '财务管理',
     path: '/user',
     component: Layout,
