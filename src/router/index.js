@@ -52,18 +52,13 @@ export const constantRouterMap = [
 
   {
     name: '工厂设置',
-    path: '/user/centerUserResourceBundle',
+    path: '/user',
     component: Layout,
     redirect: '/user/centerUserResourceBundle/list',
     meta: {title: '工厂设置', icon: 'setting'},
-    children: [{
-        name: '我的资源包',
-        path: 'list',
-        component: () => import('@/views/centerUserResourceBundle/list'),
-        meta: {title: '我的资源包', icon: 'ziyuan'}
-      },
+    children: [
       // {
-      //   path: 'external-link',
+      //   path: 'external-link', 外部链接添加模板
       //   component: Layout,
       //   children: [
       //     {
@@ -73,8 +68,15 @@ export const constantRouterMap = [
       //   ]
       // },
       {
-        name: '我的资源包2',
-        path: 'list',
+        name: '模块管理',
+        path: 'centerUserApi/list',
+        component: () => import('@/views/centerUserApi/list'),
+        meta: {title: '模块管理', icon: 'mokuai'}
+      },
+      
+      {
+        name: '我的资源包',
+        path: 'centerUserResourceBundle/list',
         component: () => import('@/views/centerUserResourceBundle/list'),
         meta: {title: '我的资源包', icon: 'ziyuan'}
       }]
@@ -267,12 +269,12 @@ export const constantRouterMap = [
       meta: {title: '用户列表', icon: 'userList'}
     },
     {
-      name: '收获地址管理',
+      name: '收货地址',
       path: 'apiExtUserShippingAddress/list',
       component: () => import('@/views/apiExtUserShippingAddress/list'),
-      meta: {title: '收获地址管理', icon: 'address'}
+      meta: {title: '收货地址', icon: 'address'}
     },{
-      name: '收获地址管理',
+      name: '收货地址',
       path: 'apiExtUserShippingAddress/add',
       component: () => import('@/views/apiExtUserShippingAddress/add'),
       meta: {noKeepAlive: true},

@@ -3,7 +3,7 @@
     <el-form class="login-form" autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left">
       <h3 class="title">api工厂后台</h3>
       <el-form-item prop="username">
-        <span class="svg-container svg-container_login">
+        <span class="svg-container">
           <svg-icon icon-class="user" />
         </span>
         <el-input name="username" type="text" v-model="loginForm.username" autoComplete="on" placeholder="手机号码" />
@@ -17,7 +17,7 @@
           <span class="show-pwd" @click="showPwd"><svg-icon icon-class="eye" /></span>
       </el-form-item>
       <el-form-item prop="imgcode" style='position:relative;'>
-        <span class="svg-container svg-container_login">
+        <span class="svg-container">
           <svg-icon icon-class="picture" />
         </span>
         <el-input name="imgcode" type="text" @keyup.enter.native="handleLogin" autoComplete="on" placeholder="验证码" v-model="loginForm.imgcode" />
@@ -257,9 +257,6 @@ $light_gray:#eee;
     vertical-align: middle;
     width: 30px;
     display: inline-block;
-    &_login {
-      font-size: 20px;
-    }
   }
   .title {
     font-size: 26px;

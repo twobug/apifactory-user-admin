@@ -1,20 +1,37 @@
 <template>
   <div class="app-container">
-    
     <div class="filter-container">
-      <el-button class="filter-item" @click="handleCreate" type="success" icon="el-icon-edit">添加</el-button>
+      <el-button size="medium" class="filter-item" @click="handleCreate" type="success" icon="el-icon-plus">添加</el-button>
+      <el-button v-if="activeTabId > 0" size="medium" class="filter-item" @click="handleUpdate" type="danger" icon="el-icon-edit">编辑</el-button>
     </div>
-    
-    <el-table :data="list" v-loading="listLoading" element-loading-text="Loading" fit highlight-current-row empty-text="暂无数据" @selection-change="handleSelectionChange">
-      <el-table-column prop="name" label="名称"></el-table-column>
-      <el-table-column label="操作">
-        <template slot-scope="scope">
-          <el-button type="text" @click="showAllChilds(scope.row.id)" style="color:green">属性设置</el-button>
-          <el-button type="text" @click="handleUpdate(scope.row.id, scope.row.name, scope.row.paixu)">编辑</el-button>
-          <el-button type="text" @click="delData(scope.row.id)" style="color:red">删除</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
+
+    <el-tabs v-model="activeTabId" type="card" closable @tab-remove="removeTab" @tab-click="showAllChilds">
+      <el-tab-pane
+        v-for="item in list"
+        :key="item.id"
+        :label="item.name"
+        :name="item.id + ''"
+      >
+        <el-alert
+          v-if="item.remark"
+          :title="item.remark"
+          :closable="false"
+          type="info"/>
+        <el-table :data="childList" v-loading="listLoading" element-loading-text="Loading" fit highlight-current-row empty-text="暂未添加子属性">
+          <el-table-column prop="name" label="名称"></el-table-column>
+          <el-table-column prop="remark" label="备注"></el-table-column>
+          <el-table-column label="操作">
+            <template slot-scope="scope">
+              <el-button type="text" @click="handleUpdateChild(scope.row.id, scope.row.name, scope.row.remark, scope.row.paixu)">编辑</el-button>
+              <el-button type="text" @click="delDataChild(scope.row.id)" style="color:red">删除</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </el-tab-pane>
+    </el-tabs>
+    <div style="margin-top:10px;" v-if="activeTabId > 0">
+      <el-button size="small" class="filter-item" @click="handleCreateChild" type="success" icon="el-icon-plus">添加子属性</el-button>
+    </div>
 
     <el-dialog :title="pushData.dialogTitle" :visible.sync="pushData.dialogFormVisible" :close-on-click-modal="false" :close-on-press-escape="false">
       <el-form :rules="rules" ref="addEditPopForm" :model="pushData" label-position="left" label-width="100px">
@@ -83,12 +100,12 @@ export default {
   },
   data() {
     return {
+      activeTabId: undefined,
       curPopPropertyId:undefined,
 
       rules: {
-        goodsId: [
-          { required: true, message: '不能为空'},
-          { type:'integer', message: '必须为数字'}
+        name: [
+          { required: true, message: '不能为空'}
         ],
         numberSucccess: [
           { required: true, message: '不能为空'},
@@ -154,7 +171,6 @@ export default {
   },
   created() {
     this.pushDataTmp = Object.assign({}, this.pushData)
-    this.pushDataTmpList = Object.assign({}, this.pushDataList)
     this.pushDataTmpChild = Object.assign({}, this.pushDataChild)
     this.fetchData()
   },
@@ -162,23 +178,44 @@ export default {
     vm = this
   },
   methods: {
-    handleSizeChange(val) {
-      this.pageSize = val;
-      this.fetchData();
+    removeTab(id) {
+      const that = this
+      this.$confirm('确定要删除当前规格尺寸吗？子属性也将被全部删除，请谨慎操作！', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        delData(id).then(response => {
+          if (response.code === 0) {
+            this.$message({
+              message: '已删除',
+              type: 'success'
+            })
+            that.fetchData()
+          } else {
+            this.$message({
+              message: response.msg,
+              type: 'warning'
+            })
+          }
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消'
+        })
+      })
     },
-    handleCurrentChange(val) {
-      this.page = val
-      this.fetchData()
-    },
-    handleSelectionChange(val) {
-      this.multipleSelection = val
-    },
-    fetchData() {
+    fetchData(noChangeTag) {
       this.list = null
       this.listLoading = true
       fetchDataList(this.page, this.pageSize).then(response => {
         if (response.code == 0) {
           this.list = response.data
+          if (!noChangeTag) {
+            this.activeTabId = this.list[0].id + ''
+          }
+          this.showAllChilds()
         }
         this.listLoading = false
       })
@@ -195,22 +232,21 @@ export default {
       this.pushDataChild = Object.assign({}, this.pushDataTmpChild)
       this.pushDataChild.dialogTitle = '增加子属性'
       this.pushDataChild.dialogFormVisible = true
-      this.pushDataChild.propertyId = vm.curPopPropertyId
+      this.pushDataChild.propertyId = this.activeTabId
       this.$nextTick(() => {
         this.$refs['addEditPopFormChild'].clearValidate()
       })
     },
-    showAllChilds(pid){
-      vm.curPopPropertyId = pid
-      fetchDataChilds(pid).then(res => {
+    showAllChilds(){
+      fetchDataChilds(this.activeTabId).then(res => {
         this.childList = res.data
-        this.pushDataList = Object.assign({}, this.pushDataTmpList)
-        this.pushDataList.dialogTitle = '子属性设置'
-        this.pushDataList.dialogFormVisible = true
       })
     },
     handleUpdate(id, name, paixu){
-      this.pushData = Object.assign({}, this.pushDataTmp, {id:id, name:name, paixu:paixu})
+      let curParentPropertyBean = this.list.find(ele => {
+        return ele.id == this.activeTabId
+      })
+      this.pushData = Object.assign({}, this.pushDataTmp, {id:curParentPropertyBean.id, name:curParentPropertyBean.name, paixu:curParentPropertyBean.paixu})
       this.pushData.dialogTitle = '修改规格尺寸'
       this.pushData.dialogFormVisible = true
       this.$nextTick(() => {
@@ -235,11 +271,9 @@ export default {
               Message({
                 message: '操作成功',
                 type: 'success',
-                duration: 1 * 1000,
-                onClose: () => {
-                  this.fetchData()
-                }
+                duration: 1 * 1000
               })
+              this.fetchData(this.pushData.id)
             } else {
               Message({
                 message: res.msg,
@@ -262,11 +296,9 @@ export default {
               Message({
                 message: '操作成功',
                 type: 'success',
-                duration: 1 * 1000,
-                onClose: () => {
-                  this.showAllChilds(vm.curPopPropertyId)
-                }
+                duration: 1 * 1000
               })
+              this.showAllChilds(vm.curPopPropertyId)
             } else {
               Message({
                 message: res.msg,
@@ -280,30 +312,6 @@ export default {
         }
       })
     },
-    statistics(){
-      statistics().then(res => {
-        // 弹框点击确定调整支付宝付款
-        this.statisticsData = res.data
-      })
-    },
-    delData(id){
-      this.$confirm('删除无法恢复, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        delData(id).then(res => {
-          Message({
-            message: '删除成功',
-            type: 'success',
-            duration: 1 * 1000,
-            onClose: () => {
-              this.fetchData()
-            }
-          })
-        })
-      }).catch(() => {});
-    },
     delDataChild(id){
       this.$confirm('删除无法恢复, 是否继续?', '提示', {
         confirmButtonText: '确定',
@@ -314,33 +322,9 @@ export default {
           Message({
             message: '删除成功',
             type: 'success',
-            duration: 1 * 1000,
-            onClose: () => {
-              vm.showAllChilds(vm.curPopPropertyId)
-            }
+            duration: 1 * 1000
           })
-        })
-      }).catch(() => {});
-    },
-    delDataMore(){
-      if (!this.multipleSelection.length) {
-        Message({
-          message: '请先选择需要删除的数据',
-          type: 'error',
-          duration: 1 * 1000
-        })
-        return
-      }
-      this.$confirm('删除无法恢复, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-
-        this.multipleSelection.forEach(obj => {
-          delData(obj.id).then(res => {
-            this.fetchData()
-          })
+          vm.showAllChilds(vm.curPopPropertyId)
         })
       }).catch(() => {});
     }
