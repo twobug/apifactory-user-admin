@@ -32,7 +32,7 @@ import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
 import { logout } from '@/api/login'
 import { getInfo } from '@/api/login'
-import { removeToken } from '@/utils/auth'
+import { getToken, removeToken } from '@/utils/auth'
 import { Message } from 'element-ui'
 
 export default {
@@ -62,7 +62,7 @@ export default {
       this.$store.dispatch('ToggleSideBar')
     },
     logout() {
-      logout().then(() => {
+      logout(getToken()).then(() => {
         Message.error('已成功退出')
         removeToken()
         location.reload();

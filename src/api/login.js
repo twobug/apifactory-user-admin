@@ -90,9 +90,10 @@ export function getInfo(token) {
   })
 }
 
-export function logout() {
+export function logout(token) {
   return request({
     url: '/login/exit',
-    method: 'get'
+    method: 'get',
+    params: { token }
   })
 }

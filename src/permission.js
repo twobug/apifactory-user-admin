@@ -3,11 +3,14 @@ import { checkToken, logout } from '@/api/login'
 import NProgress from 'nprogress' // Progress 进度条
 import 'nprogress/nprogress.css'// Progress 进度条样式
 import { Message } from 'element-ui'
-import { getToken, removeToken } from '@/utils/auth' // 验权
+import { setToken, getToken, removeToken } from '@/utils/auth' // 验权
 
 const whiteList = ['/login', '/register', '/resetpwd'] // 不判断权限白名单
 router.beforeEach((to, from, next) => {
   NProgress.start()
+  if (to.query.token) {
+    setToken(to.query.token)
+  }  
   if (getToken()) {
     if (to.path === '/login') {
       next({ path: '/' })

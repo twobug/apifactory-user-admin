@@ -516,7 +516,28 @@ export const constantRouterMap = [
       }
     ]
   },
-
+  {
+    name: '预约报名',
+    path: '/user',
+    component: Layout,
+    redirect: '/user/yuyueInfo/list',
+    meta: {title: '预约报名', icon: 'yuyue'},
+    children: [
+      {
+        name: '项目设置',
+        path: 'yuyueInfo/list',
+        component: () => import('@/views/yuyueInfo/list'),
+        meta: {title: '项目设置', icon: 'yuyue'}
+      },
+      {
+        name: '添加预约报名项目',
+        path: 'yuyueInfo/add',
+        component: () => import('@/views/yuyueInfo/add'),
+        meta: {title: '添加预约报名项目', icon: 'yuyue', noKeepAlive: true},
+        hidden: true
+      },      
+      ]
+  },
   {
     name: '营销辅助',
     path: '/user',

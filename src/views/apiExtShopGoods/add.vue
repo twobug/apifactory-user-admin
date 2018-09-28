@@ -240,8 +240,8 @@
       <el-form-item label="规格与尺寸">
         <el-checkbox-group
           v-model="radioPropertyIds">
-          <el-checkbox v-for="(item,index) in propertyMap" :label="item.id" :key="item.id"
-                       @change="createPropertyPrice(index)">
+          <el-checkbox v-for="item in propertyList" :label="item.id" :key="item.id"
+                       @change="createPropertyPrice()">
             {{item.name}}
           </el-checkbox>
         </el-checkbox-group>
@@ -394,7 +394,7 @@
         properties: [],
         propertyChildMap: [],
         propertyChilds: [],
-        propertyMap: [],
+        propertyList: [],
         curPropertyNumber: 0,
         propertyPrice: [],
         subPriceArrayStack: [],
@@ -482,37 +482,44 @@
         })
       },
       //规格与尺寸选择事件
-      createPropertyPrice(index) {
-        this.detailsJsonStr = [];
-        this.curPropertyNumber = 0;
-        this.radioPropertyIds.forEach((key) => {
-          this.getPropertyChild(key, this.propertyMap[key] ? this.propertyMap[key].name : this.propertyMap[index].name);
-        });
+      createPropertyPrice() {
+        this.detailsJsonStr = []
+        this.propertyPrice = []
+        this.curPropertyNumber = 0
+        this.radioPropertyIds.forEach((propertyId) => {
+          let curProperty = this.propertyList.find(ele => {
+            return ele.id == propertyId
+          })
+          this.getPropertyChild(curProperty)
+        })
       },
       //获取某个规格尺寸的所有子属性
-      getPropertyChild(id, name) {
-        getPropertyChild(id).then(response => {
+      getPropertyChild(curProperty) {
+        getPropertyChild(curProperty.id).then(response => {
           if (response.code !== 0) {
+            this.curPropertyNumber++;
             Message({message: response.msg, type: 'error', duration: 3 * 1000})
+            return
           } else {
             let propertyPriceSingle = [];
             response.data.forEach((item) => {
               let propertyPriceMap = {};
-              propertyPriceMap.propertyId = id;
-              propertyPriceMap.propertyName = name;
+              propertyPriceMap.propertyId = curProperty.id;
+              propertyPriceMap.propertyName = curProperty.name;
               propertyPriceMap.propertyChildId = item.id;
               propertyPriceMap.propertyChildName = item.name;
               propertyPriceSingle.push(propertyPriceMap);
-            });
-
+            });            
             if (propertyPriceSingle.length > 0) {
               this.propertyPrice.push(propertyPriceSingle);
-            }
+            }    
+                    
             this.curPropertyNumber++;
             if (this.curPropertyNumber === this.radioPropertyIds.length) {
               this.createPropertyHTML(0);
             }
           }
+          // 
         })
       },
       //生成规格尺寸
@@ -581,10 +588,16 @@
       fetchData() {
         this.listLoading = true;
         this.pushData.id = this.$route.query.id ? this.$route.query.id : '';
-        if (this.pushData.id > 0) {
+        getProperty().then(res => {
+            if (res.code == 0) {
+              this.propertyList = res.data;
+            }
+          });
+        if (this.pushData.id > 0) {          
           info(this.pushData.id).then(res => {
             if (res.code !== 0) {
               Message({message: res.msg, type: 'error', duration: 3 * 1000})
+              return
             } else {
               this.pushData = Object.assign({}, this.pushDataTmp, res.data.info, {
                 recommendStatus: '' + res.data.info.recommendStatus,
@@ -609,7 +622,6 @@
               this.properties = res.data.properties;
               this.propertyChildMap = res.data.propertyChildMap;
               this.propertyChilds = res.data.propertyChilds;
-              this.propertyMap = res.data.propertyMap;
               this.priceExts = res.data.priceExts;
               if (this.propertyIds) {
                 this.propertyIds.split(',').forEach((a) => {
@@ -631,15 +643,6 @@
 
           }).then(() => {
             this.listLoading = false;
-          });
-        } else {
-
-          getProperty().then(res => {
-            if (res.code !== 0) {
-              Message({message: res.msg, type: 'error', duration: 3 * 1000})
-            } else {
-              this.propertyMap = res.data;
-            }
           });
         }
       },
