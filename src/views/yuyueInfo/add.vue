@@ -17,11 +17,7 @@
             <el-option label="仅限注册用户" :value='true'></el-option>
           </el-select>          
         </el-col>   
-        <el-col v-if="pushData.isMemberLimit" :span="4" style="margin-left:10px">
-          <el-input-number v-model="pushData.vipLevel" @keyup.enter.native="handleCreateSave"
-                         label="需要的会员级别" style="width: 100%" />
-        </el-col>
-        <el-col :span="10" class="orange">&nbsp;&nbsp;&nbsp;仅限此类用户可以进行预约或者报名</el-col>     
+        <el-col :span="10" class="orange">&nbsp;&nbsp;&nbsp;仅限注册用户可以进行预约或者报名</el-col>     
       </el-form-item>
       <el-form-item label="开始时间" prop="dateBeginStr" >
         <el-date-picker v-model="pushData.dateBeginStr" clearable type="datetime" placeholder="点击选择" value-format="yyyy-MM-dd HH:mm:ss">
@@ -105,9 +101,6 @@ export default {
         isMemberLimit: [
           { required: true, message: '不能为空'},
         ],
-        vipLevel: [
-          { required: true, message: '不能为空'}
-        ],
         numberMax: [
           { required: true, message: '不能为空'}
         ],
@@ -123,7 +116,6 @@ export default {
         id:undefined,
         paixu:0,
         isMemberLimit:false,
-        vipLevel:0,
         numberMax:0,
         amount:0,
         status:0,

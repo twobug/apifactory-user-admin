@@ -535,7 +535,13 @@ export const constantRouterMap = [
         component: () => import('@/views/yuyueInfo/add'),
         meta: {title: '添加预约报名项目', icon: 'yuyue', noKeepAlive: true},
         hidden: true
-      },      
+      },  
+      {
+        name: '预约记录',
+        path: 'yuyueJoin/list',
+        component: () => import('@/views/yuyueJoin/list'),
+        meta: {title: '预约记录', icon: 'yuyue'}
+      },    
       ]
   },
   {
