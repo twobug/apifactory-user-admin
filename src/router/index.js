@@ -73,7 +73,12 @@ export const constantRouterMap = [
         component: () => import('@/views/centerUserApi/list'),
         meta: {title: '模块管理', icon: 'mokuai'}
       },
-      
+      {
+        name: '推广赚钱',
+        path: 'spread/list',
+        component: () => import('@/views/spread'),
+        meta: {title: '推广赚钱', icon: 'tuiguang', noKeepAlive: true}
+      },      
       {
         name: '我的资源包',
         path: 'centerUserResourceBundle/list',

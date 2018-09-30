@@ -52,11 +52,10 @@ export default {
     }
   },
   created() {
-    this.pushDataTmp = Object.assign({}, this.pushData)
-    this.fetchData()
+    this.pushDataTmp = Object.assign({}, this.pushData)    
   },
-  mounted() {
-    
+  activated() {
+    this.fetchData()
   },
   methods: {
     handleSelectionChange(val) {
@@ -121,11 +120,9 @@ export default {
           Message({
             message: '删除成功',
             type: 'success',
-            duration: 1 * 1000,
-            onClose: () => {
-              this.fetchData()
-            }
+            duration: 1 * 1000
           })
+          this.fetchData()
         })
       }).catch(() => {});
     }

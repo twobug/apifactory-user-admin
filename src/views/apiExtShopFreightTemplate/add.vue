@@ -210,11 +210,9 @@ export default {
               Message({
                 message: '操作成功',
                 type: 'success',
-                duration: 1 * 1000,
-                onClose: () => {
-                  this.$router.push({ path: '/user/apiExtShopFreightTemplate/list' })
-                }
+                duration: 1 * 1000
               })
+              this.$router.push({ path: '/user/apiExtShopFreightTemplate/list' })
             } else {
               Message({
                 message: res.msg,
