@@ -19,9 +19,13 @@ Vue.use(ElementUI, { locale })
 
 Vue.config.productionTip = false
 
+// Vue.prototype.tinymceUploadUrls = [] 原型变量，不是全局变量
+window.tinymceUploadUrls = []
+
 new Vue({
   el: '#app',
   router,
   store,
   render: h => h(App)
 })
+

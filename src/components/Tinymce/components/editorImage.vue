@@ -62,6 +62,7 @@
             duration: 3 * 1000
           })
         } else {
+          tinymceUploadUrls.push(response.data.url)          
           const uid = file.uid;
           const objKeyArr = Object.keys(this.listObj);
           for (let i = 0, len = objKeyArr.length; i < len; i++) {

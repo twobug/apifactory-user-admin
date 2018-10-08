@@ -295,6 +295,7 @@
     info,
     saveData
   } from '@/api/apiExtShopGoodsAdd'
+  import { markData } from '@/api/apiExtDfs'
   import {Message} from 'element-ui'
   import {mapGetters} from 'vuex'
   import {getToken} from '@/utils/auth'
@@ -421,6 +422,7 @@
     },
     mounted() {
       this.pushDataTmp = Object.assign({}, this.pushData)
+      this.tinymceUploadUrls = []
     },
     methods: {
       //删除图片
@@ -693,11 +695,10 @@
                 Message({
                   message: '操作成功',
                   type: 'success',
-                  duration: 1000,
-                  onClose: () => {
-                    this.goBack();
-                  }
+                  duration: 1000
                 })
+                this.markFilesKey('goods_' + res.data.id, tinymceUploadUrls.toString())
+                this.goBack();
               } else {
                 Message({
                   message: res.msg,
@@ -729,6 +730,9 @@
           }
         })
         this.extJson = newextJson
+      },
+      markFilesKey(k, urls){
+        markData(k, urls)
       }
     }
   }

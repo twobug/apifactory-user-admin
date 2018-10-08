@@ -296,12 +296,19 @@
     <el-dialog title="填写发货信息" :visible.sync="dialogFAHUOVisible" :close-on-click-modal="false" :close-on-press-escape="false">
       <el-form :rules="rulesFAHUO" ref="fahuoPopForm" :model="fahuoPushData" label-position="left" label-width="100px">
         <el-form-item label="快递公司" prop="expressCompanyId" >
-          <el-select v-model="fahuoPushData.expressCompanyId" placeholder="请选择">
-            <el-option v-if="item.type==0" v-for="item in expressCompanies" v-bind:key="item.id" :label="item.name" :value="item.id"></el-option>
-          </el-select>
+          <el-col :span="7">
+            <el-select filterable v-model="fahuoPushData.expressCompanyId" placeholder="请选择" style="width:100%">
+              <el-option v-if="item.type==0" v-for="item in expressCompanies" v-bind:key="item.id" :label="item.name" :value="item.id"></el-option>
+            </el-select>
+          </el-col>
         </el-form-item>
         <el-form-item label="快递单号" prop="number" >
-          <el-input v-model.number="fahuoPushData.number" clearable @keyup.enter.native="fahuoSave"></el-input>
+          <el-col :span="7">
+            <el-input v-model.number="fahuoPushData.number" clearable @keyup.enter.native="fahuoSave"></el-input>
+          </el-col>
+          <el-col :span="16" :offset="1" style="color:orange;">
+            商家配送或无物流单号，请选择“其他快递公司”
+          </el-col>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">

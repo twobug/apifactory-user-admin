@@ -26,3 +26,11 @@ export function delData(id) {
     data: { id }
   })
 }
+
+export function markData(k, urls) {
+  return request({
+    url: '/user/apiExtDfs/mark',
+    method: 'post',
+    data: { k, urls }
+  })
+}

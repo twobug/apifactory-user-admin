@@ -84,6 +84,12 @@ export const constantRouterMap = [
         path: 'centerUserResourceBundle/list',
         component: () => import('@/views/centerUserResourceBundle/list'),
         meta: {title: '我的资源包', icon: 'ziyuan'}
+      },      
+      {
+        name: '绑定域名',
+        path: 'centerUserDomain/list',
+        component: () => import('@/views/centerUserDomain/list'),
+        meta: {title: '绑定域名', icon: 'domain'}
       }]
   },
   {

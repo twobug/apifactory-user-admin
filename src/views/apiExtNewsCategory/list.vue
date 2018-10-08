@@ -92,6 +92,9 @@
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
         </el-form-item>
+        <el-form-item label="排序" prop="paixu">
+          <el-input v-model.number="pushData.paixu" clearable @keyup.enter.native="handleCreateSave"></el-input>
+        </el-form-item>
         <el-form-item label="状态" prop="isUse" >
           <el-select v-model="pushData.isUse" placeholder="请选择">
             <el-option label="启用" value="true"></el-option>
@@ -134,7 +137,10 @@ export default {
         ],
         isUse: [
           { required: true, message: '不能为空'}
-        ]
+        ],
+        paixu: [
+          { required: true, message: '不能为空'}
+        ],
       },
 
       pushData: {
@@ -148,6 +154,7 @@ export default {
         key:undefined,
         icon:undefined,
         isUse:undefined,
+        paixu:0
       },
 
       multipleSelection: [],
