@@ -90,6 +90,11 @@ export const constantRouterMap = [
         path: 'centerUserDomain/list',
         component: () => import('@/views/centerUserDomain/list'),
         meta: {title: '绑定域名', icon: 'domain'}
+      },{
+        name: '我的客户',
+        path: 'centerUser/list',
+        component: () => import('@/views/centerUser/list'),
+        meta: {title: '我的客户', icon: 'userList'}
       }]
   },
   {
