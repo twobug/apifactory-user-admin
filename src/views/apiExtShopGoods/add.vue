@@ -103,17 +103,11 @@
         </el-col>
       </el-form-item>
       <el-form-item label="商品图片" prop="photos">
-        <el-col :span="3" class="orange">
-          <el-upload class="upload-demo" :action="uploadUrl"
-                     list-type="picture"
-                     :data="upLoadData" :headers="fileHeaders" :on-success="uploadSuccess"
-                     :file-list="fileList"
-                     accept="image/jpeg,.jpg,image/gif,.gif,image/png,.png,image/bmp,.bmp,.jpeg,.JPG,.JPEG,.PBG,.GIF,.BMP,.JPEG"
-                     :before-upload="beforeImgUpload">
-            <el-button size="small" type="primary">[选择本地文件]</el-button>
-          </el-upload>
-        </el-col>
-        <el-col :span="19" class="orange">第一张图片默认为商品封面图片，可拖动排序</el-col>
+        <el-alert
+          title="第一张图片默认为商品封面图片，可拖动排序"
+          type="warning">
+        </el-alert>
+        <editorImage class="editor-upload-btn" @successCBK="imageSuccessCBK"></editorImage>
         <ul class="el-upload-list el-upload-list--picture-card">
           <draggable :list="pushData.photos">
             <li v-for="(item, index) in pushData.photos" :key="index" tabindex="0"
@@ -301,6 +295,7 @@
   import {getToken} from '@/utils/auth'
   import draggable from 'vuedraggable'
   import Tinymce from '@/components/Tinymce'
+  import editorImage from '@/components/Tinymce/components/editorImage' // 第一步
 
   export default {
     computed: {
@@ -310,9 +305,6 @@
     },
     data() {
       return {
-        uploadUrl:process.env.BASE_API + '/fileUpload',
-
-
         categoryData: [],
         shopData: [{label: '不选择店铺', value: 0}],
         logisticsIdData: [{label: '不使用物流', value: 0}],
@@ -407,7 +399,8 @@
     },
     components: {
       draggable,
-      Tinymce
+      Tinymce,
+      editorImage
     },
     created() {
       this.getShopData();
@@ -648,29 +641,6 @@
           });
         }
       },
-      //赋值
-      setLatLng(val) {
-        this.pushData.latitude = val.lat;
-        this.pushData.longitude = val.lng;
-      },
-      //赋值图片参数
-      beforeImgUpload(file) {
-        this.upLoadData.upfile = file;
-      },
-      //上传图片成功
-      uploadSuccess(res) {
-        if (res.code !== 0) {
-          Message({
-            message: res.msg,
-            type: 'error',
-            duration: 3 * 1000
-          })
-        } else {
-          this.pushData.photos.push({id: res.data.name, name: `店铺图片${res.data.type}`, pic: res.data.url});
-          this.fileList = [];
-          this.handleCreate();
-        }
-      },
       //表单验证
       handleCreate() {
         this.$nextTick(() => {
@@ -732,7 +702,17 @@
         this.extJson = newextJson
       },
       markFilesKey(k, urls){
+        if (!k || !urls || urls.length == 0) {
+          return
+        }
         markData(k, urls)
+      },
+      imageSuccessCBK(arr) {
+        if (arr && arr.length > 0) {
+          arr.forEach(p => {
+            this.pushData.photos.push({pic: p.url});
+          })          
+        }      
       }
     }
   }

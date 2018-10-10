@@ -47,8 +47,7 @@
     </el-pagination>
 
     <el-dialog :title="pushData.dialogTitle" :visible.sync="pushData.dialogFormVisible" :close-on-click-modal="false" :close-on-press-escape="false">
-      <el-form :rules="rules" ref="addEditPopForm" :model="pushData" label-position="left" label-width="100px">
-        
+      <el-form :rules="rules" ref="addEditPopForm" :model="pushData" label-position="left" label-width="100px">        
         <el-form-item label="自定义类型" prop="type" >
           <el-input v-model="pushData.type" clearable @keyup.enter.native="handleCreateSave"></el-input>
         </el-form-item>
@@ -59,17 +58,8 @@
           <el-input v-model="pushData.title" clearable @keyup.enter.native="handleCreateSave"></el-input>
         </el-form-item>
         <el-form-item label="上传图片" >
-          <el-upload
-            class="avatar-uploader"
-            :action="uploadUrl"
-            name="upfile"
-            :headers="uploadUrlHeaders"
-            :show-file-list="false"
-            :on-success="handleAvatarSuccess"
-            :before-upload="beforeAvatarUpload">
-            <img v-if="imageUrl" :src="imageUrl" class="avatar">
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-          </el-upload>
+          <img v-if="pushData.picUrl" :src="pushData.picUrl" class="avatar">
+          <editorImage class="editor-upload-btn" @successCBK="imageSuccessCBK"></editorImage>
         </el-form-item>
         <el-form-item label="链接地址" prop="linkUrl" >
           <el-input v-model="pushData.linkUrl" clearable @keyup.enter.native="handleCreateSave"></el-input>
@@ -102,7 +92,10 @@ import { Message, MessageBox } from 'element-ui'
 import { mapGetters } from 'vuex'
 import { getToken } from '@/utils/auth'
 
+import editorImage from '@/components/Tinymce/components/editorImage' // 第一步
+
 export default {
+  components: { editorImage }, // 第二步; 上面引用 editorImage 是第三步; 下面增加 imageSuccessCBK 方法是第四步, pushData.picUrl 要给默认值 undefined
   computed: {
     ...mapGetters([
       'centerUserBase'
@@ -113,12 +106,6 @@ export default {
       page:1,
       pageSize:10,
       totalRow:0,
-
-      imageUrl:undefined,
-      uploadUrl:process.env.BASE_API + '/fileUpload',
-      uploadUrlHeaders:{
-        "X-Token":getToken()
-      },
 
       rules: {
         type: [
@@ -148,6 +135,8 @@ export default {
         dialogFormVisible:false,
 
         id:undefined,
+        picUrl:undefined,
+        status:'0',
         paixu:0,
       },
 
@@ -164,23 +153,7 @@ export default {
   mounted() {
     
   },
-  methods: {
-    handleAvatarSuccess(res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw);
-      this.pushData.picUrl = res.data.url;
-    },
-    beforeAvatarUpload(file) {
-      const isJPG = (file.type.indexOf('image/') != -1);
-      const isLt1M = file.size / 1024 / 1024 < 1;
-
-      if (!isJPG) {
-        this.$message.error('只能是图片格式!');
-      }
-      if (!isLt1M) {
-        this.$message.error('图片大小不能超过 1MB!');
-      }
-      return isJPG && isLt1M;
-    },
+  methods: {    
     handleSizeChange(val) {
       this.pageSize = val;
       this.fetchData();
@@ -204,7 +177,6 @@ export default {
       })
     },
     handleCreate(){
-      this.imageUrl = undefined
       this.pushData = Object.assign({}, this.pushDataTmp)
       this.pushData.dialogTitle = '添加Banner'
       this.pushData.dialogFormVisible = true
@@ -221,8 +193,7 @@ export default {
             duration: 3 * 1000
           })
         } else {
-          this.pushData = Object.assign({}, this.pushDataTmp, res.data, {status:'' + res.data.status})
-          this.imageUrl = res.data.picUrl
+          this.pushData = Object.assign({}, this.pushDataTmp, res.data, {status:'' + res.data.status})          
           this.pushData.dialogTitle = '修改Banner'
           this.pushData.dialogFormVisible = true
           this.$nextTick(() => {
@@ -241,12 +212,9 @@ export default {
             if (res.code == 0) {
               Message({
                 message: '操作成功',
-                type: 'success',
-                duration: 1 * 1000,
-                onClose: () => {
-                  this.fetchData()
-                }
+                type: 'success'
               })
+              this.fetchData()
             } else {
               Message({
                 message: res.msg,
@@ -276,13 +244,16 @@ export default {
           Message({
             message: '删除成功',
             type: 'success',
-            duration: 1 * 1000,
-            onClose: () => {
-              this.fetchData()
-            }
+            duration: 1 * 1000
           })
+          this.fetchData()
         })
       }).catch(() => {});
+    },
+    imageSuccessCBK(arr) {
+      if (arr && arr.length > 0) {
+        this.pushData.picUrl = arr[0].url
+      }      
     }
   }
 }

@@ -1,7 +1,8 @@
 <template>
   <div class="upload-container">
-    <el-button icon='el-icon-upload' size="mini" :style="{background:color,borderColor:color}"
-               @click=" dialogVisible=true" type="primary">上传图片
+    <el-button icon='el-icon-picture' size="mini" @click="showServerPics" type="warning" :loading="dialogVisibleSelectLoading">插入图库图片
+    </el-button>
+    <el-button icon='el-icon-upload' size="mini" @click="dialogVisible=true" type="warning">上传本地图片
     </el-button>
     <el-dialog append-to-body :visible.sync="dialogVisible">
       <el-upload class="editor-slide-upload" :data="upLoadData" :headers="fileHeaders"
@@ -15,28 +16,47 @@
       <el-button @click="dialogVisible = false">取 消</el-button>
       <el-button type="primary" @click="handleSubmit">确 定</el-button>
     </el-dialog>
+
+    <el-dialog append-to-body :visible.sync="dialogVisibleSelect">
+      <el-row :gutter="20">
+        <el-checkbox-group v-model="serverPicsSelectIds">
+          <el-col :span="6" v-for="item in serverPics" :key="item.id" align="center" style="margin-bottom:15px;">
+            
+            <img :src="item.urlFull" style="width:100%;" />
+            <el-checkbox :label="item.urlFull">使用 ({{item.sizeStr}})</el-checkbox>
+            
+          </el-col>
+        </el-checkbox-group>
+      </el-row>
+      <el-button @click="dialogVisibleSelect = false">取 消</el-button>
+      <el-button type="primary" @click="handleSubmitSelect">插 入</el-button>
+    </el-dialog>
   </div>
 </template>
 
 <script>
   import {getToken} from '@/utils/auth'
+  import { fetchDataList } from '@/api/apiExtDfs'
 
   export default {
     name: 'editorSlideUpload',
-    props: {
-      color: {
-        type: String,
-        default: '#1890ff'
-      }
-    },
     data() {
       return {
+        page:1,
+        pageSize:10,
+        totalRow:0,
+
         uploadUrl:process.env.BASE_API + '/fileUpload',
         dialogVisible: false,
+        dialogVisibleSelect: false,
+        dialogVisibleSelectLoading: false,
         listObj: {},
         fileLists: [],
         upLoadData: {upfile: null},
-        fileHeaders: {'X-Token': getToken()}
+        fileHeaders: {'X-Token': getToken()},
+
+        serverPics:[],
+        serverPicsSelectIds:[]
       }
     },
     methods: {
@@ -53,6 +73,18 @@
         this.listObj = {};
         this.fileLists = [];
         this.dialogVisible = false
+      },
+      handleSubmitSelect() {
+        const selectPics = []
+        if (!this.serverPicsSelectIds) {
+          this.dialogVisibleSelect = false
+          return
+        }
+        this.serverPicsSelectIds.forEach(url => {
+          selectPics.push({url:url})
+        });
+        this.$emit('successCBK', selectPics);
+        this.dialogVisibleSelect = false
       },
       handleSuccess(response, file) {
         if (response.code !== 0) {
@@ -72,7 +104,6 @@
               return
             }
           }
-          console.log(this.listObj)
         }
       },
       handleRemove(file) {
@@ -90,6 +121,17 @@
         const fileName = file.uid;
         this.upLoadData.upfile = file;
         _self.listObj[fileName] = {hasSuccess: false, uid: file.uid}
+      },
+      showServerPics(){        
+        this.dialogVisibleSelectLoading = true
+        fetchDataList(this.page, this.pageSize, {fileType:0}).then(response => {
+          if (response.code == 0) {
+            this.serverPics = response.data.result
+            this.totalRow = response.data.totalRow
+            this.dialogVisibleSelect = true
+          }
+          this.dialogVisibleSelectLoading = false
+        })
       }
     }
   }
