@@ -32,6 +32,11 @@
             <el-input v-model="pushData.confine" :min="1" clearable @keyup.enter.native="handleCreateSave" style="width: 97%;"></el-input>
           </el-col>
         </el-form-item>
+        <el-form-item label="">
+          <div style="color:red;">
+            达到多少条件赠送，这是一个数字类型，消费满/充值满多少金额，如果是注册、好评等，直接填0即可
+          </div>
+        </el-form-item>
         <el-form-item label="赠送积分" prop="score">
           <el-col :span="6">
             <el-input v-model="pushData.score" :min="1" clearable @keyup.enter.native="handleCreateSave" style="width: 97%;"></el-input>
@@ -65,7 +70,7 @@ export default {
         code: [
           { required: true, message: '不能为空'},
         ],
-        continuous: [
+        confine: [
           { required: true, message: '不能为空'},
         ],
         score: [
@@ -80,7 +85,7 @@ export default {
         dialogFormVisible:false,
 
         id:undefined,
-        continuous:1,
+        confine:0,
         score:1,
       },
 
@@ -113,7 +118,7 @@ export default {
     },
     handleCreate(){
       this.pushData = Object.assign({}, this.pushDataTmp)
-      this.pushData.dialogTitle = '添加签到积分规则'
+      this.pushData.dialogTitle = '添加积分赠送规则'
       this.pushData.dialogFormVisible = true
       this.$nextTick(() => {
         this.$refs['addEditPopForm'].clearValidate()
@@ -129,7 +134,7 @@ export default {
           })
         } else {
           this.pushData = Object.assign({}, this.pushDataTmp, res.data, {dateType:'' + res.data.dateType, isPub:'' + res.data.isPub, content:res.data.value})
-          this.pushData.dialogTitle = '修改签到积分规则'
+          this.pushData.dialogTitle = '修改积分赠送规则'
           this.pushData.dialogFormVisible = true
           this.$nextTick(() => {
             this.$refs['addEditPopForm'].clearValidate()

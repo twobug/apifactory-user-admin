@@ -1,6 +1,6 @@
 ## 简介
 
-本项目是基于 `api工厂` 接口 和 `vue-element-admin` 开发的后台管理系统。 (feature: add pathToRegexp to compile path)
+本项目是基于 `api工厂` 接口 和 `vue-element-admin` 开发的后台管理系统。 (fix[ExternalLink]: fixed bug when url include chinese)
 
 [api工厂](https://www.it120.cc/) 是一个 PAAS 提供商，
 您可以根据工厂提供的各种api接口，开发出您自己的 SAAS 应用，非常方便。
