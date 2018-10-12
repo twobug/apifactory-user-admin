@@ -166,49 +166,6 @@ export default {
         this.listLoading = false
       })
     },
-    handleCreate(){
-      this.pushData = Object.assign({}, this.pushDataTmp)
-      this.pushData.dialogTitle = '增加评价'
-      this.pushData.dialogFormVisible = true
-      this.$nextTick(() => {
-        this.$refs['addEditPopForm'].clearValidate()
-      })
-    },
-    handleUpdate(id, goodReputation, goodReputationRemark){
-      this.pushData = Object.assign({}, this.pushDataTmp, {id:id, goodReputation:'' + goodReputation, goodReputationRemark:goodReputationRemark})
-      this.pushData.dialogTitle = '修改评价'
-      this.pushData.dialogFormVisible = true
-      this.$nextTick(() => {
-        this.$refs['addEditPopForm'].clearValidate()
-      })
-    },
-    handleCreateSave(){
-      this.$refs['addEditPopForm'].validate((valid) => {
-        if (valid) {
-          saveData(this.pushData).then((res) => {
-            this.pushData.dialogFormVisible = false
-            if (res.code == 0) {
-              Message({
-                message: '操作成功',
-                type: 'success',
-                duration: 1 * 1000,
-                onClose: () => {
-                  this.fetchData()
-                }
-              })
-            } else {
-              Message({
-                message: res.msg,
-                type: 'error',
-                duration: 3 * 1000
-              })
-            }
-          }).catch(e=>{
-            console.error(e);
-          })
-        }
-      })
-    },
     invalidData(id){
       this.$confirm('作废后，该笔转账记录将无法再被领取，请谨慎操作！', '提示', {
         confirmButtonText: '确定',

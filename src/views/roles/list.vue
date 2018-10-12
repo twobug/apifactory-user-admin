@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import { fetchDataList, delData } from '@/api/roles'
+import { fetchAllRoles, delData } from '@/api/roles'
 import { Message, MessageBox } from 'element-ui'
 
 export default {
@@ -48,7 +48,7 @@ export default {
     fetchData() {
       this.list = null
       this.listLoading = true
-      fetchDataList().then(response => {
+      fetchAllRoles().then(response => {
         if (response.code == 0) {
           this.list = response.data
         } else {

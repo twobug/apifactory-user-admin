@@ -6,25 +6,27 @@
     </div>
     
     <el-table :data="list" v-loading="listLoading" element-loading-text="Loading" fit highlight-current-row empty-text="暂无数据" @selection-change="handleSelectionChange">
-      <el-table-column prop="id" label="编号" width="100" align="center"></el-table-column>
-      <el-table-column prop="name" label="名称"></el-table-column>
-      <el-table-column prop="method" label="请求方式" width="100" align="center"></el-table-column>
-      <el-table-column label="接口地址">
+      <el-table-column label="用户名">
         <template slot-scope="scope">
-          <font class="red">转发地址: https://api.it120.cc/{{domain}}/api/transmit/{{scope.row.id}}</font>
-          <br>
-          <font class="green">实际地址: {{scope.row.url}}</font>
+          {{scope.row.username}}
+          <el-tag v-if="scope.row.isSuperAdmin" type="danger">超级管理员</el-tag>       
         </template>
       </el-table-column>
+      <el-table-column prop="realname" label="姓名"></el-table-column>
+      <el-table-column prop="dateLogin" label="最后登录时间"></el-table-column>
+      <el-table-column prop="ipLogin" label="登录IP"></el-table-column>
       <el-table-column label="状态" width="100" align="center">
         <template slot-scope="scope">
-          <el-tag type="success" v-if="scope.row.status == 0">启用</el-tag>
-          <el-tag type="danger" v-if="scope.row.status == 1">禁用</el-tag>
+          <el-tag type="success" v-if="!scope.row.isLock">正常</el-tag>
+          <el-tag type="danger" v-if="scope.row.isLock">禁用</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="100" align="center">
+      <el-table-column label="操作" width="220" align="center">
         <template slot-scope="scope">
           <el-button type="text" @click="handleUpdate(scope.row.id)">编辑</el-button>
+          <el-button type="text" @click="resetPwd(scope.row.id)" style="color:orange">重置密码</el-button>
+          <el-button type="text" v-if="scope.row.isLock" @click="unstopData(scope.row.id)" style="color:green">启用</el-button>
+          <el-button type="text" v-if="!scope.row.isLock" @click="stopData(scope.row.id)" style="color:red">禁用</el-button>
           <el-button type="text" @click="delData(scope.row.id)" style="color:red">删除</el-button>
         </template>
       </el-table-column>
@@ -32,26 +34,21 @@
 
     <el-dialog :title="pushData.dialogTitle" :visible.sync="pushData.dialogFormVisible" :close-on-click-modal="false" :close-on-press-escape="false">
       <el-form :rules="rules" ref="addEditPopForm" :model="pushData" label-position="left" label-width="100px">
-        <el-form-item label="名称" prop="name">
-          <el-input v-model="pushData.name" clearable @keyup.enter.native="handleCreateSave"></el-input>
+        <el-form-item label="用户名" prop="username">
+          <el-input v-model="pushData.username" clearable @keyup.enter.native="handleCreateSave"></el-input>
         </el-form-item>
-        <el-form-item label="接口地址" prop="url">
-          <el-input v-model="pushData.url" clearable @keyup.enter.native="handleCreateSave"></el-input>
+        <el-form-item v-if="!pushData.id" label="密码" prop="pwd">
+          <el-input v-model="pushData.pwd" clearable @keyup.enter.native="handleCreateSave"></el-input>
         </el-form-item>
-        <el-form-item label="请求方式" prop="method">
-          <el-select v-model="pushData.method" placeholder="请选择">
-            <el-option label="POST" value="POST"></el-option>
-            <el-option label="GET" value="GET"></el-option>
-          </el-select>
+        <el-form-item label="姓名" prop="realname">
+          <el-input v-model="pushData.realname" clearable @keyup.enter.native="handleCreateSave"></el-input>
         </el-form-item>
-        <el-form-item label="状态" prop="status" >
-          <el-select v-model="pushData.status" placeholder="请选择">
-            <el-option label="启用" value="0"></el-option>
-            <el-option label="禁用" value="1"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="排序" prop="paixu">
-          <el-input v-model="pushData.paixu" clearable @keyup.enter.native="handleCreateSave"></el-input>
+        <el-form-item label="角色">
+          <el-checkbox-group v-model="roleIds" style="padding-top:10px;">
+            <el-col v-for="item in roles" :key="item.id" :span="6" style="line-height:20px">
+              <el-checkbox :label="item.id">{{ item.name }}</el-checkbox>
+            </el-col>
+          </el-checkbox-group>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -64,7 +61,8 @@
 </template>
 
 <script>
-import { fetchDataList, infoData, delData, saveData } from '@/api/apiExtApiTransmit'
+import { fetchDataList, infoData, delData, saveData, stopData, unstopData, resetPwd } from '@/api/admin'
+import { fetchAllRoles } from '@/api/roles'
 import { Message, MessageBox } from 'element-ui'
 import { mapGetters } from 'vuex'
 import { getToken } from '@/utils/auth'
@@ -78,19 +76,13 @@ export default {
   data() {
     return {
       rules: {
-        name: [
+        username: [
           { required: true, message: '不能为空'},
         ],
-        url: [
+        pwd: [
           { required: true, message: '不能为空'},
         ],
-        method: [
-          { required: true, message: '不能为空'},
-        ],
-        status: [
-          { required: true, message: '不能为空'},
-        ],
-        paixu: [
+        realname: [
           { required: true, message: '不能为空'},
         ],
       },
@@ -109,6 +101,8 @@ export default {
 
       multipleSelection: [],
       list: null,
+      roleIds:[],
+      roles:[],
       listLoading: true,
       domain:undefined
     }
@@ -118,7 +112,11 @@ export default {
     this.fetchData()
   },
   mounted() {
-    
+    fetchAllRoles().then(response => {
+      if (response.code == 0) {
+        this.roles = response.data
+      }
+    })
   },
   methods: {
     handleSelectionChange(val) {
@@ -137,7 +135,7 @@ export default {
     },
     handleCreate(){
       this.pushData = Object.assign({}, this.pushDataTmp)
-      this.pushData.dialogTitle = '添加接口转发'
+      this.pushData.dialogTitle = '添加管理员'
       this.pushData.dialogFormVisible = true
       this.$nextTick(() => {
         this.$refs['addEditPopForm'].clearValidate()
@@ -152,8 +150,13 @@ export default {
             duration: 3 * 1000
           })
         } else {
-          this.pushData = Object.assign({}, this.pushDataTmp, res.data, {dateType:'' + res.data.dateType, isPub:'' + res.data.isPub, content:res.data.value})
-          this.pushData.dialogTitle = '修改接口转发'
+          this.pushData = Object.assign({}, this.pushDataTmp, res.data.info, {dateType:'' + res.data.dateType, isPub:'' + res.data.isPub, content:res.data.value})
+          if (res.data.myRoles) {
+            res.data.myRoles.forEach(ele => {
+              this.roleIds.push(ele.rid)
+            })
+          }
+          this.pushData.dialogTitle = '修改管理员'
           this.pushData.dialogFormVisible = true
           this.$nextTick(() => {
             this.$refs['addEditPopForm'].clearValidate()
@@ -166,6 +169,7 @@ export default {
     handleCreateSave(){
       this.$refs['addEditPopForm'].validate((valid) => {
         if (valid) {
+          this.pushData.roleIds = this.roleIds.toString()
           saveData(this.pushData).then((res) => {
             if (res.code == 0) {
               this.pushData.dialogFormVisible = false
@@ -203,6 +207,65 @@ export default {
           this.fetchData()
         })
       }).catch(() => {});
+    },
+    stopData(id){
+      this.$confirm('确定要禁用吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        stopData(id).then(res => {
+          Message({
+            message: '禁用成功',
+            type: 'success',
+            duration: 1 * 1000
+          })
+          this.fetchData()
+        })
+      }).catch(() => {});
+    },
+    unstopData(id){
+      this.$confirm('确定要启用吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        unstopData(id).then(res => {
+          Message({
+            message: '启用成功',
+            type: 'success',
+            duration: 1 * 1000
+          })
+          this.fetchData()
+        })
+      }).catch(() => {});
+    },
+    resetPwd(id) {
+      this.$prompt('请输入新密码', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消'
+      }).then(({
+        value
+      }) => {
+        resetPwd(id, value).then(response => {
+          if(response.code === 0) {
+            this.$message({
+              type: 'success',
+              message: '重置成功'
+            })
+          } else {
+            this.$message({
+              type: 'error',
+              message: response.msg
+            })
+          }
+        })
+      }).catch(() => {
+        // this.$message({
+        //   type: 'info',
+        //   message: '取消输入'
+        // })
+      })
     }
   }
 }

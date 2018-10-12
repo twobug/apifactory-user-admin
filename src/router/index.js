@@ -124,34 +124,10 @@ export const constantRouterMap = [
         hidden: true
       },
       {
-        name: '推广赚钱',
-        path: 'spread/list',
-        component: () => import('@/views/spread'),
-        meta: {title: '推广赚钱', icon: 'tuiguang', noKeepAlive: true}
-      },      
-      {
-        name: '我的资源包',
-        path: 'centerUserResourceBundle/list',
-        component: () => import('@/views/centerUserResourceBundle/list'),
-        meta: {title: '我的资源包', icon: 'ziyuan'}
-      },      
-      {
-        name: '绑定域名',
-        path: 'centerUserDomain/list',
-        component: () => import('@/views/centerUserDomain/list'),
-        meta: {title: '绑定域名', icon: 'domain'}
-      },
-      {
-        name: '我的客户',
-        path: 'centerUser/list',
-        component: () => import('@/views/centerUser/list'),
-        meta: {title: '我的客户', icon: 'userList'}
-      },
-      {
-        name: '数据克隆',
-        path: 'copyData/list',
-        component: () => import('@/views/copyData/list'),
-        meta: {title: '数据克隆', icon: 'kelong'}
+        name: '管理员列表',
+        path: 'admin/list',
+        component: () => import('@/views/admin/list'),
+        meta: {title: '管理员列表', icon: 'userList'}
       }]
   },
   {

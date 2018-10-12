@@ -1,14 +1,9 @@
 import request from '@/utils/request'
 
-export function fetchDataList(page, pageSize, data) {
+export function fetchAllRoles() {
   return request({
     url: '/user/roles/list',
-    method: 'post',
-    data: {
-      page,
-      pageSize,
-      ...data
-    }
+    method: 'post'
   })
 }
 
