@@ -212,6 +212,7 @@
           <el-date-picker
             v-model="pushData.dateStartStr"
             type="datetime"
+            value-format="yyyy-MM-dd HH:mm:ss"
             placeholder="选择起售时间">
           </el-date-picker>
         </el-col>
@@ -224,6 +225,7 @@
           <el-date-picker
             v-model="pushData.dateEndStr"
             type="datetime"
+            value-format="yyyy-MM-dd HH:mm:ss"
             placeholder="选择停售时间">
           </el-date-picker>
         </el-col>
@@ -370,7 +372,7 @@
           content: undefined,
           detailsJsonStr: [],
           deleteOldPics:'true',
-          dateStartStr: new Date(),
+          dateStartStr: undefined,
           dateEndStr: undefined,
           dateAddStr: undefined,
         },
@@ -603,10 +605,9 @@
                 dateStart: res.data.info.dateStart,
                 dateAdd: res.data.info.dateAdd,
                 dateUpdate: res.data.info.dateUpdate,
-                dateAddStr: res.data.info.dateAddStr,
-                dateEndStr: res.data.info.dateEndStr,
+                dateStartStr: res.data.info.dateStart,
+                dateEndStr: res.data.info.dateEnd,
                 photos: res.data.pics,
-                dateStartStr: new Date(),
                 content: res.data.content.content
               });
               this.extJson = Object.assign({}, res.data.extJson)

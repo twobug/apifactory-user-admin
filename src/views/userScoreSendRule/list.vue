@@ -25,14 +25,18 @@
             <el-option label="消费送" value="CONSUME"></el-option>
             <el-option label="充值送" value="RECHARGE"></el-option>
             <el-option label="好评送" value="goodReputation"></el-option>
+            <el-option label="邀请用户" value="invite"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="赠送条件" prop="confine">
+        <el-form-item v-if="pushData.code == 'invite'" style="color:red;">
+          邀请其他用户注册，被邀请用户注册成功后获得赠送
+        </el-form-item>
+        <el-form-item v-if="pushData.code != 'invite' && pushData.code != 'REG' && pushData.code != 'goodReputation'" label="赠送条件" prop="confine">
           <el-col :span="6">
             <el-input v-model="pushData.confine" :min="1" clearable @keyup.enter.native="handleCreateSave" style="width: 97%;"></el-input>
           </el-col>
         </el-form-item>
-        <el-form-item label="">
+        <el-form-item v-if="pushData.code != 'invite' && pushData.code != 'REG' && pushData.code != 'goodReputation'">
           <div style="color:red;">
             达到多少条件赠送，这是一个数字类型，消费满/充值满多少金额，如果是注册、好评等，直接填0即可
           </div>

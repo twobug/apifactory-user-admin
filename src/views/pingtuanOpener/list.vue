@@ -32,12 +32,12 @@
       <el-table-column prop="goodsId" label="商品ID"></el-table-column>
       <el-table-column label="手机号码">
         <template slot-scope="scope">
-         {{userMap[scope.row.uid].mobile}}
+         {{scope.row.mobile ? scope.row.mobile : '-'}}
         </template>
       </el-table-column>
       <el-table-column label="昵称">
         <template slot-scope="scope">
-         {{userMap[scope.row.uid].nick}}
+         {{scope.row.nick ? scope.row.nick : '-'}}
         </template>
       </el-table-column>
       <el-table-column prop="helpNumber" label="参与人数"></el-table-column>
@@ -179,9 +179,15 @@ export default {
       this.listLoading = true
       fetchDataList(this.page, this.pageSize, this.searchData).then(response => {
         if (response.code == 0) {
-          this.userMap = response.data.userMap
           this.list = response.data.result
           this.totalRow = response.data.totalRow
+          this.list.forEach(ele => {
+            let userMap = response.data.userMap[ele.uid]
+            if (userMap) {
+              ele.mobile = userMap.mobile
+              ele.nick = userMap.nick
+            }
+          });
         }
         this.listLoading = false
       })

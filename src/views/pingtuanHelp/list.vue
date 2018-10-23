@@ -31,22 +31,22 @@
       <el-table-column prop="goodsId" label="商品ID"></el-table-column>
       <el-table-column label="团长手机号码">
         <template slot-scope="scope">
-         {{userMapJoin[scope.row.uid].mobile}}
+         {{scope.row.mobileJoin ? scope.row.mobileJoin : '-'}}
         </template>
       </el-table-column>
       <el-table-column label="团长昵称">
         <template slot-scope="scope">
-         {{userMapJoin[scope.row.uid].nick}}
+         {{scope.row.nickJoin ? scope.row.nickJoin : '-'}}
         </template>
       </el-table-column>
       <el-table-column label="用户手机号码">
         <template slot-scope="scope">
-         {{userMapHelp[scope.row.uidHelp].mobile}}
+         {{scope.row.mobileHelp ? scope.row.mobileHelp : '-'}}
         </template>
       </el-table-column>
       <el-table-column label="用户昵称">
         <template slot-scope="scope">
-         {{userMapHelp[scope.row.uidHelp].nick}}
+         {{scope.row.nickHelp ? scope.row.nickHelp : '-'}}
         </template>
       </el-table-column>
       <el-table-column prop="dateAdd" label="购买时间"></el-table-column>
@@ -176,10 +176,20 @@ export default {
       this.listLoading = true
       fetchDataList(this.page, this.pageSize, this.searchData).then(response => {
         if (response.code == 0) {
-          this.userMapJoin = response.data.userMapJoin
-          this.userMapHelp = response.data.userMapHelp
           this.list = response.data.result
           this.totalRow = response.data.totalRow
+          this.list.forEach(ele => {
+            let _userMapJoin = response.data.userMapJoin[ele.uidJoiner]
+            if (_userMapJoin) {
+              ele.mobileJoin = _userMapJoin.mobile
+              ele.nickJoin = _userMapJoin.nick
+            }
+            let _userMapHelp = response.data.userMapHelp[ele.uidHelp]
+            if (_userMapHelp) {
+              ele.mobileHelp = _userMapHelp.mobile
+              ele.nickHelp = _userMapHelp.nick
+            }
+          });
         }
         this.listLoading = false
       })

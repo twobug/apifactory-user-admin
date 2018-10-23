@@ -43,6 +43,14 @@
         <el-form-item label="姓名" prop="realname">
           <el-input v-model="pushData.realname" clearable @keyup.enter.native="handleCreateSave"></el-input>
         </el-form-item>
+        <el-form-item label="超级管理员" prop="realname">
+          <el-switch
+						v-model="pushData.isSuperAdmin"
+						active-color="#13ce66"
+						inactive-color="#ff4949"
+						active-text="开启">
+					</el-switch>
+        </el-form-item>
         <el-form-item label="角色">
           <el-checkbox-group v-model="roleIds" style="padding-top:10px;">
             <el-col v-for="item in roles" :key="item.id" :span="6" style="line-height:20px">
