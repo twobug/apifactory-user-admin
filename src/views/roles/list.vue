@@ -35,11 +35,10 @@ export default {
     }
   },
   created() {
-    this.pushDataTmp = Object.assign({}, this.pushData)
-    this.fetchData()
+    this.pushDataTmp = Object.assign({}, this.pushData)    
   },
-  mounted() {
-    
+  activated() {
+    this.fetchData()
   },
   methods: {
     handleSelectionChange(val) {

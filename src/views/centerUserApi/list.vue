@@ -29,7 +29,7 @@
             剩余次数:{{item.myApi.leftNumber == -1 ? '不限' : item.myApi.leftNumber}}
           </div>
           <div v-else class="text item">
-            免费次数:{{item.leftNumber == -1 ? '不限' : item.leftNumber}}
+            免费次数:{{item.freeNumber == -1 ? '不限' : item.freeNumber}}
           </div>
           <div class="text item">
             接口文档:<a target="_blank" :href="'https://www.it120.cc/apis/' + item.id">https://www.it120.cc/apis/{{item.id}}</a>

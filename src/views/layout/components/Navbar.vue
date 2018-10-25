@@ -4,7 +4,8 @@
     <breadcrumb />
     <el-dropdown class="avatar-container" trigger="click">
       <div class="avatar-wrapper">
-        <span style="display:block;">{{centerUserBase.realName}} ( {{centerUserBase.mobile}} )</span>
+        <span v-if="centerUserBase.adminCenterUser" style="display:block;">{{centerUserBase.adminCenterUser.realname}} ( {{centerUserBase.adminCenterUser.username}} )</span>
+        <span v-if="!centerUserBase.adminCenterUser" style="display:block;">{{centerUserBase.realName}} ( {{centerUserBase.mobile}} )</span>
         <i class="el-icon-caret-bottom"></i>
       </div>
       <el-dropdown-menu slot="dropdown" class="user-dropdown">
@@ -31,7 +32,6 @@ import { mapGetters } from 'vuex'
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
 import { logout } from '@/api/login'
-import { getInfo } from '@/api/login'
 import { getToken, removeToken } from '@/utils/auth'
 import { Message } from 'element-ui'
 
@@ -51,11 +51,6 @@ export default {
     return {
 
     }
-  },
-  mounted() {
-    getInfo().then(res => {
-      this.$store.commit('SET_CENTER_USER_BASE',res.data)
-    });
   },
   methods: {
     toggleSideBar() {

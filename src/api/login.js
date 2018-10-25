@@ -14,6 +14,19 @@ export function login_mobile(mobile, pwd, rememberMe, imgcode, k) {
   })
 }
 
+export function login_username(userName, pwd, rememberMe, pdomain) {
+  return request({
+    url: '/login/userName',
+    method: 'post',
+    data: {
+      userName,
+      pwd,
+      rememberMe,
+      pdomain
+    }
+  })
+}
+
 export function smscode_register(mobile, code, k) {
   return request({
     url: '/register/smscode',
@@ -95,5 +108,12 @@ export function logout(token) {
     url: '/login/exit',
     method: 'get',
     params: { token }
+  })
+}
+
+export function myActions() {
+  return request({
+    url: '/user/myActions',
+    method: 'get'
   })
 }

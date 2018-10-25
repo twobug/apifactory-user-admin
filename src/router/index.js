@@ -18,10 +18,13 @@ Vue.use(Router)
  * meta : {
     title: 'title'               the name show in submenu and breadcrumb (recommend set)
     icon: 'svg-name'             the icon show in the sidebar,
+    noKeepAlive: true/false      true为不缓存，否则默认缓存
+    isSuperAdmin:true/false      true为仅限主账号（手机号、邮箱）登录授权；子账户不显示该菜单
   }
  **/
 export const constantRouterMap = [
   {path: '/login', component: () => import('@/views/login/index'), hidden: true},
+  {path: '/login/username', component: () => import('@/views/login/login_username'), hidden: true},
   {path: '/register', component: () => import('@/views/login/register'), hidden: true},
   {path: '/resetpwd', component: () => import('@/views/login/resetpwd'), hidden: true},
   {path: '/404', component: () => import('@/views/404'), hidden: true},
@@ -54,7 +57,7 @@ export const constantRouterMap = [
     path: '/user',
     component: Layout,
     redirect: '/user/centerUserResourceBundle/list',
-    meta: {title: '工厂设置', icon: 'setting'},
+    meta: {title: '工厂设置', icon: 'setting', isSuperAdmin: true},
     children: [
       // {
       //   path: 'external-link', 外部链接添加模板
@@ -70,37 +73,37 @@ export const constantRouterMap = [
         name: '模块管理',
         path: 'centerUserApi/list',
         component: () => import('@/views/centerUserApi/list'),
-        meta: {title: '模块管理', icon: 'mokuai'}
+        meta: {title: '模块管理', icon: 'mokuai', isSuperAdmin: true}
       },
       {
         name: '推广赚钱',
         path: 'spread/list',
         component: () => import('@/views/spread'),
-        meta: {title: '推广赚钱', icon: 'tuiguang', noKeepAlive: true}
+        meta: {title: '推广赚钱', icon: 'tuiguang', noKeepAlive: true, isSuperAdmin: true}
       },      
       {
         name: '我的资源包',
         path: 'centerUserResourceBundle/list',
         component: () => import('@/views/centerUserResourceBundle/list'),
-        meta: {title: '我的资源包', icon: 'ziyuan'}
+        meta: {title: '我的资源包', icon: 'ziyuan', isSuperAdmin: true}
       },      
       {
         name: '绑定域名',
         path: 'centerUserDomain/list',
         component: () => import('@/views/centerUserDomain/list'),
-        meta: {title: '绑定域名', icon: 'domain'}
+        meta: {title: '绑定域名', icon: 'domain', isSuperAdmin: true}
       },
       {
         name: '我的客户',
         path: 'centerUser/list',
         component: () => import('@/views/centerUser/list'),
-        meta: {title: '我的客户', icon: 'userList'}
+        meta: {title: '我的客户', icon: 'userList', isSuperAdmin: true}
       },
       {
         name: '数据克隆',
         path: 'copyData/list',
         component: () => import('@/views/copyData/list'),
-        meta: {title: '数据克隆', icon: 'kelong'}
+        meta: {title: '数据克隆', icon: 'kelong', isSuperAdmin: true}
       }]
   },
   {
@@ -140,7 +143,7 @@ export const constantRouterMap = [
       name: '系统参数',
       path: 'apiExtConfig/list',
       component: () => import('@/views/apiExtConfig/list'),
-      meta: {title: '系统参数', icon: 'setting'}
+      meta: {title: '系统参数', icon: 'setting', apiIds: [5]}
     },
     {
       name: '友情链接',
@@ -246,7 +249,7 @@ export const constantRouterMap = [
         name: '公告管理',
         path: 'apiExtNotice/list',
         component: () => import('@/views/apiExtNotice/list'),
-        meta: {title: '公告管理', icon: 'gonggao'}
+        meta: {title: '公告管理', icon: 'gonggao', apiIds: [6]}
       },
       {
         name: '添加公告',
