@@ -141,8 +141,6 @@ export default {
           let kvList = [];
           if (vm.pushData.jsonObj) {
             Object.keys(vm.pushData.jsonObj).forEach(k => {
-              console.log(k);
-              console.log(vm.pushData.jsonObj[k]);
               let aaaa = '{"k":"'+ k +'", "v":"'+ vm.pushData.jsonObj[k] +'"}'
               kvList.push(JSON.parse(aaaa))
             })
@@ -183,7 +181,6 @@ export default {
           pushDataDetailsJsonStr = Object.assign({}, pushDataDetailsJsonStr, JSON.parse(aaaa))
         }        
       })
-      console.log(pushDataDetailsJsonStr)      
       this.pushData.detailsJsonStr = JSON.stringify(pushDataDetailsJsonStr)
       this.$refs['addEditPopForm'].validate((valid) => {
         if (valid) {

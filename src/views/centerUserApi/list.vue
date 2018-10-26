@@ -1,6 +1,9 @@
 <template>
-  <div class="app-container" v-loading="listLoading" element-loading-text="Loading">    
-    <el-row :gutter="16">
+  <div class="app-container" v-loading="listLoading" element-loading-text="Loading">  
+    <el-button type="primary" @click="installAll">启用所有模块</el-button>  
+    <el-button type="danger" @click="uninstallAll">禁用所有模块</el-button>  
+    <el-button type="success" @click="installShopMods">一键配置商城模块</el-button>  
+    <el-row :gutter="16" style="margin-top:10px;">
       <el-col :span="6" v-for="item in list" :key="item.id" style="margin-bottom:15px;">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
@@ -157,6 +160,63 @@ export default {
           })
         }
       })
+    },
+    installAll(){
+      this.$confirm('确定要安装所有模块吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.list.forEach(ele => {
+          installApi(ele.id)
+        })
+        Message({
+          message: '安装成功',
+          type: 'success',
+          duration: 1000,
+          onClose: () => {
+            this.myInstallApiList()
+          }
+        })
+      }).catch(() => {});
+    },
+    uninstallAll(){
+      this.$confirm('确定要卸载所有模块吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.list.forEach(ele => {
+          uninstallApi(ele.id)
+        })
+        Message({
+          message: '卸载成功',
+          type: 'success',
+          duration: 1000,
+          onClose: () => {
+            this.myInstallApiList()
+          }
+        })
+      }).catch(() => {});
+    },
+    installShopMods(){
+      this.$confirm('确定要一键配置商城模块吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        [5, 6, 18, 17, 28, 30, 36, 37, 41, 50, 70, 88, 94, 69, 106, 101, 34, 116, 122, 113, 68, 21].forEach(id => {
+          installApi(id)
+        })
+        Message({
+          message: '配置成功',
+          type: 'success',
+          duration: 1000,
+          onClose: () => {
+            this.myInstallApiList()
+          }
+        })
+      }).catch(() => {});
     },
     openBuyList(apiId){
       apiBuyList(apiId).then(res => {

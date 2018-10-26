@@ -1,18 +1,28 @@
 <template>
   <div class="login-container">
-    <el-form class="login-form" autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left">
-      <h3 class="title">api工厂后台</h3>
+    <el-form class="login-form" autocomplete="off" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left">
+      <h3 class="title">登录工厂后台</h3>
+      <div style="margin-bottom:10px;">
+        <el-radio v-model="loginType" :label="1">手机号登录</el-radio>
+        <el-radio v-model="loginType" :label="2">子账号登录</el-radio>
+      </div>
+      <el-form-item v-if="loginType == 2" prop="merchantId">
+        <span class="svg-container">
+          <svg-icon icon-class="userList" />
+        </span>
+        <el-input name="merchantId" type="text" v-model="loginForm.merchantId" autocomplete="off" clearable placeholder="商户号" />
+      </el-form-item>
       <el-form-item prop="username">
         <span class="svg-container">
           <svg-icon icon-class="user" />
         </span>
-        <el-input name="username" type="text" v-model="loginForm.username" autoComplete="on" placeholder="手机号码" />
+        <el-input name="username" type="text" v-model="loginForm.username" autocomplete="off" clearable :placeholder="loginType == 1 ? '手机号码' : '用户名'" />
       </el-form-item>
       <el-form-item prop="password">
         <span class="svg-container">
           <svg-icon icon-class="password"></svg-icon>
         </span>
-        <el-input name="password" :type="pwdType" v-model="loginForm.password" autoComplete="on"
+        <el-input name="password" :type="pwdType" v-model="loginForm.password" autocomplete="off" clearable
           placeholder="登录密码"></el-input>
           <span class="show-pwd" @click="showPwd"><svg-icon icon-class="eye" /></span>
       </el-form-item>
@@ -20,7 +30,7 @@
         <span class="svg-container">
           <svg-icon icon-class="picture" />
         </span>
-        <el-input name="imgcode" type="text" @keyup.enter.native="handleLogin" autoComplete="on" placeholder="验证码" v-model="loginForm.imgcode" />
+        <el-input name="imgcode" type="text" @keyup.enter.native="handleLogin" autocomplete="off" placeholder="验证码" v-model="loginForm.imgcode" />
         <img class='random' style='position:absolute;right:10px; top:5px;width:80px;height:40px' @click='changeRandom' />
       </el-form-item>
       <el-form-item>
@@ -29,15 +39,12 @@
         </el-button>
       </el-form-item>
       <div class="tips">
-        <span style="margin-right:20px;">
+        <div style="width:50%;float:left;">
           <router-link to="/register">开通新后台</router-link>
-        </span>
-        <span style="margin-right:20px;">
+        </div>
+        <div style="color:orange;width:50%;float:right;text-align:right;">
           <router-link to="/resetpwd">忘记密码?</router-link>
-        </span>
-        <span style="color:orange">
-         测试账号 11100000224/123456
-        </span>
+        </div>
       </div>
     </el-form>
   </div>
@@ -45,7 +52,7 @@
 
 <script>
 
-import { login_mobile, logout, getInfo } from '@/api/login'
+import { login_mobile, login_operator, logout, getInfo } from '@/api/login'
 import { Message, MessageBox } from 'element-ui'
 import { setToken } from '@/utils/auth'
 
@@ -67,13 +74,16 @@ export default {
     }
 
     return {
+      loginType:1,
       loginForm: {
-        username: '',
-        password: '',
-        picKey:'',
-        imgcode:''
+        merchantId: undefined,
+        username: undefined,
+        password: undefined,
+        picKey:undefined,
+        imgcode:undefined
       },
       loginRules: {
+        merchantId: [{ required: true, trigger: 'blur', message:'不能为空' }],
         username: [{ required: true, trigger: 'blur', message:'不能为空' }],
         password: [{ required: true, trigger: 'blur', message:'不能为空' }],
         imgcode: [{ required: true, trigger: 'blur', validator:validateImgCode, message:'不能为空' }],
@@ -106,7 +116,14 @@ export default {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
-          login_mobile(this.loginForm.username, this.loginForm.password, '', this.loginForm.imgcode, this.loginForm.picKey).then((res) => {
+          let apiM
+          if (this.loginType == 1) {
+            apiM = login_mobile(this.loginForm.username, this.loginForm.password, '', this.loginForm.imgcode, this.loginForm.picKey)
+          }
+          if (this.loginType == 2) {
+            apiM = login_operator(this.loginForm.merchantId, this.loginForm.username, this.loginForm.password, '', this.loginForm.imgcode, this.loginForm.picKey)
+          }
+          apiM.then((res) => {
             this.loading = false
             if (res.code == 300) {
               this.changeRandom()
@@ -138,7 +155,7 @@ export default {
             if (res.code == 404) {
               this.changeRandom()
               Message({
-                message: '手机号码或密码错误',
+                message: '账号或密码错误',
                 type: 'error',
                 duration: 3 * 1000
               })

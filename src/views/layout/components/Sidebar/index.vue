@@ -20,9 +20,6 @@ import SidebarItem from './SidebarItem'
 import { getInfo, myActions } from '@/api/login'
 import { myInstallApiList } from '@/api/centerUserApi'
 
-let isSubAdmin = true // 是否为子账户
-let myActionsUrls = ['/', '/user', '/dashboard'] // 我的权限列表
-let myApiIds = [] // 安装的模块编号
 export default {
   components: { SidebarItem },
   computed: {
@@ -40,7 +37,7 @@ export default {
   },
   mounted() {
     let _this = this
-    Promise.all([getInfo(), myInstallApiList(1, 10000), myActions()]).then(function(resArray) {
+    Promise.all([getInfo(), myInstallApiList(1, 10000, {isUse: true}), myActions()]).then(function(resArray) {
       if (!resArray[0].data.adminCenterUser) {
         isSubAdmin = false
       }
@@ -69,9 +66,9 @@ export default {
         if (!r.meta) {
           return true
         }        
-        if (!isSubAdmin) {
-          return true
-        }
+        // if (!isSubAdmin) {
+        //   return true
+        // }
         if (r.meta.isSuperAdmin && isSubAdmin) {
           return false
         }

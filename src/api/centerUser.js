@@ -43,3 +43,10 @@ export function getPayData(userId) {
     data: { userId }
   })
 }
+
+export function statisticsData() {
+  return request({
+    url: '/user/statistics',
+    method: 'get'
+  })
+}

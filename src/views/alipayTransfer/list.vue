@@ -146,7 +146,6 @@ export default {
     fetchData() {
       this.list = null
       this.listLoading = true
-      console.log(this.searchData);
       
       fetchDataList(this.page, this.pageSize, this.searchData).then(response => {
         if (response.code == 0) {

@@ -111,7 +111,7 @@ export const constantRouterMap = [
     path: '/user',
     component: Layout,
     redirect: '/user/centerUserResourceBundle/list',
-    meta: {title: '管理员/权限', icon: 'qx'},
+    meta: {title: '管理员/权限', icon: 'qx', apiIds: [113]},
     children: [
       {
         name: '角色管理',
@@ -149,25 +149,25 @@ export const constantRouterMap = [
       name: '友情链接',
       path: 'apiExtFriendlyPartner/list',
       component: () => import('@/views/apiExtFriendlyPartner/list'),
-      meta: {title: '友情链接', icon: 'yqlj'}
+      meta: {title: '友情链接', icon: 'yqlj', apiIds: [60]}
     },
     {
       name: '签到积分规则',
       path: 'apiExtUserScoreSignRule/list',
       component: () => import('@/views/apiExtUserScoreSignRule/list'),
-      meta: {title: '签到积分规则', icon: 'scoreSignRule'}
+      meta: {title: '签到积分规则', icon: 'scoreSignRule', apiIds: [88]}
     },
     {
       name: '积分赠送规则',
       path: 'userScoreSendRule/list',
       component: () => import('@/views/userScoreSendRule/list'),
-      meta: {title: '积分赠送规则', icon: 'scoreSignRule'}
+      meta: {title: '积分赠送规则', icon: 'scoreSignRule', apiIds: [88]}
     },
     {
       name: '图片验证码设置',
       path: 'apiExtVerificationPicConfig/list',
       component: () => import('@/views/apiExtVerificationPicConfig/list'),
-      meta: {title: '图片验证码设置', icon: 'yzm'}
+      meta: {title: '图片验证码设置', icon: 'yzm', apiIds: [21]}
     },
     {
       name: '上传文件管理',
@@ -179,25 +179,25 @@ export const constantRouterMap = [
       name: '三方小程序支付',
       path: 'centerUserSetSaobei/list',
       component: () => import('@/views/centerUserSetSaobei/list'),
-      meta: {title: '三方小程序支付', icon: 'saobei'}
+      meta: {title: '三方小程序支付', icon: 'saobei', apiIds: [30]}
     },
     {
       name: 'Banner管理',
       path: 'apiExtBanner/list',
       component: () => import('@/views/apiExtBanner/list'),
-      meta: {title: 'Banner管理', icon: 'banner'}
+      meta: {title: 'Banner管理', icon: 'banner', apiIds: [28]}
     },
     {
       name: 'Json接口数据',
       path: 'apiExtJson/list',
       component: () => import('@/views/apiExtJson/list'),
-      meta: {title: 'Json数据管理', icon: 'json'}
+      meta: {title: 'Json数据管理', icon: 'json', apiIds: [56]}
     },
     {
       name: '接口转发',
       path: 'apiExtApiTransmit/list',
       component: () => import('@/views/apiExtApiTransmit/list'),
-      meta: {title: '接口转发', icon: 'zhuanfa'}
+      meta: {title: '接口转发', icon: 'zhuanfa', apiIds: [33]}
     }]
   },
   {
@@ -205,19 +205,19 @@ export const constantRouterMap = [
     path: '/user',
     component: Layout,
     redirect: '/user/apiExtNewsCategory/list',
-    meta: {title: 'CMS模块', icon: 'cms'},
+    meta: {title: 'CMS模块', icon: 'cms', apiIds: [9]},
     children: [
       {
         name: '分类管理',
         path: 'apiExtNewsCategory/list',
         component: () => import('@/views/apiExtNewsCategory/list'),
-        meta: {title: '分类管理', icon: 'category'}
+        meta: {title: '分类管理', icon: 'category', apiIds: [9]}
       },
       {
         name: '文章管理',
         path: 'apiExtNews/list',
         component: () => import('@/views/apiExtNews/list'),
-        meta: {title: '文章管理', icon: 'articles'}
+        meta: {title: '文章管理', icon: 'articles', apiIds: [9]}
       },
       {
         name: '添加文章',
@@ -230,13 +230,13 @@ export const constantRouterMap = [
         name: '留言管理',
         path: 'apiExtComment/list',
         component: () => import('@/views/apiExtComment/list'),
-        meta: {title: '留言管理', icon: 'liuyan'}
+        meta: {title: '留言管理', icon: 'liuyan', apiIds: [15]}
       },
       {
         name: '单页管理',
         path: 'apiExtPage/list',
         component: () => import('@/views/apiExtPage/list'),
-        meta: {title: '单页管理', icon: 'page'}
+        meta: {title: '单页管理', icon: 'page', apiIds: [132]}
       },
       {
         name: '添加单页',
@@ -270,37 +270,37 @@ export const constantRouterMap = [
       name: '微信设置',
       path: 'centerUserWxKey/list',
       component: () => import('@/views/centerUserWxKey/list'),
-      meta: {title: '微信设置', icon: 'setting'}
+      meta: {title: '微信设置', icon: 'setting', apiIds: [18, 69]}
     },
     {
       name: '自动回复',
       path: 'wxAutoReply/list',
       component: () => import('@/views/wxAutoReply/list'),
-      meta: {title: '自动回复', icon: 'dxsz'}
+      meta: {title: '自动回复', icon: 'dxsz', apiIds: [76]}
     },
     {
       name: '公众号菜单',
       path: 'wxMenu/list',
       component: () => import('@/views/wxMenu/list'),
-      meta: {title: '公众号菜单', icon: 'table'}
+      meta: {title: '公众号菜单', icon: 'table', apiIds: [76, 77]}
     },
     {
       name: '客服设置',
       path: 'kefuMember/set',
       component: () => import('@/views/kefuMember/centerUserSetKefu'),
-      meta: {title: '客服设置', icon: 'setting'}
+      meta: {title: '客服设置', icon: 'setting', apiIds: [165]}
     },
     {
       name: '客服人员管理',
       path: 'kefuMember/list',
       component: () => import('@/views/kefuMember/list'),
-      meta: {title: '客服人员管理', icon: 'userList'}
+      meta: {title: '客服人员管理', icon: 'userList', apiIds: [165]}
     },
     {
       name: '销售记录',
       path: 'kefuBuyLog/list',
       component: () => import('@/views/kefuMember/kefuBuyLog'),
-      meta: {title: '销售记录', icon: 'xstb'}
+      meta: {title: '销售记录', icon: 'xstb', isSuperAdmin: true, apiIds: [165]}
     }]
   },
   {
@@ -313,18 +313,18 @@ export const constantRouterMap = [
       name: '会员等级',
       path: 'apiExtUserLevel/list',
       component: () => import('@/views/apiExtUser/apiExtUserLevel'),
-      meta: {title: '会员等级', icon: 'userlevel'}
+      meta: {title: '会员等级', icon: 'userlevel', apiIds: [18, 25]}
     },{
       name: '用户列表',
       path: 'apiExtUser/list',
       component: () => import('@/views/apiExtUser/list'),
-      meta: {title: '用户列表', icon: 'userList'}
+      meta: {title: '用户列表', icon: 'userList', apiIds: [18, 25]}
     },
     {
       name: '收货地址',
       path: 'apiExtUserShippingAddress/list',
       component: () => import('@/views/apiExtUserShippingAddress/list'),
-      meta: {title: '收货地址', icon: 'address'}
+      meta: {title: '收货地址', icon: 'address', apiIds: [50]}
     },{
       name: '收货地址',
       path: 'apiExtUserShippingAddress/add',
@@ -338,7 +338,7 @@ export const constantRouterMap = [
     path: '/user',
     component: Layout,
     redirect: '/user/queuingUpType/list',
-    meta: {title: '排队叫号', icon: 'paiduijiaohao'},
+    meta: {title: '排队叫号', icon: 'paiduijiaohao', apiIds: [82]},
     children: [{
       name: '队列维护',
       path: 'queuingUpType/list',
@@ -362,55 +362,55 @@ export const constantRouterMap = [
       name: '优惠券规则',
       path: 'extDiscountsCoupon/list',
       component: () => import('@/views/extDiscountsCoupon/list'),
-      meta: {title: '优惠券规则', icon: 'juan'}
+      meta: {title: '优惠券规则', icon: 'juan', apiIds: [70]}
     },
     {
       name: '优惠券管理',
       path: 'extDiscountsCouponUser/list',
       component: () => import('@/views/extDiscountsCoupon/extDiscountsCouponUser'),
-      meta: {title: '优惠券管理', icon: 'juan'}
+      meta: {title: '优惠券管理', icon: 'juan', apiIds: [70]}
     },
     {
       name: '积分券管理',
       path: 'userScoreTicket/list',
       component: () => import('@/views/userScoreTicket/list'),
-      meta: {title: '积分券管理', icon: 'score'}
+      meta: {title: '积分券管理', icon: 'score', apiIds: [153]}
     },
     {
       name: '用户资产管理',
       path: 'apiExtUserCash/list',
       component: () => import('@/views/apiExtUserCash/list'),
-      meta: {title: '用户资产管理', icon: 'caiwu'}
+      meta: {title: '用户资产管理', icon: 'caiwu', apiIds: [30, 94, 116]}
     },
     {
       name: '用户积分记录',
       path: 'apiExtUserScoreLog/list',
       component: () => import('@/views/apiExtUserScoreLog/list'),
-      meta: {title: '用户积分记录', icon: 'score'}
+      meta: {title: '用户积分记录', icon: 'score', apiIds: [88]}
     },
     {
       name: '支付记录',
       path: 'apiExtUserPay/list',
       component: () => import('@/views/apiExtUserPay/list'),
-      meta: {title: '支付记录', icon: 'paylog'}
+      meta: {title: '支付记录', icon: 'paylog', apiIds: [30, 116]}
     },
     {
       name: '提现管理',
       path: 'extUserWithdraw/list',
       component: () => import('@/views/extUserWithdraw/list'),
-      meta: {title: '提现管理', icon: 'tixian'}
+      meta: {title: '提现管理', icon: 'tixian', apiIds: [94]}
     },
     {
       name: '支付宝收钱码',
       path: 'alipayTransferQrcode/list',
       component: () => import('@/views/alipayTransferQrcode/list'),
-      meta: {title: '支付宝收钱码', icon: 'alipaySR'}
+      meta: {title: '支付宝收钱码', icon: 'alipaySR', apiIds: [116]}
     },
     {
       name: '支付宝转账记录',
       path: 'alipayTransfer/list',
       component: () => import('@/views/alipayTransfer/list'),
-      meta: {title: '支付宝转账记录', icon: 'alipaySR'}
+      meta: {title: '支付宝转账记录', icon: 'alipaySR', apiIds: [116]}
     }]
   },
   {
@@ -418,7 +418,7 @@ export const constantRouterMap = [
     path: '/user',
     component: Layout,
     redirect: '/user/apiExtSmsConfig/list',
-    meta: {title: '短信设置', icon: 'dxsz'},
+    meta: {title: '短信设置', icon: 'dxsz', apiIds: [23]},
     children: [{
       name: '验证码设置',
       path: 'apiExtSmsConfig/list',
@@ -444,12 +444,13 @@ export const constantRouterMap = [
     component: Layout,
     redirect: '/user/apiExtShopSub/list',
     meta: {title: '商城管理', icon: 'shopping'},
-    children: [{
-      name: '店铺管理',
-      path: 'apiExtShopSub/list',
-      component: () => import('@/views/apiExtShopSub/list'),
-      meta: {title: '店铺管理', icon: 'shop'}
-    },
+    children: [
+      {
+        name: '店铺管理',
+        path: 'apiExtShopSub/list',
+        component: () => import('@/views/apiExtShopSub/list'),
+        meta: {title: '店铺管理', icon: 'shop', apiIds: [34]}
+      },
       {
         name: '店铺管理',
         path: 'apiExtShopSub/add',
@@ -461,19 +462,19 @@ export const constantRouterMap = [
         name: '商品分类',
         path: 'apiExtShopGoodsCategory/list',
         component: () => import('@/views/apiExtShopGoodsCategory/list'),
-        meta: {title: '商品分类', icon: 'category'}
+        meta: {title: '商品分类', icon: 'category', apiIds: [36]}
       },
       {
         name: '规格尺寸',
         path: 'apiExtShopProperty/list',
         component: () => import('@/views/apiExtShopProperty/list'),
-        meta: {title: '规格尺寸', icon: 'guigecicun'}
+        meta: {title: '规格尺寸', icon: 'guigecicun', apiIds: [37]}
       },
       {
         name: '运费模板',
         path: 'apiExtShopFreightTemplate/list',
         component: () => import('@/views/apiExtShopFreightTemplate/list'),
-        meta: {title: '运费模板', icon: 'yunfeimoban'}
+        meta: {title: '运费模板', icon: 'yunfeimoban', apiIds: [37]}
       },
       {
         name: '添加修改运费模板',
@@ -486,7 +487,7 @@ export const constantRouterMap = [
         name: '商品管理',
         path: 'apiExtShopGoods/list',
         component: () => import('@/views/apiExtShopGoods/list'),
-        meta: {title: '商品管理', icon: 'goods'}
+        meta: {title: '商品管理', icon: 'goods', apiIds: [37]}
       },
       {
         name: '商品管理',
@@ -499,7 +500,7 @@ export const constantRouterMap = [
         name: '订单列表',
         path: 'apiExtOrder/list',
         component: () => import('@/views/apiExtOrder/list'),
-        meta: {title: '订单管理', icon: 'order'}
+        meta: {title: '订单管理', icon: 'order', apiIds: [41]}
       },
       {
         name: '订单详情',
@@ -512,19 +513,19 @@ export const constantRouterMap = [
         name: '评价管理',
         path: 'apiExtOrderEvaluate/list',
         component: () => import('@/views/apiExtOrderEvaluate/list'),
-        meta: {title: '评价管理', icon: 'pingjia'}
+        meta: {title: '评价管理', icon: 'pingjia', apiIds: [41]}
       },
       {
         name: '达达门店',
         path: 'expressDadaShopCitycode/list',
         component: () => import('@/views/expressDadaShopCitycode/list'),
-        meta: {title: '达达门店', icon: 'dada'}
+        meta: {title: '达达门店', icon: 'dada', apiIds: [111]}
       },
       {
         name: '知识交易设置',
         path: 'virtualTraderSet/list',
         component: () => import('@/views/virtualTraderSet/list'),
-        meta: {title: '知识交易设置', icon: 'zhishi'}
+        meta: {title: '知识交易设置', icon: 'zhishi', apiIds: [128]}
       },
       {
         name: '添加知识交易',
@@ -537,7 +538,7 @@ export const constantRouterMap = [
         name: '知识交易记录',
         path: 'virtualTraderBuyLog/list',
         component: () => import('@/views/virtualTraderBuyLog/list'),
-        meta: {title: '知识交易记录', icon: 'zhishi'}
+        meta: {title: '知识交易记录', icon: 'zhishi', apiIds: [128]}
       }]
   },
 
@@ -546,7 +547,7 @@ export const constantRouterMap = [
     path: '/user',
     component: Layout,
     redirect: '/user/centerUserAliappKey/list',
-    meta: {title: '支付宝小程序', icon: 'alipaySR'},
+    meta: {title: '支付宝小程序', icon: 'alipaySR', apiIds: [166]},
     children: [{
       name: 'Appid配置',
       path: 'centerUserAliappKey/list',
@@ -564,7 +565,7 @@ export const constantRouterMap = [
         path: 'list',
         name: '视频点播',
         component: () => import('@/views/apiExtVod/list'),
-        meta: {title: '视频点播', icon: 'video'}
+        meta: {title: '视频点播', icon: 'video', apiIds: [101]}
       }
     ]
   },
@@ -573,7 +574,7 @@ export const constantRouterMap = [
     path: '/user',
     component: Layout,
     redirect: '/user/yuyueInfo/list',
-    meta: {title: '预约报名', icon: 'yuyue'},
+    meta: {title: '预约报名', icon: 'yuyue', apiIds: [158]},
     children: [
       {
         name: '项目设置',
@@ -602,41 +603,42 @@ export const constantRouterMap = [
     component: Layout,
     redirect: '/user/kanjiaSet/list',
     meta: {title: '营销辅助', icon: 'yingxiao'},
-    children: [{
-      name: '砍价设置',
-      path: 'kanjiaSet/list',
-      component: () => import('@/views/kanjiaSet/list'),
-      meta: {title: '砍价设置', icon: 'kanjia'}
-    },
+    children: [
+      {
+        name: '砍价设置',
+        path: 'kanjiaSet/list',
+        component: () => import('@/views/kanjiaSet/list'),
+        meta: {title: '砍价设置', icon: 'kanjia', apiIds: [122]}
+      },
       {
         name: '砍价参与用户',
         path: 'kanjiaJoiner/list',
         component: () => import('@/views/kanjiaJoiner/list'),
-        meta: {title: '砍价参与用户', icon: 'kanjia'}
+        meta: {title: '砍价参与用户', icon: 'kanjia', apiIds: [122]}
       },
       {
         name: '砍价明细',
         path: 'kanjiaHelp/list',
         component: () => import('@/views/kanjiaHelp/list'),
-        meta: {title: '砍价明细', icon: 'kanjia'}
+        meta: {title: '砍价明细', icon: 'kanjia', apiIds: [122]}
       },
       {
         name: '拼团设置',
         path: 'pingtuanSet/list',
         component: () => import('@/views/pingtuanSet/list'),
-        meta: {title: '拼团设置', icon: 'pingtuan'}
+        meta: {title: '拼团设置', icon: 'pingtuan', apiIds: [134]}
       },
       {
         name: '开团记录',
         path: 'pingtuanOpener/list',
         component: () => import('@/views/pingtuanOpener/list'),
-        meta: {title: '开团记录', icon: 'pingtuan'}
+        meta: {title: '开团记录', icon: 'pingtuan', apiIds: [134]}
       },
       {
         name: '拼团记录',
         path: 'pingtuanHelp/list',
         component: () => import('@/views/pingtuanHelp/list'),
-        meta: {title: '拼团记录', icon: 'pingtuan'}
+        meta: {title: '拼团记录', icon: 'pingtuan', apiIds: [134]}
       }]
   },
 

@@ -27,6 +27,21 @@ export function login_username(userName, pwd, rememberMe, pdomain) {
   })
 }
 
+export function login_operator(merchantId, userName, pwd, rememberMe, imgcode, k) {
+  return request({
+    url: '/login/operator',
+    method: 'post',
+    data: {
+      merchantId,
+      userName,
+      pwd,
+      rememberMe,
+      imgcode,
+      k
+    }
+  })
+}
+
 export function smscode_register(mobile, code, k) {
   return request({
     url: '/register/smscode',
