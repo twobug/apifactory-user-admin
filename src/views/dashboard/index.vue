@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard-container">
     <el-row :gutter="40" class="panel-group">
-      <el-col v-checkInstalledApi="[1,2,3,4,7]" :xs="12" :sm="12" :lg="6" class="card-panel-col">
+      <el-col v-checkInstalledApi="[18, 25, 166]" :xs="12" :sm="12" :lg="6" class="card-panel-col">
         <div class="card-panel user-box">
           <div class="card-panel-icon-wrapper icon-people">
             <svg-icon icon-class="user" class-name="card-panel-icon" />
@@ -13,43 +13,46 @@
           </div>
         </div>
       </el-col>
-      <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
+      <el-col v-checkInstalledApi="[41]" :xs="12" :sm="12" :lg="6" class="card-panel-col">
         <div class="card-panel income-box">
           <div class="card-panel-icon-wrapper icon-message">
-            <svg-icon icon-class="shouru" class-name="card-panel-icon" />
+            <svg-icon icon-class="order" class-name="card-panel-icon" />
           </div>
           <div class="column-box" />
           <div class="card-panel-description">
             <div class="card-panel-text">订单数</div>
-            <count-to :start-val="0" :end-val="1000" :duration="2600" class="card-panel-num" />
+            <count-to :start-val="0" :end-val="statisticsData.orders" :duration="1000" class="card-panel-num" />
           </div>
         </div>
       </el-col>
       <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
         <div class="card-panel jkje-box">
           <div class="card-panel-icon-wrapper icon-money">
-            <svg-icon icon-class="jiekuan" class-name="card-panel-icon" />
+            <svg-icon icon-class="files" class-name="card-panel-icon" />
           </div>
           <div class="column-box" />
           <div class="card-panel-description">
-            <div class="card-panel-text">借款金额</div>
-            <count-to :start-val="0" :end-val="4000" :duration="2600" class="card-panel-num" />
+            <div class="card-panel-text">存储空间</div>
+            <font style="color:red">已用 {{statisticsData.fileCapacity}}</font>
           </div>
         </div>
       </el-col>
-      <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
+      <el-col v-checkInstalledApi="[37]" :xs="12" :sm="12" :lg="6" class="card-panel-col">
         <div class="card-panel pz-box">
           <div class="card-panel-icon-wrapper icon-shoppingCard">
-            <svg-icon icon-class="peizi" class-name="card-panel-icon" />
+            <svg-icon icon-class="goods" class-name="card-panel-icon" />
           </div>
           <div class="column-box" />
           <div class="card-panel-description">
-            <div class="card-panel-text">配资规模</div>
-            <count-to :start-val="0" :end-val="8000" :duration="3000" class="card-panel-num" />
+            <div class="card-panel-text">商品数量</div>
+            <count-to :start-val="0" :end-val="statisticsData.goods" :duration="1000" class="card-panel-num" />
           </div>
         </div>
       </el-col>
     </el-row>
+    <el-alert type="error" :closable="false" title="温馨提示：" style="margin-bottom:25px;">
+      当前后台左侧没有菜单？安装/卸载模块快速切换菜单！「<a href="#/user/centerUserApi/list" class="gray">模块设置</a>」。
+    </el-alert>
   </div>
 </template>
 
@@ -57,6 +60,7 @@
 import CountTo from 'vue-count-to'
 import { mapGetters } from 'vuex'
 import { statisticsData } from '@/api/centerUser'
+import { statistics } from '@/api/apiExtDfs'
 
 export default {
   name: 'Dashboard',
@@ -72,14 +76,22 @@ export default {
   data() {
     return {
       statisticsData:{
-        users:0
+        users:0,
+        orders:0,
+        goods:0,
+        fileCapacity:'-'
       }
     }
   },
   mounted() {
     statisticsData().then(res => {
       if (res.code == 0) {
-        this.statisticsData = res.data
+        this.statisticsData = Object.assign({}, this.statisticsData, res.data)
+      }
+    })
+    statistics().then(res => {
+      if (res.code == 0) {
+        this.statisticsData.fileCapacity = res.data.capacityStr
       }
     })
   },
