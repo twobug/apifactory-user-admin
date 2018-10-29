@@ -1,21 +1,35 @@
 <template>
   <div class="login-container">
-    <el-form class="login-form" autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left">
-      <h3 class="title">api工厂后台</h3>
+    <el-form class="login-form" autoComplete="off" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left">
+      <h3 class="title">修改手机号码</h3>
       <el-form-item prop="username">
-        <span class="svg-container">
+        <span class="svg-container svg-container_login">
           <svg-icon icon-class="user" />
         </span>
-        <el-input name="username" type="text" v-model="loginForm.username" autoComplete="on" placeholder="用户名" />
+        <el-input name="username" type="text" v-model="loginForm.username" autoComplete="off" placeholder="新手机号码" />
+      </el-form-item>
+      <el-form-item prop="imgcode" style='position:relative;'>
+        <span class="svg-container svg-container_login">
+          <svg-icon icon-class="picture" />
+        </span>
+        <el-input name="imgcode" type="text" @keyup.enter.native="handleLogin" autoComplete="on" placeholder="验证码" v-model="loginForm.imgcode" />
+        <img class='random' style='position:absolute;right:10px; top:5px;width:80px;height:40px' @click='changeRandom' />
+      </el-form-item>
+      <el-form-item prop="smscode" style='position:relative;'>
+        <span class="svg-container svg-container_login">
+          <svg-icon icon-class="mobile" />
+        </span>
+        <el-input name="smscode" type="text" @keyup.enter.native="handleLogin" autoComplete="on" placeholder="短信验证码" v-model="loginForm.smscode" />
+        <el-button type="warning" round style='position:absolute;right:10px; top:5px;' @click='getsmscode'>获取验证码</el-button>
       </el-form-item>
       <el-form-item prop="password">
         <span class="svg-container">
           <svg-icon icon-class="password"></svg-icon>
         </span>
-        <el-input name="password" :type="pwdType" v-model="loginForm.password" autoComplete="on"
-          placeholder="登录密码"></el-input>
+        <el-input name="password" :type="pwdType" v-model="loginForm.password" autoComplete="new-password"
+          placeholder="新的登录密码"></el-input>
           <span class="show-pwd" @click="showPwd"><svg-icon icon-class="eye" /></span>
-      </el-form-item>      
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" style="width:100%;" :loading="loading" @click.native.prevent="handleLogin">
           登录
@@ -23,13 +37,10 @@
       </el-form-item>
       <div class="tips">
         <span style="margin-right:20px;">
+          <router-link to="/login">现有账号登陆</router-link>
+        </span>
+        <span>
           <router-link to="/register">开通新后台</router-link>
-        </span>
-        <span style="margin-right:20px;">
-          <router-link to="/resetpwd">忘记密码?</router-link>
-        </span>
-        <span style="color:orange">
-         测试账号 11100000224/123456
         </span>
       </div>
     </el-form>
@@ -38,7 +49,8 @@
 
 <script>
 
-import { login_username, logout, getInfo } from '@/api/login'
+import { smscode_register } from '@/api/login'
+import { editMobile } from '@/api/centerUser'
 import { Message, MessageBox } from 'element-ui'
 import { setToken } from '@/utils/auth'
 
@@ -64,27 +76,21 @@ export default {
         username: '',
         password: '',
         picKey:'',
-        imgcode:''
+        imgcode:'',
+        smscode:'',
+        name:''
       },
       loginRules: {
-        username: [{ required: true, trigger: 'blur', message:'不能为空' }],
-        password: [{ required: true, trigger: 'blur', message:'不能为空' }]
+        username: [{ required: true, trigger: 'blur' }],
+        password: [{ required: true, trigger: 'blur' }],
+        imgcode: [{ required: true, trigger: 'blur', validator:validateImgCode }],
       },
       loading: false,
-      pwdType: 'password',
-      redirect: undefined
-    }
-  },
-  watch: {
-    $route: {
-      handler: function(route) {
-        this.redirect = route.query && route.query.redirect
-      },
-      immediate: true
+      pwdType: 'password'
     }
   },
   mounted() {
-    
+    this.changeRandom();
   },
   methods: {
     showPwd() {
@@ -94,52 +100,57 @@ export default {
         this.pwdType = 'password'
       }
     },
+    getsmscode() {
+      if (this.loginForm.username == "") {
+        Message({
+          message: '请输入手机号码',
+          type: 'error',
+          duration: 3 * 1000
+        })
+        return;
+      }
+      if (this.loginForm.imgcode == "") {
+        Message({
+          message: '请输入图形验证码',
+          type: 'error',
+          duration: 3 * 1000
+        })
+        return;
+      }
+      this.loading = true
+      smscode_register(this.loginForm.username, this.loginForm.imgcode, this.loginForm.picKey).then((res) =>{
+        this.loading = false
+        if (res.code == 0) {
+          Message({
+            message: '验证码已发送',
+            type: 'success',
+            duration: 3 * 1000
+          })
+          return;
+        } else {
+          this.changeRandom()
+          Message({
+            message: res.msg,
+            type: 'error',
+            duration: 3 * 1000
+          })
+          return;
+        }
+      }).catch((err) => {
+        console.log(err);
+        this.loading = false
+      })
+    },
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
-          login_username(this.loginForm.username, this.loginForm.password, '', 'mall.s2m.cc').then((res) => {
+          editMobile(this.loginForm.username, this.loginForm.password, this.loginForm.smscode).then((res) => {
             this.loading = false
-            if (res.code == 300) {
-              this.changeRandom()
-              Message({
-                message: '验证码错误',
-                type: 'error',
-                duration: 3 * 1000
-              })
-              return;
-            }
-            if (res.code == 10000) {
-              this.changeRandom()
-              Message({
-                message: '请输入正确的手机号码',
-                type: 'error',
-                duration: 3 * 1000
-              })
-              return;
-            }
-            if (res.code == 100) {
-              this.changeRandom()
-              Message({
-                message: '密码次数过多，该账号已被锁定',
-                type: 'error',
-                duration: 3 * 1000
-              })
-              return;
-            }
             if (res.code == 404) {
               this.changeRandom()
               Message({
-                message: '手机号码或密码错误',
-                type: 'error',
-                duration: 3 * 1000
-              })
-              return;
-            }
-            if (res.code == 20000) {
-              this.changeRandom()
-              Message({
-                message: '当前用户状态有误',
+                message: '手机号码未注册',
                 type: 'error',
                 duration: 3 * 1000
               })
@@ -155,12 +166,11 @@ export default {
               return;
             }
             Message({
-              message: '登录成功',
+              message: '重置完成，请重新登录',
               type: 'success',
-              duration: 1 * 1000,
+              duration: 3 * 1000,
               onClose: () => {
-                setToken(res.data);
-                this.$router.push({ path: this.redirect || '/' })
+                this.$router.push({ path: '/login' })
               }
             })
           }).catch((err) => {
@@ -174,7 +184,8 @@ export default {
       })
     },
     changeRandom() {
-      
+      this.loginForm.picKey = Math.random();
+      (document.getElementsByClassName('random'))[0].setAttribute('src', process.env.BASE_API + '/code?k=' + this.loginForm.picKey)
     }
   }
 }
@@ -228,7 +239,6 @@ $light_gray:#eee;
     left: 0;
     right: 0;
     width: 520px;
-    max-width: 100%;
     padding: 35px 35px 15px 35px;
     margin: 120px auto;
   }
@@ -248,6 +258,9 @@ $light_gray:#eee;
     vertical-align: middle;
     width: 30px;
     display: inline-block;
+    &_login {
+      font-size: 20px;
+    }
   }
   .title {
     font-size: 26px;

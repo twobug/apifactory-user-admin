@@ -24,9 +24,9 @@ Vue.use(Router)
  **/
 export const constantRouterMap = [
   {path: '/login', component: () => import('@/views/login/index'), hidden: true},
-  {path: '/login/username', component: () => import('@/views/login/login_username'), hidden: true},
   {path: '/register', component: () => import('@/views/login/register'), hidden: true},
   {path: '/resetpwd', component: () => import('@/views/login/resetpwd'), hidden: true},
+  {path: '/modifyMobile', component: () => import('@/views/login/modifyMobile'), hidden: true},
   {path: '/404', component: () => import('@/views/404'), hidden: true},
 
   {
